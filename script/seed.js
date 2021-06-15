@@ -1,11 +1,19 @@
 'use strict'
 
-const {db, models: {User} } = require('../server/db')
+const {db} = require('../server/db')
+
+const User = require('../server/db/models/user')
+const Cocktail = require('../server/db/models/cocktail')
 
 /**
  * seed - this function clears the database, updates tables to
  *      match the models, and populates the database.
  */
+
+ const cocktailOne = {
+   name: 'margarita', 
+   imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Flaming_cocktails.jpg/220px-Flaming_cocktails.jpg'
+ }
 async function seed() {
   await db.sync({ force: true }) // clears db and matches models to tables
   console.log('db synced!')
@@ -16,7 +24,11 @@ async function seed() {
     User.create({ username: 'murphy', password: '123' }),
   ])
 
+
+const cocktails = await Cocktail.create(cocktailOne)
+  
   console.log(`seeded ${users.length} users`)
+  console.log(`seeded ${cocktails.length} cocktails`)
   console.log(`seeded successfully`)
   return {
     users: {
@@ -25,7 +37,6 @@ async function seed() {
     }
   }
 }
-
 /*
  We've separated the `seed` function from the `runSeed` function.
  This way we can isolate the error handling and exit trapping.
