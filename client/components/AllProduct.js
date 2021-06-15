@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchCoctails } from "../store/allProduct";
+import { fetchCocktails } from "../store/allProduct";
 
 class AllProduct extends React.Component {
   componentDidMount() {
@@ -23,13 +23,14 @@ class AllProduct extends React.Component {
     );
   }
 }
+
 const mapState = (state) => {
   return { cocktails: state.cocktails };
 };
 
 const mapDispatch = (dispatch) => ({
   getCocktails: () => {
-    dispatch(fetchCoctails());
+    dispatch(fetchCocktails());
   },
 });
 

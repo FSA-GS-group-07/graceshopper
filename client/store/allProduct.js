@@ -7,7 +7,7 @@ export const setCocktails = (cocktails) => ({
   cocktails,
 });
 
-export const fetchCoctails = () => async (dispatch) => {
+export const fetchCocktails = () => async (dispatch) => {
   try {
     const { data } = await axios.get("/api/cocktails");
     dispatch(setCocktails(data));

@@ -19,7 +19,7 @@ describe("Cocktail routes", () => {
       const res = await request(app).get("/api/cocktails").expect(200);
 
       expect(res.body).to.be.an("array");
-      expect(res.body.length).to.equal(100);
+      expect(res.body.length).to.equal(20);
     });
   });
 });
