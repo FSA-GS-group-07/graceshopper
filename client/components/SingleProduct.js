@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import fetchProduct from "../store/singleproduct";
 
 class SingleProduct extends React.Component {
   constructor(props) {
@@ -26,7 +27,7 @@ class SingleProduct extends React.Component {
 
 const mapDispatch = (dispatch) => {
   return {
-    getProduct: (id) => dispatch(thunk(id)),
+    getProduct: (id) => dispatch(fetchProduct(id)),
   };
 };
 
