@@ -1,3 +1,4 @@
+
 //Changes(if required) : name of the model
 const router = require("express").Router();
 const {
@@ -13,3 +14,5 @@ router.get("/", async (req, res, next) => {
     next(err);
   }
 });
+
+
