@@ -1,4 +1,3 @@
-
 //Changes(if required) : name of the model
 const router = require("express").Router();
 const {
@@ -6,6 +5,7 @@ const {
 } = require("../db");
 module.exports = router;
 
+// GET /cocktails
 router.get("/", async (req, res, next) => {
   try {
     const cocktails = await Cocktail.findAll();
@@ -15,4 +15,12 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-
+// GET /cocktails/:id
+router.get("/cocktails/:id", async (req, res, next) => {
+  try {
+    const cocktail = await Cocktail.findByPk(req.paramds.id);
+    res.json(cocktail);
+  } catch (err) {
+    next(err);
+  }
+});

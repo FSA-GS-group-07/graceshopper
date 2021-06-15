@@ -1,27 +1,27 @@
 import axios from "axios";
 
-const GET_PRODUCT = "GET_PRODUCT";
+const GET_COCKTAIL = "GET_COCKTAIL";
 
-const gotProduct = (product) => {
+const gotCocktail = (cocktail) => {
   return {
-    type: GET_PRODUCT,
-    product,
+    type: GET_COCKTAIL,
+    cocktail,
   };
 };
 
-export const fetchProduct = (id) => async (dispatch) => {
+export const fetchCocktail = (id) => async (dispatch) => {
   try {
-    let { data: product } = await axios.get(`/api/products/${id}`);
-    dispatch(gotProduct(product));
+    let { data: cocktail } = await axios.get(`/api/cocktails/${id}`);
+    dispatch(gotCocktail(cocktail));
   } catch (error) {
     console.log(error);
   }
 };
 
-export default function productReducer(state = {}, action) {
+export default function cocktailReducer(state = {}, action) {
   switch (action.type) {
-    case GET_PRODUCT:
-      return action.product;
+    case GET_COCKTAIL:
+      return action.cocktail;
     default:
       return state;
   }

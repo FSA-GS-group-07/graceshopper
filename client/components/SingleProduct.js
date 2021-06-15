@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchProduct } from "../store/singleproduct";
+import { fetchCocktail } from "../store/singleproduct";
 
 class SingleProduct extends React.Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class SingleProduct extends React.Component {
   }
 
   async componentDidMount() {
-    await this.props.getProduct(this.props.match.params.id);
+    await this.props.getCocktail(this.props.match.params.id);
   }
 
   handleAdd() {
@@ -30,14 +30,14 @@ class SingleProduct extends React.Component {
   }
 
   render() {
-    const { product } = this.props;
+    const { cocktail } = this.props;
 
     return (
       <div>
-        <h1>{product.name}</h1>
-        <h3>{product.price}</h3>
-        <p>{product.description}</p>
-        <img src={product.imageUrl} />
+        <h1>{cocktail.name}</h1>
+        <h3>{cocktail.price}</h3>
+        <p>{cocktail.description}</p>
+        <img src={cocktail.imageUrl} />
 
         <button type="button" onClick={this.handleSubtract}>
           -
@@ -55,13 +55,13 @@ class SingleProduct extends React.Component {
 
 const mapState = (state) => {
   return {
-    product: state.product,
+    cocktail: state.cocktail,
   };
 };
 
 const mapDispatch = (dispatch) => {
   return {
-    getProduct: (id) => dispatch(fetchProduct(id)),
+    getCocktail: (id) => dispatch(fetchCocktail(id)),
     addToCart: (id, quantity) => dispatch(thunk(id, quantity)),
   };
 };
