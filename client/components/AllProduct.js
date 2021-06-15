@@ -4,14 +4,12 @@ import { Link } from "react-router-dom";
 import { fetchCocktails } from "../store/allProduct";
 
 class AllProduct extends React.Component {
-  async componentDidMount() {
-    await this.props.getCocktails();
-    console.log(this.props);
+  componentDidMount() {
+    this.props.getCocktails();
   }
 
   render() {
     const { cocktails } = this.props;
-    console.log(this.props);
     return (
       <div className="all-cocktails">
         {cocktails &&
@@ -29,7 +27,6 @@ class AllProduct extends React.Component {
 }
 
 const mapState = (state) => {
-  console.log(state.cocktails);
   return { cocktails: state.cocktails };
 };
 
