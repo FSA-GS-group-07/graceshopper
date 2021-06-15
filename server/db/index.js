@@ -6,6 +6,7 @@ const Cocktail = require('./models/cocktail');
 const Cart = require('./models/cart');
 const Cocktails_in_cart = require('./models/cocktails_in_cart');
 
+
 //associations could go here!
 Cart.belongsTo(User);
 User.hasOne(Cart);
