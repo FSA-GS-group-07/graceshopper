@@ -5,6 +5,7 @@ import { Login, Signup } from "./components/AuthForm";
 import Home from "./components/Home";
 import { me } from "./store";
 import AllProduct from "./components/AllProduct";
+import SingleProduct from "./components/SingleProduct";
 
 /**
  * COMPONENT
@@ -34,6 +35,7 @@ class Routes extends Component {
       // </div>
       <div>
         <Route exact path="/cocktails" component={AllProduct} />
+        <Route exact path="/cocktails/:id" component={SingleProduct} />
       </div>
     );
   }
