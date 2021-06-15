@@ -14,8 +14,8 @@ class AllProduct extends React.Component {
       <div className="all-cocktails">
         {cocktails &&
           cocktails.map((cocktail) => (
-            <Link to={`/cocktails/${cocktail.id}`}>
-              <span key={cocktail.id}>
+            <Link key={cocktail.id} to={`/cocktails/${cocktail.id}`}>
+              <span>
                 <h1>{cocktail.name}</h1>
                 <img src={cocktail.imageUrl} alt={cocktail.name} />
                 <h3>{cocktail.price}</h3>

@@ -5,7 +5,7 @@ const {
 } = require("../db");
 module.exports = router;
 
-// GET /cocktails
+// GET api/cocktails
 router.get("/", async (req, res, next) => {
   try {
     const cocktails = await Cocktail.findAll();
@@ -15,10 +15,10 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// GET /cocktails/:id
-router.get("/cocktails/:id", async (req, res, next) => {
+// GET api/cocktails/:id
+router.get("/:id", async (req, res, next) => {
   try {
-    const cocktail = await Cocktail.findByPk(req.paramds.id);
+    const cocktail = await Cocktail.findByPk(req.params.id);
     res.json(cocktail);
   } catch (err) {
     next(err);
