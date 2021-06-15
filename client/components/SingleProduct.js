@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import fetchProduct from "../store/singleproduct";
+import { fetchProduct } from "../store/singleproduct";
 
 class SingleProduct extends React.Component {
   constructor(props) {
@@ -53,6 +53,12 @@ class SingleProduct extends React.Component {
   }
 }
 
+const mapState = (state) => {
+  return {
+    product: state.product,
+  };
+};
+
 const mapDispatch = (dispatch) => {
   return {
     getProduct: (id) => dispatch(fetchProduct(id)),
@@ -60,4 +66,4 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatch)(SingleProduct);
+export default connect(mapState, mapDispatch)(SingleProduct);
