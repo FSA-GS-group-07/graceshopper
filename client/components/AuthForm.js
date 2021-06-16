@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { authenticate } from "../store";
+import { Link } from "react-router-dom";
 
 /**
  * COMPONENT
@@ -26,6 +27,12 @@ const AuthForm = (props) => {
         <div>
           <button type="submit">{displayName}</button>
         </div>
+        <br />
+        <small>First Time?</small>
+        <br />
+        <small>
+          <Link to="/signup">Sign up here</Link>
+        </small>
         {error && error.response && <div> {error.response.data} </div>}
       </form>
     );
@@ -61,7 +68,13 @@ const AuthForm = (props) => {
         <div>
           <button type="submit">{displayName}</button>
         </div>
-        {error && error.response && <div> {error.response.data} </div>}
+        <br />
+        <small>Already have an account?</small>
+        <br />
+        <small>
+          <Link to="/login">log in here</Link>
+        </small>
+        {error && error.response && <div>{error.response.data}</div>}
       </form>
     );
   };
@@ -80,7 +93,7 @@ const mapLogin = (state) => {
   return {
     name: "login",
     displayName: "Login",
-    error: state.auth.error,
+    error: state.auth.loginError,
   };
 };
 
@@ -88,7 +101,7 @@ const mapSignup = (state) => {
   return {
     name: "signup",
     displayName: "Sign Up",
-    error: state.auth.error,
+    error: state.auth.signupError,
   };
 };
 
@@ -102,11 +115,6 @@ const mapDispatch = (dispatch) => {
       const lastName = evt.target.lname?.value;
       const password = evt.target.password.value;
       const email = evt.target.email.value;
-
-      // firstName,
-      // lastName,
-      // password,
-      // email,
       dispatch(authenticate(firstName, lastName, password, email, formName));
     },
   };

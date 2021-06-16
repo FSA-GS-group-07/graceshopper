@@ -34,11 +34,22 @@ async function seed() {
   
   // Creating Users
   const users = await Promise.all([
+    User.create({
+      firstName: "cody",
+      lastName: "bean",
+      email: "cody@email.com",
+      username: "cody",
+      password: "123",
+    }),
+    User.create({
+      firstName: "murphy",
+      lastName: "terry",
+      email: "murphy@email.com",
+      username: "murphy",
+      password: "123",
+    }),
+  ]);
 
-    User.create({ username: 'cody', password: '123' }),
-    User.create({ username: 'murphy', password: '123' }),
-  ])
-  
   // Creating Cocktails
   const allCocktails = await Promise.all(
     cocktails.map((cocktail) => Cocktail.create(cocktail))
