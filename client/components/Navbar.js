@@ -19,7 +19,7 @@ class Navbar extends React.Component {
     return (
       <div>
         <h1>PourDecisions</h1>
-        <nav>
+        <nav> 
           {this.props.isLoggedIn ? (
             <div>
               {/* The navbar will show these links after you log in */}
@@ -31,7 +31,7 @@ class Navbar extends React.Component {
               </a>
             </div>
           ) : (
-            <div>
+          <div>
               {/* The navbar will show these links before you log in */}
               <Link to="/home">Home</Link>
               <Link to="/cocktails">Shop</Link>

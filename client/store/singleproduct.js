@@ -14,7 +14,7 @@ export const fetchCocktail = (id) => async (dispatch) => {
     let { data: cocktail } = await axios.get(`/api/cocktails/${id}`);
     dispatch(gotCocktail(cocktail));
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
