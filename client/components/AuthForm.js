@@ -74,10 +74,7 @@ const AuthForm = (props) => {
         <small>
           <Link to="/login">log in here</Link>
         </small>
-
-        {name === "signup" && error && error.response && (
-          <div>{error.response.data}</div>
-        )}
+        {error && error.response && <div>{error.response.data}</div>}
       </form>
     );
   };
@@ -96,7 +93,7 @@ const mapLogin = (state) => {
   return {
     name: "login",
     displayName: "Login",
-    error: state.auth.error,
+    error: state.auth.loginError,
   };
 };
 
@@ -104,7 +101,7 @@ const mapSignup = (state) => {
   return {
     name: "signup",
     displayName: "Sign Up",
-    error: state.auth.error,
+    error: state.auth.signupError,
   };
 };
 

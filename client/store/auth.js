@@ -44,7 +44,11 @@ export const authenticate =
       dispatch(me());
     } catch (authError) {
       console.error(authError);
-      return dispatch(setAuth({ error: authError }));
+      return dispatch(
+        setAuth({
+          [method === "login" ? "loginError" : "signupError"]: authError,
+        })
+      );
     }
   };
 
