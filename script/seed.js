@@ -5,20 +5,33 @@ const { db } = require("../server/db");
 const User = require("../server/db/models/user");
 const Cocktail = require("../server/db/models/cocktail");
 
+
 /**
  * seed - this function clears the database, updates tables to
  *      match the models, and populates the database.
  */
 
-const cocktailOne = {
-  name: "margarita",
-  imageUrl:
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Flaming_cocktails.jpg/220px-Flaming_cocktails.jpg",
-};
-async function seed() {
-  await db.sync({ force: true }); // clears db and matches models to tables
-  console.log("db synced!");
 
+
+
+async function seed() {
+  await db.sync({ force: true }) // clears db and matches models to tables
+  console.log('db synced!')
+  
+
+  const data = require('../script/data2.json')
+
+  let cocktails = [];
+  
+  data.drinks.forEach((drink) => {
+    let cocktail = {
+      name: drink.strDrink,
+      imageUrl: drink.strDrinkThumb
+    }
+    cocktails.push(cocktail)
+  })
+  
+  
   // Creating Users
   const users = await Promise.all([
     User.create({
@@ -37,11 +50,16 @@ async function seed() {
     }),
   ]);
 
-  const cocktails = await Cocktail.create(cocktailOne);
+  // Creating Cocktails
+  const allCocktails = await Promise.all(
+    cocktails.map((cocktail) => Cocktail.create(cocktail))
+  )
+ 
 
-  console.log(`seeded ${users.length} users`);
-  console.log(`seeded ${cocktails.length} cocktails`);
-  console.log(`seeded successfully`);
+  console.log(`seeded ${users.length} users`)
+  console.log(`seeded ${allCocktails.length} cocktails`)
+  console.log(`seeded successfully`)
+
   return {
     users: {
       cody: users[0],
