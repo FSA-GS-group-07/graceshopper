@@ -11,34 +11,37 @@ const Order = require('../server/db/models/order');
  *      match the models, and populates the database.
  */
 
-const cocktailOne = {
-  name: 'margarita',
-  imageUrl:
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Flaming_cocktails.jpg/220px-Flaming_cocktails.jpg',
-};
 async function seed() {
   await db.sync({ force: true }); // clears db and matches models to tables
   console.log('db synced!');
 
-  // Creating Users
-  const users = await Promise.all([
-    User.create({ name: 'cody', username: 'cody', password: '123' }),
-    User.create({ name: 'murphy', username: 'murphy', password: '123' }),
-  ]);
+  const data = require('../script/data2.json');
 
-  const cocktails = await Cocktail.create(cocktailOne);
+  let cocktails = [];
 
-  const orders = await Order.create({
-    address: '123 st',
-    total: 50,
-    status: 'CART',
-    userId: 1,
+  data.drinks.forEach((drink) => {
+    let cocktail = {
+      name: drink.strDrink,
+      imageUrl: drink.strDrinkThumb,
+    };
+    cocktails.push(cocktail);
   });
 
+  // Creating Users
+  const users = await Promise.all([
+    User.create({ username: 'cody', password: '123' }),
+    User.create({ username: 'murphy', password: '123' }),
+  ]);
+
+  // Creating Cocktails
+  const allCocktails = await Promise.all(
+    cocktails.map((cocktail) => Cocktail.create(cocktail))
+  );
+
   console.log(`seeded ${users.length} users`);
-  console.log(`seeded ${cocktails.length} cocktails`);
-  console.log(`seeded ${orders.length} orders`);
+  console.log(`seeded ${allCocktails.length} cocktails`);
   console.log(`seeded successfully`);
+
   return {
     users: {
       cody: users[0],
