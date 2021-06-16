@@ -1,18 +1,15 @@
+const router = require('express').Router()
+const { models: { Cocktail }} = require('../db')
+module.exports = router
 
-//Changes(if required) : name of the model
-const router = require("express").Router();
-const {
-  models: { Cocktail },
-} = require("../db");
-module.exports = router;
-
-router.get("/", async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
-    const cocktails = await Cocktail.findAll();
-    res.json(cocktails);
+    // const api_url = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail'
+    // const fetch_res = await fetch(api_url)
+    // const json = await fetch_res.json()
+    const cocktails = await Cocktail.findAll()
+    res.json(cocktails)
   } catch (err) {
-    next(err);
+    next(err)
   }
-});
-
-
+})
