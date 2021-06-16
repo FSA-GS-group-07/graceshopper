@@ -37,9 +37,8 @@ export const authenticate =
         lastName,
         password,
         email,
-        username: email,
+        username: firstName,
       });
-
 
       window.localStorage.setItem(TOKEN, res.data.token);
       dispatch(me());
