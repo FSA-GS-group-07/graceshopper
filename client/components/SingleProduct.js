@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   fetchCocktail,
   updateCocktail,
@@ -138,6 +139,9 @@ class SingleProduct extends React.Component {
             <button type="button">Add to Cart</button>
           </div>
         )}
+        <Link to="/cocktails">
+          <button type="button">Back</button>
+        </Link>
       </div>
     );
   }
