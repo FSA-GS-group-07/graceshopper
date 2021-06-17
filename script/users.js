@@ -1,4 +1,4 @@
-var data = [
+let data = [
   {
     firstName: "Lucas",
     lastName: "Gallagher",
@@ -712,3 +712,5 @@ var data = [
   { firstName: "Alfreda", lastName: "Hess", email: "sed.leo@ultricies.edu" },
   { firstName: "Baxter", lastName: "Huff", email: "et.ultrices@Aliquam.co.uk" },
 ];
+
+module.exports = data;

@@ -5,60 +5,69 @@ const { db } = require("../server/db");
 const User = require("../server/db/models/user");
 const Cocktail = require("../server/db/models/cocktail");
 
+const data = require("../script/data2.json");
+const users = require("./users");
 
 /**
  * seed - this function clears the database, updates tables to
  *      match the models, and populates the database.
  */
 
-
-
-
 async function seed() {
-  await db.sync({ force: true }) // clears db and matches models to tables
-  console.log('db synced!')
-  
-
-  const data = require('../script/data2.json')
+  await db.sync({ force: true }); // clears db and matches models to tables
+  console.log("db synced!");
 
   let cocktails = [];
-  
+
   data.drinks.forEach((drink) => {
     let cocktail = {
       name: drink.strDrink,
-      imageUrl: drink.strDrinkThumb
-    }
-    cocktails.push(cocktail)
-  })
-  
-  
-  // Creating Users
-  const users = await Promise.all([
-    User.create({
-      firstName: "cody",
-      lastName: "bean",
-      email: "cody@email.com",
-      username: "cody",
-      password: "123",
-    }),
-    User.create({
-      firstName: "murphy",
-      lastName: "terry",
-      email: "murphy@email.com",
-      username: "murphy",
-      password: "123",
-    }),
-  ]);
+      imageUrl: drink.strDrinkThumb,
+    };
+    cocktails.push(cocktail);
+  });
+
+  // // Creating Users
+  // const users = await Promise.all([
+  //   User.create({
+  //     firstName: "cody",
+  //     lastName: "bean",
+  //     email: "cody@email.com",
+  //     username: "cody",
+  //     password: "123",
+  //   }),
+  //   User.create({
+  //     firstName: "murphy",
+  //     lastName: "terry",
+  //     email: "murphy@email.com",
+  //     username: "murphy",
+  //     password: "123",
+  //   }),
+  // ]);
 
   // Creating Cocktails
   const allCocktails = await Promise.all(
     cocktails.map((cocktail) => Cocktail.create(cocktail))
-  )
- 
+  );
 
-  console.log(`seeded ${users.length} users`)
-  console.log(`seeded ${allCocktails.length} cocktails`)
-  console.log(`seeded successfully`)
+  const allUsers = await Promise.all(
+    users.map((user, idx) => {
+      const newUser = User.build(user);
+      newUser.username = `${newUser.firstName}${newUser.lastName}`;
+      if (idx > 180) {
+        newUser.admin = true;
+        newUser.password = "123456";
+      } else {
+        newUser.admin = false;
+        newUser.password = "123";
+      }
+      return newUser.save();
+    })
+  );
+
+  console.log(`seeded ${allUsers.length} users`);
+  console.log(`seeded ${allCocktails.length} cocktails`);
+  console.log(`seeded successfully`);
 
   return {
     users: {
