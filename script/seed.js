@@ -33,16 +33,10 @@ async function seed() {
   );
 
   const allUsers = await Promise.all(
-    users.map((user, idx) => {
+    users.map((user) => {
       const newUser = User.build(user);
       newUser.username = `${newUser.firstName}${newUser.lastName}`;
-      if (idx > 180) {
-        newUser.admin = true;
-        newUser.password = "123456";
-      } else {
-        newUser.admin = false;
-        newUser.password = "123";
-      }
+      newUser.password = "123";
       return newUser.save();
     })
   );

@@ -30,7 +30,7 @@ const User = db.define("user", {
   },
   admin: {
     type: Sequelize.BOOLEAN,
-    defaultValue: true,
+    defaultValue: false,
   },
 });
 
