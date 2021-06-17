@@ -3,7 +3,7 @@ import axios from 'axios';
 const GET_CART = 'GET CART';
 
 const gotCart = (cart) => ({
-  type: GOT_CART,
+  type: GET_CART,
   cart,
 });
 

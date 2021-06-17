@@ -10,10 +10,13 @@ const { requireToken } = require('./gatekeeping');
 router.get('/', requireToken, async (req, res, next) => {
   try {
     //we have access to req.user
+
+    // console.log('outside if req.user-->', req.user);
     if (req.user) {
+      console.log('req.user.id-->', req.user.id);
       const order = await Order.findAll({
         where: {
-          [Sequelize.Op.and]: [{ userId: req.user.id }, { status: 'CART' }],
+          [Sequelize.Op.and]: [{ userId: req.user.id }, { status: 'cart' }],
         },
       });
       const orderItems = await Order_items.findAll({

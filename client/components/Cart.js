@@ -12,6 +12,7 @@ class Cart extends React.Component {
     console.log(this.props);
     return (
       <div className="cart">
+        am i loading?
         {/* {cocktails &&
           cocktails.map((cocktail) => (
             <Link key={cocktail.id} to={`/cocktails/${cocktail.id}`}>
