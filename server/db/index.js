@@ -1,10 +1,10 @@
 //this is the access point for all things database related!
 
-const db = require("./db");
-const User = require("./models/user");
-const Cocktail = require("./models/cocktail");
-const Order = require("./models/order");
-const Order_items = require("./models/orderitems");
+const db = require('./db');
+const User = require('./models/user');
+const Cocktail = require('./models/cocktail');
+const Order = require('./models/order');
+const Order_items = require('./models/orderitems');
 
 //associations could go here!
 Order.belongsTo(User);
@@ -19,5 +19,6 @@ module.exports = {
     User,
     Cocktail,
     Order,
+    Order_items,
   },
 };
