@@ -38,6 +38,7 @@ class Navbar extends React.Component {
               <Link to="/cart">Cart</Link>
               <Link to="/login">Login</Link>
               <Link to="/signup">Sign Up</Link>
+              <Link to="/users">Users</Link>
             </div>
           )}
         </nav>
