@@ -10,6 +10,7 @@ class SingleProduct extends React.Component {
       quantity: 1,
       edit: false,
       name: "",
+      imageUrl: this.props.cocktail.imageUrl,
       price: 0,
       description: "",
     };
@@ -56,7 +57,6 @@ class SingleProduct extends React.Component {
     const { edit, name, price, description, imageUrl } = this.state;
     const { handleChange, handleSubmit } = this;
 
-    // console.log(name, imageUrl);
     return (
       <div>
         {isAdmin && (
@@ -80,15 +80,16 @@ class SingleProduct extends React.Component {
                 value={name}
               />
             </label>
-            {/* <label>
+            <label>
               Image Url:
               <input
                 type="text"
                 name="imageUrl"
+                placeholder={cocktail.imageUrl}
                 onChange={handleChange}
                 value={imageUrl}
               />
-            </label> */}
+            </label>
             <label>
               Description:
               <input

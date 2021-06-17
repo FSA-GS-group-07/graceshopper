@@ -19,6 +19,7 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   try {
     const cocktail = await Cocktail.findByPk(req.params.id);
+    console.log(cocktail);
     res.json(cocktail);
   } catch (err) {
     next(err);
