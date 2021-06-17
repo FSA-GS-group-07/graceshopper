@@ -9,24 +9,19 @@ const { requireToken } = require('./gatekeeping');
 // GET current order using requireToken middleware
 router.get('/', requireToken, async (req, res, next) => {
   try {
-    //we have access to req.user
-
-    // console.log('outside if req.user-->', req.user);
     if (req.user) {
-      console.log('req.user.id-->', req.user.id);
-      const order = await Order.findAll({
+      const orderArr = await Order.findAll({
         where: {
           [Sequelize.Op.and]: [{ userId: req.user.id }, { status: 'cart' }],
         },
       });
-      const orderItems = await Order_items.findAll({
-        where: { orderId: order[0].dataValues.id },
-      });
-      // const cocktails = await Cocktail.findAll({
-      //   where: { orderId: order[0].dataValues.id },
-      // });
-      res.json({ order, orderItems });
+      const order = orderArr[0];
+      const cocktails = await order.getCocktails();
+
+      res.json({ order, cocktails });
     } else {
+      //this seems to not be working atm need to look into why
+      //wrong place to put error msg?
       res.status(404).send('You have to be logged in to view cart (for now)!');
     }
   } catch (err) {

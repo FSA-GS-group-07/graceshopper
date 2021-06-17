@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { fetchCart } from '../store/cart';
 
 class Cart extends React.Component {
@@ -12,18 +13,21 @@ class Cart extends React.Component {
     console.log(this.props);
     return (
       <div className="cart">
-        am i loading?
-        {/* {cocktails &&
-          cocktails.map((cocktail) => (
+        {cart.cocktails &&
+          cart.cocktails.map((cocktail) => (
             <Link key={cocktail.id} to={`/cocktails/${cocktail.id}`}>
-              <span>
-                <h1>{cocktail.name}</h1>
-                <img src={cocktail.imageUrl} alt={cocktail.name} />
-                <h3>{cocktail.price}</h3>
-                <p>{cocktail.description}</p>
-              </span>
+              <div className="cart-item">
+                <span>
+                  <h1>{cocktail.name}</h1>
+                  <img src={cocktail.imageUrl} alt={cocktail.name} />
+                  <h3>${cocktail.price}</h3>
+                </span>
+              </div>
             </Link>
-          ))} */}
+          ))}
+        <div id="checkout">
+          <button>Checkout</button>
+        </div>
       </div>
     );
   }
