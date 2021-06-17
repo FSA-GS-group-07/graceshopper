@@ -10,8 +10,8 @@ const CartItem = require('./models/cartItems');
 Order.belongsTo(User);
 User.hasMany(Order);
 
-Order.belongsToMany(Cocktail, { through: CartItem });
-Cocktail.hasMany(Order);
+Cocktail.belongsToMany(Order, { through: CartItem });
+Order.hasMany(Cocktail);
 
 module.exports = {
   db,
