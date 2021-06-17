@@ -19,7 +19,6 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   try {
     const cocktail = await Cocktail.findByPk(req.params.id);
-    console.log(cocktail);
     res.json(cocktail);
   } catch (err) {
     next(err);
@@ -33,5 +32,16 @@ router.put("/:id", async (req, res, next) => {
     res.json(await updateCocktail.update(req.body));
   } catch (err) {
     next(err);
+  }
+});
+
+//DELETE api/cocktails/:id
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const deleteCocktail = await Cocktail.findByPk(req.params.id);
+    await deleteCocktail.destroy();
+    res.json(deleteCocktail);
+  } catch (error) {
+    next(error);
   }
 });

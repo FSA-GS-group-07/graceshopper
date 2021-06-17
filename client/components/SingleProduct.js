@@ -1,7 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchCocktail } from "../store/singleproduct";
-import { updateCocktail } from "../store/singleproduct";
+import {
+  fetchCocktail,
+  updateCocktail,
+  deleteCocktail,
+} from "../store/singleproduct";
 
 class SingleProduct extends React.Component {
   constructor(props) {
@@ -45,7 +48,6 @@ class SingleProduct extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log(this.props.cocktail);
     this.props.updateCocktail({ ...this.props.cocktail, ...this.state });
     this.setState({
       edit: false,
@@ -53,9 +55,9 @@ class SingleProduct extends React.Component {
   }
 
   render() {
-    const { cocktail, isAdmin } = this.props;
-    const { edit, name, price, description, imageUrl } = this.state;
-    const { handleChange, handleSubmit } = this;
+    const { cocktail, history, isAdmin, deleteCocktail } = this.props;
+    const { edit, name, price, description, imageUrl, quantity } = this.state;
+    const { handleChange, handleSubmit, handleSubtract, handleAdd } = this;
 
     return (
       <div>
@@ -65,7 +67,13 @@ class SingleProduct extends React.Component {
               this.setState((prevState) => ({ edit: !prevState.edit }))
             }
           >
-            Edit
+            Edit Cocktail
+          </button>
+        )}
+
+        {isAdmin && (
+          <button onClick={() => deleteCocktail(cocktail.id, history)}>
+            X
           </button>
         )}
 
@@ -119,11 +127,11 @@ class SingleProduct extends React.Component {
             <p>{cocktail.description}</p>
             <img src={cocktail.imageUrl} />
 
-            <button type="button" onClick={this.handleSubtract}>
+            <button type="button" onClick={handleSubtract}>
               -
             </button>
-            <span>{this.state.quantity}</span>
-            <button type="button" onClick={this.handleAdd}>
+            <span>{quantity}</span>
+            <button type="button" onClick={handleAdd}>
               +
             </button>
 
@@ -146,7 +154,8 @@ const mapDispatch = (dispatch) => {
   return {
     getCocktail: (id) => dispatch(fetchCocktail(id)),
     addToCart: (id, quantity) => dispatch(thunk(id, quantity)),
-    updateCocktail: (cocktail) => dispatch(updateCocktail(cocktail, history)),
+    updateCocktail: (cocktail) => dispatch(updateCocktail(cocktail)),
+    deleteCocktail: (id, history) => dispatch(deleteCocktail(id, history)),
   };
 };
 

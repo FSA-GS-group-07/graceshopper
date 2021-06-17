@@ -11,6 +11,7 @@ const reducer = combineReducers({
   cocktail: singleCocktail,
   cocktails: cocktailsReducer,
   updateCocktail: singleCocktail,
+  deleteCocktail: singleCocktail,
 });
 
 const middleware = composeWithDevTools(
