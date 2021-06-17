@@ -4,61 +4,86 @@ const { db } = require("../server/db");
 
 const User = require("../server/db/models/user");
 const Cocktail = require("../server/db/models/cocktail");
+const Order = require("../server/db/models/order");
+const Order_items = require("../server/db/models/orderitems");
 
+const data = require("../script/data2.json");
+const users = require("./users");
+const orders = require("./orderAddresses");
 
 /**
  * seed - this function clears the database, updates tables to
  *      match the models, and populates the database.
  */
 
-
-
-
 async function seed() {
-  await db.sync({ force: true }) // clears db and matches models to tables
-  console.log('db synced!')
-  
-
-  const data = require('../script/data2.json')
+  await db.sync({ force: true }); // clears db and matches models to tables
+  console.log("db synced!");
 
   let cocktails = [];
-  
   data.drinks.forEach((drink) => {
     let cocktail = {
       name: drink.strDrink,
-      imageUrl: drink.strDrinkThumb
-    }
-    cocktails.push(cocktail)
-  })
-  
-  
-  // Creating Users
-  const users = await Promise.all([
-    User.create({
-      firstName: "cody",
-      lastName: "bean",
-      email: "cody@email.com",
-      username: "cody",
-      password: "123",
-    }),
-    User.create({
-      firstName: "murphy",
-      lastName: "terry",
-      email: "murphy@email.com",
-      username: "murphy",
-      password: "123",
-    }),
-  ]);
-
-  // Creating Cocktails
+      imageUrl: drink.strDrinkThumb,
+    };
+    cocktails.push(cocktail);
+  });
   const allCocktails = await Promise.all(
     cocktails.map((cocktail) => Cocktail.create(cocktail))
-  )
- 
+  );
 
-  console.log(`seeded ${users.length} users`)
-  console.log(`seeded ${allCocktails.length} cocktails`)
-  console.log(`seeded successfully`)
+  const allUsers = await Promise.all(
+    users.map((user) => {
+      const newUser = User.build(user);
+      newUser.username = `${newUser.firstName}${newUser.lastName}`;
+      newUser.password = "123";
+      return newUser.save();
+    })
+  );
+
+  let memo = {};
+  const allOrders = await Promise.all(
+    orders.map((order, idx) => {
+      const newOrder = Order.build(order);
+
+      if (idx > 150) {
+        newOrder.status = "cart";
+      } else {
+        newOrder.userId = Math.ceil(Math.random() * 100);
+        if (memo[newOrder.userId] === true) {
+          newOrder.status = "complete";
+        } else {
+          newOrder.status = "cart";
+          memo[newOrder.userId] = true;
+        }
+      }
+
+      return newOrder.save();
+    })
+  );
+
+  const createOrderItems = (length) => {
+    let array = [];
+    for (let i = 0; i < length; i++) {
+      const item = {};
+      item.quantity = Math.ceil(Math.random() * 5);
+      item.cocktailId = Math.ceil(Math.random() * (allCocktails.length - 1));
+      item.orderId = Math.ceil(Math.random() * (allOrders.length - 1));
+      array.push(item);
+    }
+    return array;
+  };
+
+  const orderItems = createOrderItems(200);
+  const allOrderItems = await Promise.all(
+    orderItems.map((item) => Order_items.create(item))
+  );
+
+  console.log(`seeded ${allOrders.length} orders`);
+  console.log(`seeded ${allOrderItems.length} order items`);
+  console.log(`seeded ${allUsers.length} users`);
+  console.log(`seeded ${allCocktails.length} cocktails`);
+  console.log(`seeded successfully`);
 
   return {
     users: {
