@@ -9,8 +9,15 @@ const gotCart = (cart) => ({
 
 export const fetchCart = () => async (dispatch) => {
   try {
-    let { data: cart } = await axios.get(`/api/cart/`);
-    dispatch(gotCart(cart));
+    const token = window.localStorage.getItem('token');
+    if (token) {
+      const { data: cart } = await axios.get('/api/cart/', {
+        headers: {
+          authorization: token,
+        },
+      });
+      dispatch(gotCart(cart));
+    }
   } catch (error) {
     console.error(error);
   }

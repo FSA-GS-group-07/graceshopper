@@ -4,14 +4,14 @@ const db = require('./db');
 const User = require('./models/user');
 const Cocktail = require('./models/cocktail');
 const Order = require('./models/order');
-const CartItem = require('./models/cartItems');
+const Order_items = require('./models/orderitems');
 
 //associations could go here!
 Order.belongsTo(User);
 User.hasMany(Order);
 
-Cocktail.belongsToMany(Order, { through: CartItem });
-Order.hasMany(Cocktail);
+Cocktail.belongsToMany(Order, { through: Order_items });
+Order.belongsToMany(Cocktail, { through: Order_items });
 
 module.exports = {
   db,
@@ -19,6 +19,6 @@ module.exports = {
     User,
     Cocktail,
     Order,
-    CartItem,
+    Order_items,
   },
 };

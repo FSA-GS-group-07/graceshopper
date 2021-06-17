@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const Sequelize = require('sequelize');
 const {
-  models: { Order, CartItem, Cocktail },
+  models: { Order, Order_items, Cocktail },
 } = require('../db');
 const { requireToken } = require('./gatekeeping');
 
@@ -16,13 +16,13 @@ router.get('/', requireToken, async (req, res, next) => {
           [Sequelize.Op.and]: [{ userId: req.user.id }, { status: 'CART' }],
         },
       });
-      const cartItems = await CartItem.findAll({
+      const orderItems = await Order_items.findAll({
         where: { orderId: order[0].dataValues.id },
       });
-      const cocktails = await Cocktail.findAll({
-        where: { orderId: order[0].dataValues.id },
-      });
-      res.json({ order, cartItems, cocktails });
+      // const cocktails = await Cocktail.findAll({
+      //   where: { orderId: order[0].dataValues.id },
+      // });
+      res.json({ order, orderItems });
     } else {
       res.status(404).send('You have to be logged in to view cart (for now)!');
     }
