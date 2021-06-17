@@ -6,10 +6,10 @@ module.exports = router;
 
 router.post("/login", async (req, res, next) => {
   try {
-    const { firtName, lastName, password, email, username } = req.body;
+    const { firstName, lastName, password, email, username } = req.body;
     res.send({
       token: await User.authenticate({
-        firtName,
+        firstName,
         lastName,
         password,
         email,
@@ -23,9 +23,9 @@ router.post("/login", async (req, res, next) => {
 
 router.post("/signup", async (req, res, next) => {
   try {
-    const { firtName, lastName, password, email, username } = req.body;
+    const { firstName, lastName, password, email, username } = req.body;
     const user = await User.create({
-      firtName,
+      firstName,
       lastName,
       password,
       email,

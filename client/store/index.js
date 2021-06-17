@@ -10,6 +10,7 @@ const reducer = combineReducers({
   auth,
   cocktail: singleCocktail,
   cocktails: cocktailsReducer,
+  updateCocktail: singleCocktail,
 });
 
 const middleware = composeWithDevTools(

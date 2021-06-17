@@ -1,16 +1,23 @@
 import React from "react";
 import { connect } from "react-redux";
 import { fetchCocktail } from "../store/singleproduct";
+import { updateCocktail } from "../store/singleproduct";
 
 class SingleProduct extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       quantity: 1,
+      edit: false,
+      name: "",
+      price: 0,
+      description: "",
     };
     this.handleAdd = this.handleAdd.bind(this);
     this.handleSubtract = this.handleSubtract.bind(this);
     this.handleAddToCart = this.handleAddToCart.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async componentDidMount() {
@@ -29,25 +36,99 @@ class SingleProduct extends React.Component {
     await this.props.addToCart(this.props.match.params.id, this.state.quantity);
   }
 
-  render() {
-    const { cocktail } = this.props;
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  }
 
+  handleSubmit(event) {
+    event.preventDefault();
+    console.log(this.props.cocktail);
+    this.props.updateCocktail({ ...this.props.cocktail, ...this.state });
+    this.setState({
+      edit: false,
+    });
+  }
+
+  render() {
+    const { cocktail, isAdmin } = this.props;
+    const { edit, name, price, description, imageUrl } = this.state;
+    const { handleChange, handleSubmit } = this;
+
+    // console.log(name, imageUrl);
     return (
       <div>
-        <h1>{cocktail.name}</h1>
-        <h3>{cocktail.price}</h3>
-        <p>{cocktail.description}</p>
-        <img src={cocktail.imageUrl} />
+        {isAdmin && (
+          <button
+            onClick={() =>
+              this.setState((prevState) => ({ edit: !prevState.edit }))
+            }
+          >
+            Edit
+          </button>
+        )}
 
-        <button type="button" onClick={this.handleSubtract}>
-          -
-        </button>
-        <span>{this.state.quantity}</span>
-        <button type="button" onClick={this.handleAdd}>
-          +
-        </button>
+        {edit ? (
+          <form>
+            <label>
+              Name:
+              <input
+                type="text"
+                name="name"
+                onChange={handleChange}
+                value={name}
+              />
+            </label>
+            {/* <label>
+              Image Url:
+              <input
+                type="text"
+                name="imageUrl"
+                onChange={handleChange}
+                value={imageUrl}
+              />
+            </label> */}
+            <label>
+              Description:
+              <input
+                type="text"
+                name="description"
+                onChange={handleChange}
+                value={description}
+              />
+            </label>
+            <label>
+              Price:
+              <input
+                type="text"
+                name="price"
+                onChange={handleChange}
+                value={price}
+              />
+            </label>
+            <button type="submit" onClick={(event) => handleSubmit(event)}>
+              Submit
+            </button>
+          </form>
+        ) : (
+          <div>
+            <h1>{cocktail.name}</h1>
+            <h3>{cocktail.price}</h3>
+            <p>{cocktail.description}</p>
+            <img src={cocktail.imageUrl} />
 
-        <button type="button">Add to Cart</button>
+            <button type="button" onClick={this.handleSubtract}>
+              -
+            </button>
+            <span>{this.state.quantity}</span>
+            <button type="button" onClick={this.handleAdd}>
+              +
+            </button>
+
+            <button type="button">Add to Cart</button>
+          </div>
+        )}
       </div>
     );
   }
@@ -56,6 +137,7 @@ class SingleProduct extends React.Component {
 const mapState = (state) => {
   return {
     cocktail: state.cocktail,
+    isAdmin: state.auth.admin,
   };
 };
 
@@ -63,6 +145,7 @@ const mapDispatch = (dispatch) => {
   return {
     getCocktail: (id) => dispatch(fetchCocktail(id)),
     addToCart: (id, quantity) => dispatch(thunk(id, quantity)),
+    updateCocktail: (cocktail) => dispatch(updateCocktail(cocktail, history)),
   };
 };
 

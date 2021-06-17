@@ -25,11 +25,9 @@ class Routes extends Component {
             path="/login"
             render={() => (isLoggedIn ? <Redirect to="/home" /> : <Login />)}
           />
-          />
           <Route
             path="/signup"
             render={() => (isLoggedIn ? <Redirect to="/home" /> : <Signup />)}
-          />
           />
           <Route exact path="/cocktails" render={() => <AllProduct />} />
           />
@@ -37,7 +35,6 @@ class Routes extends Component {
             exact
             path="/cocktails/:id"
             render={(props) => <SingleProduct {...props} />}
-          />
           />
         </Switch>
       </div>
