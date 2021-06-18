@@ -1,7 +1,7 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { fetchCart } from '../store/cart';
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { fetchCart } from "../store/cart";
 
 class Cart extends React.Component {
   componentDidMount() {
@@ -10,7 +10,6 @@ class Cart extends React.Component {
 
   render() {
     const { cart } = this.props;
-    console.log(this.props);
     return (
       <div className="cart">
         {cart.cocktails &&

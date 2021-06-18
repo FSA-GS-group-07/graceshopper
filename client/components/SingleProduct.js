@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { fetchCocktail } from "../store/singleproduct";
+import { fetchCart, createCart, addToCart } from "../store/cart";
 
 class SingleProduct extends React.Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class SingleProduct extends React.Component {
 
   async componentDidMount() {
     await this.props.getCocktail(this.props.match.params.id);
+    this.props.getCart();
   }
 
   handleAdd() {
@@ -26,7 +28,17 @@ class SingleProduct extends React.Component {
   }
 
   async handleAddToCart() {
-    await this.props.addToCart(this.props.match.params.id, this.state.quantity);
+    if (this.props.cart.order.id) {
+      await this.props.addToCart(
+        this.props.match.params.id,
+        this.state.quantity
+      );
+    } else {
+      await this.props.createCart(
+        this.props.match.params.id,
+        this.state.quantity
+      );
+    }
   }
 
   render() {
@@ -47,7 +59,9 @@ class SingleProduct extends React.Component {
           +
         </button>
 
-        <button type="button">Add to Cart</button>
+        <button type="button" onClick={this.handleAddToCart}>
+          Add to Cart
+        </button>
       </div>
     );
   }
@@ -56,13 +70,17 @@ class SingleProduct extends React.Component {
 const mapState = (state) => {
   return {
     cocktail: state.cocktail,
+    cart: state.cart,
+    auth: state.auth,
   };
 };
 
 const mapDispatch = (dispatch) => {
   return {
+    getCart: () => dispatch(fetchCart()),
     getCocktail: (id) => dispatch(fetchCocktail(id)),
-    addToCart: (id, quantity) => dispatch(thunk(id, quantity)),
+    // addToCart: (id, quantity) => dispatch(addToCart(id, quantity)),
+    createCart: (id, quantity) => dispatch(createCart(id, quantity)),
   };
 };
 
