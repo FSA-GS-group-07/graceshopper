@@ -7,6 +7,7 @@ import { me } from "./store";
 import AllProduct from "./components/AllProduct";
 import SingleProduct from "./components/SingleProduct";
 import NewProduct from "./components/NewProduct";
+import Cart from './components/Cart';
 
 /**
  * COMPONENT
@@ -41,6 +42,7 @@ class Routes extends Component {
             path="/cocktails/:id"
             render={(props) => <SingleProduct {...props} />}
           />
+          <Route exact path="/cart" render={() => <Cart />} />
         </Switch>
       </div>
     );

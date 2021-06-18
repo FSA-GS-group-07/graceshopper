@@ -1,3 +1,4 @@
+
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { createLogger } from "redux-logger";
 import thunkMiddleware from "redux-thunk";
@@ -6,6 +7,8 @@ import auth from "./auth";
 import singleCocktail from "./singleproduct";
 import cocktailsReducer from "./allProduct";
 import createReducer from "./createProduct";
+import cartReducer from './cart';
+
 
 const reducer = combineReducers({
   auth,
@@ -14,6 +17,8 @@ const reducer = combineReducers({
   updateCocktail: singleCocktail,
   deleteCocktail: singleCocktail,
   newCocktail: createReducer,
+  cart: cartReducer,
+
 });
 
 const middleware = composeWithDevTools(
@@ -22,4 +27,4 @@ const middleware = composeWithDevTools(
 const store = createStore(reducer, middleware);
 
 export default store;
-export * from "./auth";
+export * from './auth';
