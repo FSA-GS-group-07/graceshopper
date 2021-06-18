@@ -8,11 +8,11 @@ const SALT_ROUNDS = 5;
 const User = db.define("user", {
   firstName: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   lastName: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   username: {
     type: Sequelize.STRING,
@@ -24,16 +24,22 @@ const User = db.define("user", {
   },
   email: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: true,
     validate: {
       notEmpty: true,
       isEmail: true,
     },
   },
-  admin: {
+  isAdmin: {
     type: Sequelize.BOOLEAN,
-    defaultValue: true,
-  },
+    defaultValue: false,
+  }
+  // salt: {
+  //   type: Sequelize.Sequelize,
+  //   get() {
+  //     return () => this.getDataValue("salt");
+  //   }
+
 });
 
 module.exports = User;

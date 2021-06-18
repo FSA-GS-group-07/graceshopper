@@ -5,11 +5,13 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import auth from "./auth";
 import singleCocktail from "./singleproduct";
 import cocktailsReducer from "./allProduct";
+import usersReducer from "./user";
 
 const reducer = combineReducers({
   auth,
   cocktail: singleCocktail,
   cocktails: cocktailsReducer,
+  users: usersReducer,
 });
 
 const middleware = composeWithDevTools(

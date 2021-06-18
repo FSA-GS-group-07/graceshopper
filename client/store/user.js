@@ -21,7 +21,7 @@ export default function usersReducer(state = [], action) {
 
 export const fetchUsers = () => async (dispatch) => {
     try { 
-        const { data } = await axios.get("api/users");
+        const { data } = await axios.get("/api/users");
         dispatch (setUsers(data))
     } catch (err) {
         console.error(err)
