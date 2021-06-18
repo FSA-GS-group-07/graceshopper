@@ -29,7 +29,6 @@ class SingleProduct extends React.Component {
 
   async handleAddToCart() {
     if (this.props.cart.order.id) {
-      console.log("adding to cart");
       await this.props.addToCart(
         this.props.match.params.id,
         this.state.quantity

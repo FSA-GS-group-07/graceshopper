@@ -41,7 +41,7 @@ router.post("/", requireToken, async (req, res, next) => {
         userId: req.user.id,
         status: "cart",
       });
-      const orderItem = await Order_items.create({
+      await Order_items.create({
         quantity: req.body.body.quantity,
         orderId: order.id,
         cocktailId: req.body.body.cocktailId,
@@ -64,37 +64,31 @@ router.put("/", requireToken, async (req, res, next) => {
     if (req.user) {
       const { cocktailId, quantity } = req.body.body;
 
-      const orderArr = await Order.findAll({
+      const order = await Order.findOne({
         where: {
           [Sequelize.Op.and]: [{ userId: req.user.id }, { status: "cart" }],
         },
+        include: Cocktail,
       });
-      const order = orderArr[0];
 
-      let item = await Order_items.findOne({
-        where: {
-          [Sequelize.Op.and]: [
-            { orderId: order.dataValues.id },
-            { cocktailId },
-          ],
-        },
-      });
-      console.log("item", item);
+      let item = order.cocktails.filter(
+        (cocktail) => Number(cocktail.id) == Number(cocktailId)
+      );
 
       let qty;
-      if (!item) {
-        console.log("so we re in the conditional");
+      if (!item || item.length === 0) {
         const newOrderArr = await order.addCocktail(cocktailId);
         const newOrder = newOrderArr[0];
-        console.log("newOrder", newOrder);
+
         item = await Order_items.findOne({
           where: {
             [Sequelize.Op.and]: [{ orderId: newOrder.orderId }, { cocktailId }],
           },
         });
+
         qty = quantity;
       } else {
-        console.log("item datavalues", item.dataValues);
+        item = item[0].order_items;
         qty = item.dataValues.quantity + quantity;
       }
 

@@ -11,6 +11,7 @@ const Order = db.define("order", {
   },
   status: {
     type: Sequelize.ENUM("cart", "processing", "complete"),
+    defaultValue: "cart",
   },
 });
 
