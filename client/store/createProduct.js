@@ -1,5 +1,4 @@
 import axios from "axios";
-import { bindActionCreators } from "redux";
 
 const CREATE_COCKTAIL = "CREATE_COCKTAIL";
 
@@ -10,7 +9,8 @@ export const createdCocktail = (cocktail) => ({
 
 export const createCocktail = (cocktail, history) => async (dispatch) => {
   try {
-    const { data: addCocktail } = await axios.post("/api/cocktails");
+    console.log(cocktail);
+    const { data: addCocktail } = await axios.post("/api/cocktails", cocktail);
     dispatch(createdCocktail(addCocktail));
     history.push("/cocktails");
   } catch (error) {
@@ -18,7 +18,7 @@ export const createCocktail = (cocktail, history) => async (dispatch) => {
   }
 };
 
-export default function createCocktailReducer(state = {}, action) {
+export default function createReducer(state = {}, action) {
   switch (action.type) {
     case CREATE_COCKTAIL:
       return action.cocktail;

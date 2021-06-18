@@ -25,16 +25,6 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-//POST api/cocktails
-router.post("/", async (req, res, next) => {
-  try {
-    const newCocktail = await Cocktail.create(req.body);
-    res.status(201).json(newCocktail);
-  } catch (error) {
-    next(error);
-  }
-});
-
 //PUT api/cocktails/:id
 router.put("/:id", async (req, res, next) => {
   try {
@@ -45,12 +35,22 @@ router.put("/:id", async (req, res, next) => {
   }
 });
 
+//POST api/cocktails
+router.post("/", async (req, res, next) => {
+  try {
+    const newCocktail = await Cocktail.create(req.body);
+    res.status(201).json(newCocktail);
+  } catch (error) {
+    next(error);
+  }
+});
+
 //DELETE api/cocktails/:id
 router.delete("/:id", async (req, res, next) => {
   try {
     const deleteCocktail = await Cocktail.findByPk(req.params.id);
     await deleteCocktail.destroy();
-    res.json(deleteCocktail);
+    res.status(200).json({ message: "Successfully deleted!", deleteCocktail });
   } catch (error) {
     next(error);
   }

@@ -5,7 +5,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import auth from "./auth";
 import singleCocktail from "./singleproduct";
 import cocktailsReducer from "./allProduct";
-import createCocktailReducer from "./createProduct";
+import createReducer from "./createProduct";
 
 const reducer = combineReducers({
   auth,
@@ -13,7 +13,7 @@ const reducer = combineReducers({
   cocktails: cocktailsReducer,
   updateCocktail: singleCocktail,
   deleteCocktail: singleCocktail,
-  createCocktail: createCocktailReducer,
+  newCocktail: createReducer,
 });
 
 const middleware = composeWithDevTools(
