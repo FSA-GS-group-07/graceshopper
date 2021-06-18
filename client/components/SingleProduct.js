@@ -29,6 +29,7 @@ class SingleProduct extends React.Component {
 
   async handleAddToCart() {
     if (this.props.cart.order.id) {
+      console.log("adding to cart");
       await this.props.addToCart(
         this.props.match.params.id,
         this.state.quantity
@@ -79,7 +80,7 @@ const mapDispatch = (dispatch) => {
   return {
     getCart: () => dispatch(fetchCart()),
     getCocktail: (id) => dispatch(fetchCocktail(id)),
-    // addToCart: (id, quantity) => dispatch(addToCart(id, quantity)),
+    addToCart: (id, quantity) => dispatch(addToCart(id, quantity)),
     createCart: (id, quantity) => dispatch(createCart(id, quantity)),
   };
 };

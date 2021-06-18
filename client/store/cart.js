@@ -2,6 +2,7 @@ import axios from "axios";
 
 const GET_CART = "GET CART";
 const CREATE_CART = "CREATE CART";
+const ADD_TO_CART = "ADD TO CART";
 
 const gotCart = (cart) => ({
   type: GET_CART,
@@ -12,6 +13,13 @@ const createdCart = (cart) => {
   return {
     type: CREATE_CART,
     cart,
+  };
+};
+
+const addedToCart = (item) => {
+  return {
+    type: ADD_TO_CART,
+    item,
   };
 };
 
@@ -51,12 +59,47 @@ export const createCart = (cocktailId, quantity) => async (dispatch) => {
   }
 };
 
+export const addToCart = (cocktailId, quantity) => async (dispatch) => {
+  try {
+    console.log("add to cart thunk");
+    const token = window.localStorage.getItem("token");
+    if (token) {
+      const { data: item } = await axios.put("/api/cart/", {
+        headers: {
+          authorization: token,
+        },
+        body: {
+          cocktailId,
+          quantity,
+        },
+      });
+      console.log("what item are we receiving?", item);
+      dispatch(addedToCart(item));
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export default function cartReducer(state = {}, action) {
   switch (action.type) {
     case GET_CART:
       return action.cart;
     case CREATE_CART:
       return action.cart;
+    case ADD_TO_CART:
+      let updatedOldItem = false;
+      let updatedCocktails = state.cocktails.map((cocktail) => {
+        if (cocktail.id === action.item.cocktailId) {
+          cocktail.order_items.quantity = action.item.quantity;
+          updatedOldItem = true;
+        }
+        return cocktail;
+      });
+      if (!updatedOldItem) {
+        updatedCocktails.push(action.item);
+      }
+      return { ...state, cocktails: updatedCocktails };
     default:
       return state;
   }

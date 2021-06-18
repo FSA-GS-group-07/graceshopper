@@ -6,7 +6,6 @@ const {
 const { requireToken } = require("./gatekeeping");
 
 // GET api/cart/
-// GET current order using requireToken middleware
 router.get("/", requireToken, async (req, res, next) => {
   try {
     if (req.user) {
@@ -15,6 +14,7 @@ router.get("/", requireToken, async (req, res, next) => {
           [Sequelize.Op.and]: [{ userId: req.user.id }, { status: "cart" }],
         },
       });
+
       let order = {};
       let cocktails = [];
       if (orderArr.length > 0) {
@@ -33,7 +33,7 @@ router.get("/", requireToken, async (req, res, next) => {
   }
 });
 
-// POST /cart -> create a new cart WITH the first item added
+// POST api/cart -> create a new cart WITH the first item added
 router.post("/", requireToken, async (req, res, next) => {
   try {
     if (req.user) {
@@ -49,8 +49,49 @@ router.post("/", requireToken, async (req, res, next) => {
       const cocktails = await order.getCocktails();
       res.send({ order, cocktails });
     } else {
-      console.log("there is not a user in the backend");
-      res.send("no logged in user -> still have to build this feature out");
+      res
+        .status(404)
+        .send("no logged in user -> still have to build this feature out");
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+// PUT /api/cart
+router.put("/", requireToken, async (req, res, next) => {
+  try {
+    if (req.user) {
+      const { cocktailId, quantity } = req.body.body;
+
+      const orderArr = await Order.findAll({
+        where: {
+          [Sequelize.Op.and]: [{ userId: req.user.id }, { status: "cart" }],
+        },
+      });
+      const order = orderArr[0].dataValues;
+
+      let item = await Order_items.findOne({
+        where: {
+          [Sequelize.Op.and]: [{ orderId: order.id }, { cocktailId }],
+        },
+      });
+      console.log("item", item);
+
+      let qty;
+      if (!item) {
+        item = await order.addCocktail(cocktailId);
+        qty = quantity;
+      }
+      qty = item.dataValues.quantity + quantity;
+
+      item.update({ quantity: qty });
+
+      res.send(item);
+    } else {
+      res
+        .status(404)
+        .send("no logged in user -> still have to build this feature out");
     }
   } catch (error) {
     next(error);
