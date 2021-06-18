@@ -14,7 +14,10 @@ class Cart extends React.Component {
       <div className="cart">
         {cart.cocktails &&
           cart.cocktails.map((cocktail) => (
-            <Link key={cocktail.id} to={`/cocktails/${cocktail.id}`}>
+            <Link
+              key={cocktail.id || cocktail.cocktailId}
+              to={`/cocktails/${cocktail.id}`}
+            >
               <div className="cart-item">
                 <span>
                   <h1>{cocktail.name}</h1>
