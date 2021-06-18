@@ -69,20 +69,25 @@ router.put("/", requireToken, async (req, res, next) => {
           [Sequelize.Op.and]: [{ userId: req.user.id }, { status: "cart" }],
         },
       });
-      const order = orderArr[0].dataValues;
+      const order = orderArr[0];
 
       let item = await Order_items.findOne({
         where: {
-          [Sequelize.Op.and]: [{ orderId: order.id }, { cocktailId }],
+          [Sequelize.Op.and]: [
+            { orderId: order.dataValues.id },
+            { cocktailId },
+          ],
         },
       });
       console.log("item", item);
 
       let qty;
       if (!item) {
+        console.log("so we re in the conditional");
         item = await order.addCocktail(cocktailId);
         qty = quantity;
       }
+      console.log("item datavalues", item.dataValues);
       qty = item.dataValues.quantity + quantity;
 
       item.update({ quantity: qty });
