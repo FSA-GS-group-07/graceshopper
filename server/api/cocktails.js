@@ -25,6 +25,16 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+//POST api/cocktails
+router.post("/", async (req, res, next) => {
+  try {
+    const newCocktail = await Cocktail.create(req.body);
+    res.status(201).json(newCocktail);
+  } catch (error) {
+    next(error);
+  }
+});
+
 //PUT api/cocktails/:id
 router.put("/:id", async (req, res, next) => {
   try {

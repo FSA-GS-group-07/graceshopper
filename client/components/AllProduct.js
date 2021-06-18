@@ -2,16 +2,16 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchCocktails } from "../store/allProduct";
-
 class AllProduct extends React.Component {
   componentDidMount() {
     this.props.getCocktails();
   }
 
   render() {
-    const { cocktails } = this.props;
+    const { cocktails, isAdmin } = this.props;
     return (
       <div className="all-cocktails">
+        {isAdmin && <button type="button">Create new cocktail </button>}
         {cocktails &&
           cocktails.map((cocktail) => (
             <Link key={cocktail.id} to={`/cocktails/${cocktail.id}`}>
@@ -28,9 +28,10 @@ class AllProduct extends React.Component {
   }
 }
 
-const mapState = (state) => {
-  return { cocktails: state.cocktails };
-};
+const mapState = (state) => ({
+  cocktails: state.cocktails,
+  isAdmin: state.auth.admin,
+});
 
 const mapDispatch = (dispatch) => ({
   getCocktails: () => {
