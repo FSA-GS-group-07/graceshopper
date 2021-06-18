@@ -29,7 +29,6 @@ class NewProduct extends Component {
 
   render() {
     const { name, imageUrl, price, description, ingredients } = this.state;
-    console.log(this.state);
     const { handleChange, handleSubmit } = this;
 
     return (
