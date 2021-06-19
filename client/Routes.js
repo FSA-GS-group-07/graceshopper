@@ -1,12 +1,14 @@
-import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
-import { withRouter, Route, Switch, Redirect } from "react-router-dom";
-import { Login, Signup } from "./components/AuthForm";
-import Home from "./components/Home";
-import { me } from "./store";
-import AllProduct from "./components/AllProduct";
-import SingleProduct from "./components/SingleProduct";
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { Login, Signup } from './components/AuthForm';
+import Home from './components/Home';
+import { me } from './store';
+import AllProduct from './components/AllProduct';
+import SingleProduct from './components/SingleProduct';
 import NewProduct from "./components/NewProduct";
+import Cart from './components/Cart';
+
 
 /**
  * COMPONENT
@@ -41,6 +43,7 @@ class Routes extends Component {
             path="/cocktails/:id"
             render={(props) => <SingleProduct {...props} />}
           />
+          <Route exact path="/cart" render={() => <Cart />} />
         </Switch>
       </div>
     );
