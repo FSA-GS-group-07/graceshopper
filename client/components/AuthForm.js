@@ -6,8 +6,18 @@ import { Link } from "react-router-dom";
 /**
  * COMPONENT
  */
+
 const AuthForm = (props) => {
   const { name, displayName, handleSubmit, error } = props;
+
+  const errorHandler = (error) => {
+    if (error === "Validation error: Validation isEmail on email failed") {
+      return "Invalid email entry";
+    }
+    if (error === "User already exists") {
+      return "User already exists";
+    }
+  };
 
   const renderLogin = () => {
     return (
@@ -33,7 +43,7 @@ const AuthForm = (props) => {
         <small>
           <Link to="/signup">Sign up here</Link>
         </small>
-        {error && error.response && <div> {error.response.data} </div>}
+        {error?.response && <div> {error.response.data} </div>}
       </form>
     );
   };
@@ -74,7 +84,7 @@ const AuthForm = (props) => {
         <small>
           <Link to="/login">log in here</Link>
         </small>
-        {error && error.response && <div>{error.response.data}</div>}
+        {error?.response && <div>{errorHandler(error.response.data)}</div>}
       </form>
     );
   };
