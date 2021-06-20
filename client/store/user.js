@@ -1,12 +1,25 @@
 import axios from 'axios'
-import history from '../history'
 
 const SET_USERS = "SET_USERS"
 
-const setUsers = (users) => {
-    return {
+export const setUsers = (users) => ({
         type: SET_USERS,
         users
+})
+
+export const fetchUsers = () => async (dispatch) => {
+    try { 
+        const token = window.localStorage.getItem("token");
+        if (token) {
+        const { data } = await axios.get("/api/users", {
+            headers: {
+                authorization: token,
+            }
+        });
+        dispatch (setUsers(data))
+        }
+    } catch (err) {
+        console.log(err)
     }
 }
 
@@ -16,14 +29,5 @@ export default function usersReducer(state = [], action) {
             return action.users;
         default:
             return state;
-    }
-}
-
-export const fetchUsers = () => async (dispatch) => {
-    try { 
-        const { data } = await axios.get("/api/users");
-        dispatch (setUsers(data))
-    } catch (err) {
-        console.error(err)
     }
 }

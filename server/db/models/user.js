@@ -30,7 +30,7 @@ const User = db.define("user", {
       isEmail: true,
     },
   },
-  isAdmin: {
+  admin: {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
   }

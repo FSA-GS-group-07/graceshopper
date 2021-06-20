@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store";
 
+
 class Navbar extends React.Component {
   constructor(props) {
     super(props);
@@ -26,6 +27,7 @@ class Navbar extends React.Component {
               <Link to="/home">Home</Link>
               <Link to="/cocktails">Shop</Link>
               <Link to="/cart">Cart</Link>
+              {this.props.isAdmin ? (<Link to="/users">Users</Link>) : null }
               <a href="#" onClick={this.handleClick}>
                 Logout
               </a>
@@ -38,7 +40,6 @@ class Navbar extends React.Component {
               <Link to="/cart">Cart</Link>
               <Link to="/login">Login</Link>
               <Link to="/signup">Sign Up</Link>
-              <Link to="/users">Users</Link>
             </div>
           )}
         </nav>
@@ -54,6 +55,7 @@ class Navbar extends React.Component {
 const mapState = (state) => {
   return {
     isLoggedIn: !!state.auth.id,
+    isAdmin: state.auth.admin,
   };
 };
 

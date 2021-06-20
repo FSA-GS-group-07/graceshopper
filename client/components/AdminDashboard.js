@@ -10,14 +10,15 @@ class AdminDashboard extends React.Component {
     }
 
     render() {
-        const { users } = this.props;
+        const { users, isAdmin } = this.props;
         return (
             <div className="all-users">
-                {users.map((user) => (
+                {users && users.map((user) => (
                     <Link key={user.id} to={`/users/${user.id}`}>
                         <span>
                         <h3>{user.id}</h3>
                         <h1>{user.firstName}{user.lastName}</h1>
+                        <h3>{user.username}</h3>
                         <h3>{user.email}</h3>
                         </span>
                     </Link>
@@ -27,9 +28,10 @@ class AdminDashboard extends React.Component {
     }
 }
 
-const mapState = (state) => {
-    return { users: state.users };
-};
+const mapState = (state) => ({
+    users: state.users,
+    isAdmin: state.auth.admin
+});
 
 const mapDispatch = (dispatch) => ({
     getUsers: () => {
