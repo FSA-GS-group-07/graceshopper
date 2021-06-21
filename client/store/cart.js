@@ -34,6 +34,10 @@ export const fetchCart = () => async (dispatch) => {
         },
       });
       dispatch(gotCart(cart));
+    } else {
+      let cart = window.localStorage.getItem("cart");
+      cart = JSON.parse(cart);
+      dispatch(gotCart(cart));
     }
   } catch (error) {
     console.error(error);
