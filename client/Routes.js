@@ -6,7 +6,9 @@ import Home from './components/Home';
 import { me } from './store';
 import AllProduct from './components/AllProduct';
 import SingleProduct from './components/SingleProduct';
+import NewProduct from "./components/NewProduct";
 import Cart from './components/Cart';
+
 
 /**
  * COMPONENT
@@ -31,6 +33,11 @@ class Routes extends Component {
             render={() => (isLoggedIn ? <Redirect to="/home" /> : <Signup />)}
           />
           <Route exact path="/cocktails" render={() => <AllProduct />} />
+          <Route
+            exact
+            path="/cocktails/create"
+            render={(props) => <NewProduct {...props} />}
+          />
           <Route
             exact
             path="/cocktails/:id"
