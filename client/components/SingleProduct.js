@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { fetchCart, createCart, addToCart } from "../store/cart";
 import { Link } from "react-router-dom";
 import {
   fetchCocktail,
@@ -27,6 +28,7 @@ class SingleProduct extends React.Component {
 
   async componentDidMount() {
     await this.props.getCocktail(this.props.match.params.id);
+    this.props.getCart();
   }
 
   handleAdd() {
@@ -38,7 +40,17 @@ class SingleProduct extends React.Component {
   }
 
   async handleAddToCart() {
-    await this.props.addToCart(this.props.match.params.id, this.state.quantity);
+    if (this.props.cart.order.id) {
+      await this.props.addToCart(
+        this.props.match.params.id,
+        this.state.quantity
+      );
+    } else {
+      await this.props.createCart(
+        this.props.match.params.id,
+        this.state.quantity
+      );
+    }
   }
 
   handleChange(event) {
@@ -58,7 +70,7 @@ class SingleProduct extends React.Component {
   render() {
     const { cocktail, history, isAdmin, deleteCocktail } = this.props;
     const { edit, name, price, description, imageUrl, quantity } = this.state;
-    const { handleChange, handleSubmit, handleSubtract, handleAdd } = this;
+    const { handleChange, handleSubmit, handleSubtract, handleAdd, handleAddToCart } = this;
 
     return (
       <div>
@@ -136,7 +148,7 @@ class SingleProduct extends React.Component {
               +
             </button>
 
-            <button type="button">Add to Cart</button>
+            <button type="button" onClick={handleAddToCart}>Add to Cart</button>
           </div>
         )}
         <Link to="/cocktails">
@@ -150,14 +162,18 @@ class SingleProduct extends React.Component {
 const mapState = (state) => {
   return {
     cocktail: state.cocktail,
+    cart: state.cart,
+    auth: state.auth,
     isAdmin: state.auth.admin,
   };
 };
 
 const mapDispatch = (dispatch) => {
   return {
+    getCart: () => dispatch(fetchCart()),
     getCocktail: (id) => dispatch(fetchCocktail(id)),
-    addToCart: (id, quantity) => dispatch(thunk(id, quantity)),
+    addToCart: (id, quantity) => dispatch(addToCart(id, quantity)),
+    createCart: (id, quantity) => dispatch(createCart(id, quantity)),
     updateCocktail: (cocktail) => dispatch(updateCocktail(cocktail)),
     deleteCocktail: (id, history) => dispatch(deleteCocktail(id, history)),
   };

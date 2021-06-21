@@ -1,14 +1,10 @@
 const {
   models: { User },
-} = require('../db');
-
-//gatekeeping middleware
+} = require("../db");
 
 const requireToken = async (req, res, next) => {
   try {
-    // console.log('req.headers----->', req.headers);
-    const token = req.headers.authorization;
-    // console.log('token---->', token);
+    const token = req.headers.authorization || req.body.headers.authorization;
     const user = await User.findByToken(token);
     req.user = user;
     next();

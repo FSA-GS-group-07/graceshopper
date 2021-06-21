@@ -1,7 +1,7 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { fetchCart } from '../store/cart';
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { fetchCart } from "../store/cart";
 
 class Cart extends React.Component {
   componentDidMount() {
@@ -10,12 +10,14 @@ class Cart extends React.Component {
 
   render() {
     const { cart } = this.props;
-    console.log(this.props);
     return (
       <div className="cart">
         {cart.cocktails &&
           cart.cocktails.map((cocktail) => (
-            <Link key={cocktail.id} to={`/cocktails/${cocktail.id}`}>
+            <Link
+              key={cocktail.id || cocktail.cocktailId}
+              to={`/cocktails/${cocktail.id}`}
+            >
               <div className="cart-item">
                 <span>
                   <h1>{cocktail.name}</h1>
