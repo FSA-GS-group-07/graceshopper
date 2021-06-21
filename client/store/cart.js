@@ -68,7 +68,6 @@ export const createCart = (cocktailId, quantity, singleCocktail) => async (
       });
       dispatch(createdCart(cart));
     } else {
-      console.log("the cocktail: ", singleCocktail);
       singleCocktail.order_items = {
         quantity,
       };
@@ -76,10 +75,9 @@ export const createCart = (cocktailId, quantity, singleCocktail) => async (
         order: {},
         cocktails: [singleCocktail],
       };
-      console.log("cart with order items", cartObj);
       const cartString = JSON.stringify(cartObj);
       window.localStorage.setItem("cart", cartString);
-      dispatch(fetchCart(cartObj));
+      dispatch(gotCart(cartObj));
     }
   } catch (error) {
     console.error(error);
@@ -103,16 +101,28 @@ export const addToCart = (cocktailId, quantity, cocktail) => async (
       });
       dispatch(addedToCart(item));
     } else {
-      cocktail.order_items = {
-        quantity,
-      };
+      const cart = JSON.parse(window.localStorage.getItem("cart"));
+      let updatedItem = false;
+      let updatedCocktails = cart.cocktails.map((drink) => {
+        if (drink.id == cocktailId) {
+          drink.order_items.quantity += quantity;
+          updatedItem = true;
+        }
+        return drink;
+      });
+      if (!updatedItem) {
+        cocktail.order_items = {
+          quantity,
+        };
+        updatedCocktails.push(cocktail);
+      }
       const cartObj = {
         order: {},
-        cocktails: [cocktail],
+        cocktails: updatedCocktails,
       };
       const cartString = JSON.stringify(cartObj);
       window.localStorage.setItem("cart", cartString);
-      dispatch(fetchCart(cartObj));
+      dispatch(gotCart(cartObj));
     }
   } catch (error) {
     console.error(error);
