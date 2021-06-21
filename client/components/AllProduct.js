@@ -9,9 +9,14 @@ class AllProduct extends React.Component {
   }
 
   render() {
-    const { cocktails } = this.props;
+    const { cocktails, isAdmin } = this.props;
     return (
       <div className="all-cocktails">
+        {isAdmin && (
+          <Link to="/cocktails/create">
+            <button type="button">Create new cocktail </button>
+          </Link>
+        )}
         {cocktails &&
           cocktails.map((cocktail) => (
             <Link key={cocktail.id} to={`/cocktails/${cocktail.id}`}>
@@ -28,9 +33,10 @@ class AllProduct extends React.Component {
   }
 }
 
-const mapState = (state) => {
-  return { cocktails: state.cocktails };
-};
+const mapState = (state) => ({
+  cocktails: state.cocktails,
+  isAdmin: state.auth.admin,
+});
 
 const mapDispatch = (dispatch) => ({
   getCocktails: () => {

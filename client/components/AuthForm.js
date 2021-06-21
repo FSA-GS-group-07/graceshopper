@@ -6,8 +6,18 @@ import { Link } from "react-router-dom";
 /**
  * COMPONENT
  */
+
 const AuthForm = (props) => {
   const { name, displayName, handleSubmit, error } = props;
+
+  const errorHandler = (error) => {
+    if (error === "Validation error: Validation isEmail on email failed") {
+      return "Invalid email entry";
+    }
+    if (error === "User already exists") {
+      return "User already exists";
+    }
+  };
 
   const renderLogin = () => {
     return (
@@ -16,13 +26,13 @@ const AuthForm = (props) => {
           <label htmlFor="email">
             <small>Email</small>
           </label>
-          <input name="email" type="text" />
+          <input name="email" type="text" required />
         </div>
         <div>
           <label htmlFor="password">
             <small>Password</small>
           </label>
-          <input name="password" type="password" />
+          <input name="password" type="password" required />
         </div>
         <div>
           <button type="submit">{displayName}</button>
@@ -33,7 +43,7 @@ const AuthForm = (props) => {
         <small>
           <Link to="/signup">Sign up here</Link>
         </small>
-        {error && error.response && <div> {error.response.data} </div>}
+        {error?.response && <div> {error.response.data} </div>}
       </form>
     );
   };
@@ -45,25 +55,25 @@ const AuthForm = (props) => {
           <label htmlFor="firstName">
             <small>First Name</small>
           </label>
-          <input name="fname" type="text" />
+          <input name="fname" type="text" required />
         </div>
         <div>
           <label htmlFor="lastName">
             <small>Last Name</small>
           </label>
-          <input name="lname" type="text" />
+          <input name="lname" type="text" required />
         </div>
         <div>
           <label htmlFor="email">
             <small>Email</small>
           </label>
-          <input name="email" type="text" />
+          <input name="email" type="text" required />
         </div>
         <div>
           <label htmlFor="password">
             <small>Password</small>
           </label>
-          <input name="password" type="password" />
+          <input name="password" type="password" required />
         </div>
         <div>
           <button type="submit">{displayName}</button>
@@ -74,7 +84,7 @@ const AuthForm = (props) => {
         <small>
           <Link to="/login">log in here</Link>
         </small>
-        {error && error.response && <div>{error.response.data}</div>}
+        {error?.response && <div>{errorHandler(error.response.data)}</div>}
       </form>
     );
   };
