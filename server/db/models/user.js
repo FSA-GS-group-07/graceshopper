@@ -6,11 +6,11 @@ const bcrypt = require("bcrypt");
 const User = db.define("user", {
   firstName: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   lastName: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   username: {
     type: Sequelize.STRING,
@@ -31,7 +31,7 @@ const User = db.define("user", {
   admin: {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
-  },
+  }
 });
 
 module.exports = User;

@@ -1,13 +1,17 @@
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
-import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
-import { Login, Signup } from './components/AuthForm';
-import Home from './components/Home';
-import { me } from './store';
-import AllProduct from './components/AllProduct';
-import SingleProduct from './components/SingleProduct';
+
+
+import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+import { withRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Login, Signup } from "./components/AuthForm";
+import Home from "./components/Home";
+import { me } from "./store";
+import AllProduct from "./components/AllProduct";
+import SingleProduct from "./components/SingleProduct";
 import NewProduct from "./components/NewProduct";
 import Cart from './components/Cart';
+import AdminDashboard from "./components/AdminDashboard"
+
 
 
 /**
@@ -19,7 +23,7 @@ class Routes extends Component {
   }
 
   render() {
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn, isAdmin } = this.props;
     return (
       <div>
         <Switch>
@@ -43,6 +47,9 @@ class Routes extends Component {
             path="/cocktails/:id"
             render={(props) => <SingleProduct {...props} />}
           />
+          <Route 
+            path="/users"
+            render={() =>  (isAdmin && isLoggedIn ? <AdminDashboard /> : null )} />
           <Route exact path="/cart" render={() => <Cart />} />
         </Switch>
       </div>
@@ -58,6 +65,7 @@ const mapState = (state) => {
     // Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
     isLoggedIn: !!state.auth.id,
+    isAdmin: state.auth.admin
   };
 };
 
