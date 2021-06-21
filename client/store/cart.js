@@ -36,7 +36,14 @@ export const fetchCart = () => async (dispatch) => {
       dispatch(gotCart(cart));
     } else {
       let cart = window.localStorage.getItem("cart");
-      cart = JSON.parse(cart);
+      if (cart) {
+        cart = JSON.parse(cart);
+      } else {
+        cart = {
+          order: {},
+          cocktails: [],
+        };
+      }
       dispatch(gotCart(cart));
     }
   } catch (error) {
@@ -44,7 +51,9 @@ export const fetchCart = () => async (dispatch) => {
   }
 };
 
-export const createCart = (cocktailId, quantity) => async (dispatch) => {
+export const createCart = (cocktailId, quantity, singleCocktail) => async (
+  dispatch
+) => {
   try {
     const token = window.localStorage.getItem("token");
     if (token) {
@@ -58,13 +67,28 @@ export const createCart = (cocktailId, quantity) => async (dispatch) => {
         },
       });
       dispatch(createdCart(cart));
+    } else {
+      console.log("the cocktail: ", singleCocktail);
+      singleCocktail.order_items = {
+        quantity,
+      };
+      const cartObj = {
+        order: {},
+        cocktails: [singleCocktail],
+      };
+      console.log("cart with order items", cartObj);
+      const cartString = JSON.stringify(cartObj);
+      window.localStorage.setItem("cart", cartString);
+      dispatch(fetchCart(cartObj));
     }
   } catch (error) {
     console.error(error);
   }
 };
 
-export const addToCart = (cocktailId, quantity) => async (dispatch) => {
+export const addToCart = (cocktailId, quantity, cocktail) => async (
+  dispatch
+) => {
   try {
     const token = window.localStorage.getItem("token");
     if (token) {
@@ -78,6 +102,17 @@ export const addToCart = (cocktailId, quantity) => async (dispatch) => {
         },
       });
       dispatch(addedToCart(item));
+    } else {
+      cocktail.order_items = {
+        quantity,
+      };
+      const cartObj = {
+        order: {},
+        cocktails: [cocktail],
+      };
+      const cartString = JSON.stringify(cartObj);
+      window.localStorage.setItem("cart", cartString);
+      dispatch(fetchCart(cartObj));
     }
   } catch (error) {
     console.error(error);

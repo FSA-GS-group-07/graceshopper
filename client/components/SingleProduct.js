@@ -40,15 +40,19 @@ class SingleProduct extends React.Component {
   }
 
   async handleAddToCart() {
-    if (this.props.cart.order.id) {
+    if (this.props.cart.cocktails.length > 0) {
+      console.log("length above 0");
       await this.props.addToCart(
         this.props.match.params.id,
-        this.state.quantity
+        this.state.quantity,
+        this.props.cocktail
       );
     } else {
+      console.log("this.props.cocktail", this.props.cocktail);
       await this.props.createCart(
         this.props.match.params.id,
-        this.state.quantity
+        this.state.quantity,
+        this.props.cocktail
       );
     }
   }
@@ -70,7 +74,13 @@ class SingleProduct extends React.Component {
   render() {
     const { cocktail, history, isAdmin, deleteCocktail } = this.props;
     const { edit, name, price, description, imageUrl, quantity } = this.state;
-    const { handleChange, handleSubmit, handleSubtract, handleAdd, handleAddToCart } = this;
+    const {
+      handleChange,
+      handleSubmit,
+      handleSubtract,
+      handleAdd,
+      handleAddToCart,
+    } = this;
 
     return (
       <div>
@@ -148,7 +158,9 @@ class SingleProduct extends React.Component {
               +
             </button>
 
-            <button type="button" onClick={handleAddToCart}>Add to Cart</button>
+            <button type="button" onClick={handleAddToCart}>
+              Add to Cart
+            </button>
           </div>
         )}
         <Link to="/cocktails">
@@ -172,8 +184,10 @@ const mapDispatch = (dispatch) => {
   return {
     getCart: () => dispatch(fetchCart()),
     getCocktail: (id) => dispatch(fetchCocktail(id)),
-    addToCart: (id, quantity) => dispatch(addToCart(id, quantity)),
-    createCart: (id, quantity) => dispatch(createCart(id, quantity)),
+    addToCart: (id, quantity, cocktail) =>
+      dispatch(addToCart(id, quantity, cocktail)),
+    createCart: (id, quantity, cocktail) =>
+      dispatch(createCart(id, quantity, cocktail)),
     updateCocktail: (cocktail) => dispatch(updateCocktail(cocktail)),
     deleteCocktail: (id, history) => dispatch(deleteCocktail(id, history)),
   };
