@@ -15,7 +15,6 @@ class SingleProduct extends React.Component {
       quantity: 1,
       edit: false,
       name: "",
-      imageUrl: this.props.cocktail.imageUrl,
       price: 0,
       description: "",
     };
@@ -69,8 +68,14 @@ class SingleProduct extends React.Component {
 
   render() {
     const { cocktail, history, isAdmin, deleteCocktail } = this.props;
-    const { edit, name, price, description, imageUrl, quantity } = this.state;
-    const { handleChange, handleSubmit, handleSubtract, handleAdd, handleAddToCart } = this;
+    const { edit, name, price, description, quantity } = this.state;
+    const {
+      handleChange,
+      handleSubmit,
+      handleSubtract,
+      handleAdd,
+      handleAddToCart,
+    } = this;
 
     return (
       <div>
@@ -99,16 +104,6 @@ class SingleProduct extends React.Component {
                 name="name"
                 onChange={handleChange}
                 value={name}
-              />
-            </label>
-            <label>
-              Image Url:
-              <input
-                type="text"
-                name="imageUrl"
-                placeholder={cocktail.imageUrl}
-                onChange={handleChange}
-                value={imageUrl}
               />
             </label>
             <label>
@@ -148,7 +143,9 @@ class SingleProduct extends React.Component {
               +
             </button>
 
-            <button type="button" onClick={handleAddToCart}>Add to Cart</button>
+            <button type="button" onClick={handleAddToCart}>
+              Add to Cart
+            </button>
           </div>
         )}
         <Link to="/cocktails">

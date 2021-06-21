@@ -1,5 +1,6 @@
 //Changes(if required) : name of the model
 const router = require("express").Router();
+
 const {
   models: { Cocktail },
 } = require("../db");
