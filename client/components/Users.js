@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { fetchUsers } from "../store/user";
 
 
-class AdminDashboard extends React.Component {
+class Users extends React.Component {
     componentDidMount() {
         this.props.getUsers();
     }
@@ -39,4 +39,4 @@ const mapDispatch = (dispatch) => ({
     }
 })
 
-export default connect(mapState, mapDispatch)(AdminDashboard);
+export default connect(mapState, mapDispatch)(Users);
