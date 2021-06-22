@@ -3,6 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchCart, addToCart } from "../store/cart";
+import { loadStripe } from "@stripe/stripe-js";
 
 class Cart extends React.Component {
   constructor(props) {
@@ -11,7 +12,9 @@ class Cart extends React.Component {
     this.state = {
       edit: false,
     };
+    this.handleCheckout = this.handleCheckout.bind(this);
   }
+
   componentDidMount() {
     this.props.getCart();
   }
@@ -24,11 +27,27 @@ class Cart extends React.Component {
     this.props.updatedQuantity(cocktailId, -1, cocktail);
   }
 
+  async handleCheckout() {
+    const stripe = await loadStripe(
+      "pk_test_51J5C3LFT1yAmNlTZXfbIlPdca9y7GD8DILU77uUVH1AO844xp0B9UxdzJSGetlpYe4uRpRoH16hKtRyZ8aWPUeYz00RV42ERF5"
+    );
+    const response = await fetch("/api/create-checkout-session", {
+      method: "POST",
+      body: this.props.cart,
+    });
+    const session = await response.json();
+    const result = await stripe.redirectToCheckout({
+      sessionId: session.id,
+    });
+    if (result.error) {
+      console.log(result.error.message);
+    }
+  }
+
   render() {
     const { cart } = this.props;
     let total = 0;
     let subtotal = 0;
-    // console.log(cart.cocktails)
     return (
       <div className="cart">
         {cart.cocktails &&
@@ -74,12 +93,11 @@ class Cart extends React.Component {
             </div>
           ))}
         <div className="subtotal">
-          <h4>
-            Subtotal:
-          </h4>
-            {cart.cocktails && cart.cocktails.map(cocktail => {
-              subtotal = Number(cocktail.price * cocktail.order_items.quantity)
-              total += Number(cocktail.price * cocktail.order_items.quantity)
+          <h4>Subtotal:</h4>
+          {cart.cocktails &&
+            cart.cocktails.map((cocktail) => {
+              subtotal = Number(cocktail.price * cocktail.order_items.quantity);
+              total += Number(cocktail.price * cocktail.order_items.quantity);
               return (
                 <div className="subtotal-item">
                   <span>
@@ -91,20 +109,21 @@ class Cart extends React.Component {
                     <h6>${subtotal}</h6>
                   </span>
                 </div>
-              )
-            }
-            )}
-          
+              );
+            })}
         </div>
         <div className="total">
-          <h4>
-            Total: $
-            {cart.cocktails && total}
-          </h4>
+          <h4>Total: ${cart.cocktails && total}</h4>
         </div>
-        <div className="checkout">
-          <button>Checkout</button>
-        </div>
+        {cart.cocktails && cart.cocktails.length > 0 ? (
+          <div className="checkout" role="link">
+            <button onClick={this.handleCheckout}>Checkout</button>
+          </div>
+        ) : (
+          <h1>
+            Oh no! Your cart is empty :/ would you like to browse a bit more?
+          </h1>
+        )}
       </div>
     );
   }
