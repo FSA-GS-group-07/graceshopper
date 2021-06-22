@@ -151,7 +151,8 @@ class SingleProduct extends React.Component {
 
   render() {
     const { cocktail, history, isAdmin, deleteCocktail } = this.props;
-    const { edit, name, price, description, imageUrl, quantity } = this.state;
+    const { edit, name, price, description, quantity } = this.state;
+
     const {
       handleChange,
       handleSubmit,

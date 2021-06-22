@@ -51,8 +51,23 @@ const LargeText = styled.span`
 `;
 
 class Cart extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      edit: false,
+    };
+  }
   componentDidMount() {
     this.props.getCart();
+  }
+
+  handleAdd(cocktailId, currQty, cocktail) {
+    this.props.updatedQuantity(cocktailId, 1, cocktail);
+  }
+
+  handleSubtract(cocktailId, currQty, cocktail) {
+    this.props.updatedQuantity(cocktailId, -1, cocktail);
   }
 
   render() {
@@ -123,6 +138,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     getCart: () => dispatch(fetchCart()),
+    updatedQuantity: (cocktailId, quantity, cocktail) =>
+      dispatch(addToCart(cocktailId, quantity, cocktail)),
   };
 };
 

@@ -19,7 +19,7 @@ export const fetchUsers = () => async (dispatch) => {
         dispatch (setUsers(data))
         }
     } catch (err) {
-        console.log(err)
+        console.error(err)
     }
 }
 
