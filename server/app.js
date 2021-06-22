@@ -5,7 +5,6 @@ const app = express();
 module.exports = app;
 
 if (process.env.NODE_ENV !== "production") require("../secret");
-console.log("process environment -->", process.env);
 
 const STRIPE_API_KEY = process.env.STRIPE_API_KEY;
 // logging middleware

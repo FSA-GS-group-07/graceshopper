@@ -1,11 +1,27 @@
+import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchCart } from "../store/cart";
+import { fetchCart, addToCart } from "../store/cart";
 
 class Cart extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      edit: false,
+    };
+  }
   componentDidMount() {
     this.props.getCart();
+  }
+
+  handleAdd(cocktailId, currQty, cocktail) {
+    this.props.updatedQuantity(cocktailId, 1, cocktail);
+  }
+
+  handleSubtract(cocktailId, currQty, cocktail) {
+    this.props.updatedQuantity(cocktailId, -1, cocktail);
   }
 
   render() {
@@ -21,8 +37,37 @@ class Cart extends React.Component {
                   <img src={cocktail.imageUrl} alt={cocktail.name} />
                 </span>
               </Link>
+
               <h3>${cocktail.price}</h3>
-              <h3>Quantity: {cocktail.order_items.quantity}</h3>
+
+              <h3>
+                Quantity: {cocktail.order_items.quantity}
+                {this.state.edit && (
+                  <button
+                    type="button"
+                    onClick={() => this.handleAdd(cocktail.id, 1, cocktail)}
+                  >
+                    +
+                  </button>
+                )}
+                {this.state.edit && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      this.handleSubtract(cocktail.id, 1, cocktail)
+                    }
+                  >
+                    -
+                  </button>
+                )}
+              </h3>
+              <button
+                onClick={() =>
+                  this.setState((prevState) => ({ edit: !prevState.edit }))
+                }
+              >
+                Edit
+              </button>
             </div>
           ))}
         <div id="checkout">
@@ -42,6 +87,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     getCart: () => dispatch(fetchCart()),
+    updatedQuantity: (cocktailId, quantity, cocktail) =>
+      dispatch(addToCart(cocktailId, quantity, cocktail)),
   };
 };
 
