@@ -1,11 +1,27 @@
+import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchCart } from "../store/cart";
+import { fetchCart, addToCart } from "../store/cart";
 
 class Cart extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      edit: false,
+    };
+  }
   componentDidMount() {
     this.props.getCart();
+  }
+
+  handleAdd(cocktailId, currQty, cocktail) {
+    this.props.updatedQuantity(cocktailId, 1, cocktail);
+  }
+
+  handleSubtract(cocktailId, currQty, cocktail) {
+    this.props.updatedQuantity(cocktailId, -1, cocktail);
   }
 
   render() {
@@ -17,18 +33,45 @@ class Cart extends React.Component {
       <div className="cart">
         {cart.cocktails &&
           cart.cocktails.map((cocktail) => (
-            <Link
-              key={cocktail.id || cocktail.cocktailId}
-              to={`/cocktails/${cocktail.id}`}
-            >
-              <div className="cart-item">
+            <div className="cart-item" key={cocktail.id || cocktail.cocktailId}>
+              <Link to={`/cocktails/${cocktail.id}`}>
                 <span>
                   <h1>{cocktail.name}</h1>
                   <img src={cocktail.imageUrl} alt={cocktail.name} />
-                  <h3>${cocktail.price}</h3>
                 </span>
-              </div>
-            </Link>
+              </Link>
+
+              <h3>${cocktail.price}</h3>
+
+              <h3>
+                Quantity: {cocktail.order_items.quantity}
+                {this.state.edit && (
+                  <button
+                    type="button"
+                    onClick={() => this.handleAdd(cocktail.id, 1, cocktail)}
+                  >
+                    +
+                  </button>
+                )}
+                {this.state.edit && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      this.handleSubtract(cocktail.id, 1, cocktail)
+                    }
+                  >
+                    -
+                  </button>
+                )}
+              </h3>
+              <button
+                onClick={() =>
+                  this.setState((prevState) => ({ edit: !prevState.edit }))
+                }
+              >
+                Edit
+              </button>
+            </div>
           ))}
         <div className="subtotal">
           <h4>
@@ -76,6 +119,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     getCart: () => dispatch(fetchCart()),
+    updatedQuantity: (cocktailId, quantity, cocktail) =>
+      dispatch(addToCart(cocktailId, quantity, cocktail)),
   };
 };
 
