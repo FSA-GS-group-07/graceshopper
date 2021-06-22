@@ -37,7 +37,7 @@ class Cart extends React.Component {
             {cart.cocktails && cart.cocktails.map(cocktail => {
               subtotal = Number(cocktail.price * cocktail.order_items.quantity)
               total += Number(cocktail.price * cocktail.order_items.quantity)
-              return (
+              (
                 <div className="subtotal-item">
                   <span>
                     <h5>{cocktail.name}</h5>

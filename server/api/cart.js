@@ -105,4 +105,15 @@ router.put("/", requireToken, async (req, res, next) => {
   }
 });
 
+//DELETE /api
+
+router.delete('/', requireToken, async (req, res, next) => {
+  try { 
+    const item = await Order_items.findByPk(req.params.cocktailId);
+    await item.destroy();
+    res.json(item)
+  } catch (error) {
+    next (error)
+  }
+})
 module.exports = router;
