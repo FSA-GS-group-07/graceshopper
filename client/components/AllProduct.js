@@ -30,8 +30,13 @@ const Button = styled.button`
     text-transform: uppercase;
     letter-spacing: 1px;
     font-size: 0.75em;
+    /* height: 20%;
+    width: 80%; */
   }
 `;
+
+//change text to "+" when media is too small
+//css content, after element "::after ::before"
 
 const Wrapper = styled.div`
   & {
