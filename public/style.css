@@ -1,9 +1,14 @@
 body {
-  font-family: sans-serif;
+  font-family: 'Lato', sans-serif;
+  background-color: white;
 }
 
-a {
+a:link,
+a:visited,
+a:hover,
+a:active {
   text-decoration: none;
+  color: inherit;
 }
 
 label {
@@ -18,4 +23,9 @@ nav a {
 form div {
   margin: 1em;
   display: inline-block;
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
 }

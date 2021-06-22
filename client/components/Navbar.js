@@ -1,8 +1,34 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { logout } from "../store";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { logout } from '../store';
+import styled from 'styled-components';
 
+//CSS STYLES
+const Nav = styled.div`
+  font-size: small;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: space-around;
+  margin: 1rem;
+`;
+
+const Logo = styled.span`
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 3px;
+  font-size: 2rem;
+  color: black;
+  padding: 0.5rem;
+`;
+
+const NavItems = styled.span`
+  padding: 0.5rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+`;
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -18,33 +44,49 @@ class Navbar extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>PourDecisions</h1>
-        <nav> 
-          {this.props.isLoggedIn ? (
-            <div>
-              {/* The navbar will show these links after you log in */}
-              <Link to="/home">Home</Link>
+      <Nav>
+        <Logo>
+          <Link to="/">Pour Decisions</Link>
+        </Logo>
+        {this.props.isLoggedIn ? (
+          <div>
+            {/* The navbar will show these links after you log in */}
+
+            <NavItems>
               <Link to="/cocktails">Shop</Link>
+            </NavItems>
+            <NavItems>
               <Link to="/cart">Cart</Link>
-              {this.props.isAdmin ? (<Link to="/users">Users</Link>) : null }
+            </NavItems>
+            {this.props.isAdmin ? (
+              <NavItems>
+                <Link to="/users">Users</Link>
+              </NavItems>
+            ) : null}
+            <NavItems>
               <a href="#" onClick={this.handleClick}>
                 Logout
               </a>
-            </div>
-          ) : (
+            </NavItems>
+          </div>
+        ) : (
           <div>
-              {/* The navbar will show these links before you log in */}
-              <Link to="/home">Home</Link>
+            {/* The navbar will show these links before you log in */}
+            <NavItems>
               <Link to="/cocktails">Shop</Link>
+            </NavItems>
+            <NavItems>
               <Link to="/cart">Cart</Link>
+            </NavItems>
+            <NavItems>
               <Link to="/login">Login</Link>
+            </NavItems>
+            <NavItems>
               <Link to="/signup">Sign Up</Link>
-            </div>
-          )}
-        </nav>
-        <hr />
-      </div>
+            </NavItems>
+          </div>
+        )}
+      </Nav>
     );
   }
 }
