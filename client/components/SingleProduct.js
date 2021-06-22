@@ -54,6 +54,11 @@ const Button = styled.button`
   letter-spacing: 1px;
   font-size: 1em;
   margin-right: 1em;
+  &:hover {
+    background-color: black;
+    border: 2px solid black;
+    color: white;
+  }
 `;
 
 const QuantityButton = styled.button`
