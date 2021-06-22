@@ -10,13 +10,62 @@ const Grid = styled.div`
   grid-auto-columns: max-content;
   grid-auto-flow: dense;
   grid-auto-rows: minmax(100px, auto);
-  grid-gap: 25px;
+  grid-gap: 40px;
   grid-template-columns: repeat(4, 1fr);
   margin: 60px auto;
   max-width: 1000px;
 `;
 
-const CocktailName = styled.span``;
+const Button = styled.button`
+  & {
+    display: none;
+    position: absolute;
+    top: 45%;
+    left: 23%;
+    background-color: transparent;
+    border: 2px solid white;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    color: white;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.75em;
+  }
+`;
+
+const Wrapper = styled.div`
+  & {
+    position: relative;
+  }
+
+  &:hover img {
+    filter: brightness(70%);
+  }
+  &:hover button {
+    display: block;
+  }
+`;
+
+const Text = styled.span`
+  font-family: 'Bebas Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1rem;
+`;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0 5px 0;
+`;
+
+const SmallText = styled.span`
+  padding: 3rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.75em;
+`;
 
 class AllProduct extends React.Component {
   componentDidMount() {
@@ -29,18 +78,22 @@ class AllProduct extends React.Component {
       <div className="all-cocktails">
         {isAdmin && (
           <Link to="/cocktails/create">
-            <button type="button">Create new cocktail </button>
+            <SmallText>
+              <b>Admin Controls: </b>Create new cocktail{' '}
+            </SmallText>
           </Link>
         )}
         <Grid>
           {cocktails &&
             cocktails.map((cocktail) => (
               <Link key={cocktail.id} to={`/cocktails/${cocktail.id}`}>
-                <span>
+                <Wrapper>
                   <img src={cocktail.imageUrl} alt={cocktail.name} />
-                  {cocktail.name}
-                  <br />${cocktail.price}
-                </span>
+                  <Button>Add to Cart</Button>
+                </Wrapper>
+                <Container>
+                  <Text>{cocktail.name}</Text> <Text>${cocktail.price}</Text>
+                </Container>
               </Link>
             ))}
         </Grid>
