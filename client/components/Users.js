@@ -31,7 +31,7 @@ const BoldText = styled.span`
   letter-spacing: 1px;
 `;
 
-class AdminDashboard extends React.Component {
+class Users extends React.Component {
   componentDidMount() {
     this.props.getUsers();
   }
@@ -70,4 +70,4 @@ const mapDispatch = (dispatch) => ({
   },
 });
 
-export default connect(mapState, mapDispatch)(AdminDashboard);
+export default connect(mapState, mapDispatch)(Users);
