@@ -10,7 +10,7 @@ import AllProduct from "./components/AllProduct";
 import SingleProduct from "./components/SingleProduct";
 import NewProduct from "./components/NewProduct";
 import Cart from './components/Cart';
-import AdminDashboard from "./components/AdminDashboard"
+import Users from "./components/Users"
 
 
 
@@ -49,7 +49,7 @@ class Routes extends Component {
           />
           <Route 
             path="/users"
-            render={() =>  (isAdmin && isLoggedIn ? <AdminDashboard /> : null )} />
+            render={() =>  (isAdmin && isLoggedIn ? <Users /> : null )} />
           <Route exact path="/cart" render={() => <Cart />} />
         </Switch>
       </div>
