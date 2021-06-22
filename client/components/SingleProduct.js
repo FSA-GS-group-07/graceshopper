@@ -44,6 +44,45 @@ const RightColumn = styled.div`
   padding: 3rem;
 `;
 
+const Button = styled.button`
+  background-color: transparent;
+  border: 2px solid black;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  color: black;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1em;
+  margin-right: 1em;
+`;
+
+const QuantityButton = styled.button`
+  background-color: transparent;
+  border: 2px solid black;
+  padding: 0 5px 0 5px 0;
+  color: black;
+  font-size: 1em;
+`;
+
+const AdminControls = styled.div`
+  max-width: 1200px;
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 1rem;
+`;
+
+const Input = styled.input.attrs({
+  type: 'text',
+})`
+  background-color: white;
+  color: black;
+  margin-bottom: 0;
+  width: 20%;
+  border-color: 2px solid black;
+  margin-left: 1rem;
+`;
+
 class SingleProduct extends React.Component {
   constructor(props) {
     super(props);
@@ -121,65 +160,77 @@ class SingleProduct extends React.Component {
             <IoChevronBack /> Back to all cocktails
           </SmallText>
         </Link>
+        <AdminControls>
+          {isAdmin && (
+            <>
+              <br />
+              <Button
+                onClick={() =>
+                  this.setState((prevState) => ({ edit: !prevState.edit }))
+                }
+              >
+                Edit Cocktail
+              </Button>
+            </>
+          )}
 
-        {isAdmin && (
-          <button
-            onClick={() =>
-              this.setState((prevState) => ({ edit: !prevState.edit }))
-            }
-          >
-            Edit Cocktail
-          </button>
-        )}
-
-        {isAdmin && (
-          <button onClick={() => deleteCocktail(cocktail.id, history)}>
-            X
-          </button>
-        )}
-
+          {isAdmin && (
+            <>
+              <br />
+              <Button onClick={() => deleteCocktail(cocktail.id, history)}>
+                Delete Cocktail
+              </Button>
+            </>
+          )}
+        </AdminControls>
         {edit ? (
           <form>
-            <label>
-              Name:
-              <input
-                type="text"
-                name="name"
-                onChange={handleChange}
-                value={name}
-              />
-            </label>
-            <label>
-              Image Url:
-              <input
-                type="text"
-                name="imageUrl"
-                placeholder={cocktail.imageUrl}
-                onChange={handleChange}
-                value={imageUrl}
-              />
-            </label>
-            <label>
-              Description:
-              <input
-                type="text"
-                name="description"
-                onChange={handleChange}
-                value={description}
-              />
-            </label>
-            <label>
-              Price:
-              <input
-                type="text"
-                name="price"
-                onChange={handleChange}
-                value={price}
-              />
-            </label>
-            <button type="submit" onClick={(event) => handleSubmit(event)}>
-              Submit
-            </button>
+            <SmallText>
+              <label>
+                Name:
+                <Input
+                  type="text"
+                  name="name"
+                  onChange={handleChange}
+                  value={name}
+                />
+              </label>
+              <br />
+              <label>
+                Image Url:
+                <Input
+                  type="text"
+                  name="imageUrl"
+                  placeholder={cocktail.imageUrl}
+                  onChange={handleChange}
+                  value={imageUrl}
+                />
+              </label>
+              <br />
+              <label>
+                Description:
+                <Input
+                  type="text"
+                  name="description"
+                  onChange={handleChange}
+                  value={description}
+                />
+              </label>
+              <br />
+              <label>
+                Price:
+                <Input
+                  type="text"
+                  name="price"
+                  onChange={handleChange}
+                  value={price}
+                />
+              </label>
+              <br />
+              <Button type="submit" onClick={(event) => handleSubmit(event)}>
+                Submit
+              </Button>
+            </SmallText>
           </form>
         ) : (
           <div>
@@ -192,17 +243,13 @@ class SingleProduct extends React.Component {
                 <h3>${cocktail.price}</h3>
                 <p>{cocktail.description}</p>
 
-                <button type="button" onClick={handleSubtract}>
-                  -
-                </button>
-                <span>{quantity}</span>
-                <button type="button" onClick={handleAdd}>
-                  +
-                </button>
+                <QuantityButton onClick={handleSubtract}>-</QuantityButton>
+                {quantity}
+                <QuantityButton onClick={handleAdd}>+</QuantityButton>
 
-                <button type="button" onClick={handleAddToCart}>
-                  Add to Cart
-                </button>
+                <br />
+                <br />
+                <Button onClick={handleAddToCart}>Add to Cart</Button>
               </RightColumn>
             </Container>
           </div>
