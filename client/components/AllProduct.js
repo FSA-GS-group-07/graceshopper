@@ -1,7 +1,22 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { fetchCocktails } from "../store/allProduct";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { fetchCocktails } from '../store/allProduct';
+import styled from 'styled-components';
+
+//CSS STYLES
+const Grid = styled.div`
+  display: grid;
+  grid-auto-columns: max-content;
+  grid-auto-flow: dense;
+  grid-auto-rows: minmax(100px, auto);
+  grid-gap: 25px;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 60px auto;
+  max-width: 1000px;
+`;
+
+const CocktailName = styled.span``;
 
 class AllProduct extends React.Component {
   componentDidMount() {
@@ -17,17 +32,18 @@ class AllProduct extends React.Component {
             <button type="button">Create new cocktail </button>
           </Link>
         )}
-        {cocktails &&
-          cocktails.map((cocktail) => (
-            <Link key={cocktail.id} to={`/cocktails/${cocktail.id}`}>
-              <span>
-                <h1>{cocktail.name}</h1>
-                <img src={cocktail.imageUrl} alt={cocktail.name} />
-                <h3>{cocktail.price}</h3>
-                <p>{cocktail.description}</p>
-              </span>
-            </Link>
-          ))}
+        <Grid>
+          {cocktails &&
+            cocktails.map((cocktail) => (
+              <Link key={cocktail.id} to={`/cocktails/${cocktail.id}`}>
+                <span>
+                  <img src={cocktail.imageUrl} alt={cocktail.name} />
+                  {cocktail.name}
+                  <br />${cocktail.price}
+                </span>
+              </Link>
+            ))}
+        </Grid>
       </div>
     );
   }
