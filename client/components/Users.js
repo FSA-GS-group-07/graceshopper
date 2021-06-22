@@ -56,6 +56,8 @@ class Users extends React.Component {
         </Container>
       </div>
     );
+  }
+}
 
 const mapState = (state) => ({
   users: state.users,
