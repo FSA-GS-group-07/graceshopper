@@ -4,7 +4,6 @@ import axios from "axios";
 const GET_CART = "GET CART";
 const CREATE_CART = "CREATE CART";
 const ADD_TO_CART = "ADD TO CART";
-// const UPDATE_QUANTITY = "UPDATE_QUANTITY";
 
 const gotCart = (cart) => ({
   type: GET_CART,
@@ -24,13 +23,6 @@ const addedToCart = (item) => {
     item,
   };
 };
-
-// const updatedQuantity = (cart) => {
-//   return {
-//     type: UPDATE_QUANTITY,
-//     cart,
-//   };
-// };
 
 export const fetchCart = () => async (dispatch) => {
   try {
