@@ -34,13 +34,26 @@ export const fetchCart = () => async (dispatch) => {
         },
       });
       dispatch(gotCart(cart));
+    } else {
+      let cart = window.localStorage.getItem("cart");
+      if (cart) {
+        cart = JSON.parse(cart);
+      } else {
+        cart = {
+          order: {},
+          cocktails: [],
+        };
+      }
+      dispatch(gotCart(cart));
     }
   } catch (error) {
     console.error(error);
   }
 };
 
-export const createCart = (cocktailId, quantity) => async (dispatch) => {
+export const createCart = (cocktailId, quantity, singleCocktail) => async (
+  dispatch
+) => {
   try {
     const token = window.localStorage.getItem("token");
     if (token) {
@@ -54,13 +67,26 @@ export const createCart = (cocktailId, quantity) => async (dispatch) => {
         },
       });
       dispatch(createdCart(cart));
+    } else {
+      singleCocktail.order_items = {
+        quantity,
+      };
+      const cartObj = {
+        order: {},
+        cocktails: [singleCocktail],
+      };
+      const cartString = JSON.stringify(cartObj);
+      window.localStorage.setItem("cart", cartString);
+      dispatch(gotCart(cartObj));
     }
   } catch (error) {
     console.error(error);
   }
 };
 
-export const addToCart = (cocktailId, quantity) => async (dispatch) => {
+export const addToCart = (cocktailId, quantity, cocktail) => async (
+  dispatch
+) => {
   try {
     const token = window.localStorage.getItem("token");
     if (token) {
@@ -74,6 +100,29 @@ export const addToCart = (cocktailId, quantity) => async (dispatch) => {
         },
       });
       dispatch(addedToCart(item));
+    } else {
+      const cart = JSON.parse(window.localStorage.getItem("cart"));
+      let updatedItem = false;
+      let updatedCocktails = cart.cocktails.map((drink) => {
+        if (drink.id == cocktailId) {
+          drink.order_items.quantity += quantity;
+          updatedItem = true;
+        }
+        return drink;
+      });
+      if (!updatedItem) {
+        cocktail.order_items = {
+          quantity,
+        };
+        updatedCocktails.push(cocktail);
+      }
+      const cartObj = {
+        order: {},
+        cocktails: updatedCocktails,
+      };
+      const cartString = JSON.stringify(cartObj);
+      window.localStorage.setItem("cart", cartString);
+      dispatch(gotCart(cartObj));
     }
   } catch (error) {
     console.error(error);
