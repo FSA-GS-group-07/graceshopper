@@ -1,17 +1,17 @@
-const router = require("express").Router();
-const Sequelize = require("sequelize");
+const router = require('express').Router();
+const Sequelize = require('sequelize');
 const {
   models: { Order, Order_items, Cocktail },
-} = require("../db");
-const { requireToken } = require("./gatekeeping");
+} = require('../db');
+const { requireToken } = require('./gatekeeping');
 
 // GET api/cart/
-router.get("/", requireToken, async (req, res, next) => {
+router.get('/', requireToken, async (req, res, next) => {
   try {
     if (req.user) {
       const order = await Order.findOne({
         where: {
-          [Sequelize.Op.and]: [{ userId: req.user.id }, { status: "cart" }],
+          [Sequelize.Op.and]: [{ userId: req.user.id }, { status: 'cart' }],
         },
         include: Cocktail,
       });
@@ -27,17 +27,17 @@ router.get("/", requireToken, async (req, res, next) => {
 });
 
 // POST api/cart -> create a new cart WITH the first item added
-router.post("/", requireToken, async (req, res, next) => {
+router.post('/', requireToken, async (req, res, next) => {
   try {
     if (req.user) {
       const order = await Order.create({
         userId: req.user.id,
-        status: "cart",
+        status: 'cart',
       });
       await Order_items.create({
-        quantity: req.body.body.quantity,
+        quantity: req.body.quantity,
         orderId: order.id,
-        cocktailId: req.body.body.cocktailId,
+        cocktailId: req.body.cocktailId,
       });
       const cocktails = await order.getCocktails();
       res.send({ order, cocktails });
@@ -60,17 +60,17 @@ router.post("/", requireToken, async (req, res, next) => {
 });
 
 // PUT /api/cart
-router.put("/", requireToken, async (req, res, next) => {
+router.put('/', requireToken, async (req, res, next) => {
   try {
     if (req.user) {
       const order = await Order.findOne({
         where: {
-          [Sequelize.Op.and]: [{ userId: req.user.id }, { status: "cart" }],
+          [Sequelize.Op.and]: [{ userId: req.user.id }, { status: 'cart' }],
         },
         include: Cocktail,
       });
 
-      const { cocktailId, quantity } = req.body.body;
+      const { cocktailId, quantity } = req.body;
 
       let item = order.cocktails.filter(
         (cocktail) => Number(cocktail.id) == Number(cocktailId)
@@ -105,16 +105,16 @@ router.put("/", requireToken, async (req, res, next) => {
 });
 
 // PUT /api/cart/completed
-router.put("/completed", requireToken, async (req, res, next) => {
+router.put('/completed', requireToken, async (req, res, next) => {
   try {
     if (req.user) {
       await Order.update(
         {
-          status: "complete",
+          status: 'complete',
         },
         {
           where: {
-            [Sequelize.Op.and]: [{ userId: req.user.id }, { status: "cart" }],
+            [Sequelize.Op.and]: [{ userId: req.user.id }, { status: 'cart' }],
           },
         }
       );
