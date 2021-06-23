@@ -19,10 +19,10 @@ router.get("/", requireToken, async (req, res, next) => {
       const cocktails = order.cocktails;
       res.json({ order, cocktails });
     } else {
-      res.sendStatus(404);
+      res.send({ order: {}, cocktails: [] });
     }
   } catch (err) {
-    next(err);
+    res.send({ order: {}, cocktails: [] });
   }
 });
 
