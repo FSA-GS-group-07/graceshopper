@@ -8,6 +8,7 @@ import {
   Input,
   Button,
   CreateContainer,
+  Container,
 } from '../styled-components';
 
 class NewProduct extends Component {
@@ -48,63 +49,56 @@ class NewProduct extends Component {
         </Link>
         <br />
         <br />
-        <form onSubmit={handleSubmit}>
-          <SmallText>
-            <label>
-              Name:
+        <Container>
+          <form onSubmit={handleSubmit}>
+            <SmallText>
+              <label>Name</label>
               <Input
                 type="text"
                 name="name"
                 onChange={handleChange}
                 value={name}
               />
-            </label>
-            <br />
-            <label>
-              Image Url:
+              <br />
+              <label>Image Url</label>
               <Input
                 type="text"
                 name="imageUrl"
                 onChange={handleChange}
                 value={imageUrl}
               />
-            </label>
-            <br />
-            <label>
-              Description:
+              <br />
+              <label>Description</label>
               <Input
                 type="text"
                 name="description"
                 onChange={handleChange}
                 value={description}
               />
-            </label>
-            <br />
-            <label>
-              ingredients:
+              <br />
+              <label>Ingredients</label>
               <Input
                 type="text"
                 name="ingredients"
                 onChange={handleChange}
                 value={ingredients}
               />
-            </label>
-            <br />
-            <label>
-              Price:
+              <br />
+              <label>Price</label>
               <Input
                 type="text"
                 name="price"
                 onChange={handleChange}
                 value={price}
               />
-            </label>
-            <br />
-            <Button type="submit" onClick={(event) => handleSubmit(event)}>
-              Submit
-            </Button>
-          </SmallText>
-        </form>
+              <br />
+              <br />
+              <Button type="submit" onClick={(event) => handleSubmit(event)}>
+                Submit
+              </Button>
+            </SmallText>
+          </form>
+        </Container>
       </CreateContainer>
     );
   }
