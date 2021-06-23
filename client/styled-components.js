@@ -194,6 +194,7 @@ export const QuantityButton = styled.button`
   padding: 0 5px 0 5px 0;
   color: black;
   font-size: 1em;
+  margin: 5px;
 `;
 
 export const CartButton = styled.button`
@@ -254,4 +255,3 @@ export const NavItemsRed = styled.span`
   letter-spacing: 1px;
   color: darkred;
 `;
-

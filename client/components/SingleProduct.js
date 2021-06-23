@@ -1,7 +1,7 @@
-import React from "react";
-import { connect } from "react-redux";
-import { fetchCart, createCart, addToCart } from "../store/cart";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { connect } from 'react-redux';
+import { fetchCart, createCart, addToCart } from '../store/cart';
+import { Link } from 'react-router-dom';
 import {
   fetchCocktail,
   updateCocktail,
@@ -13,7 +13,6 @@ import {
   LargeText,
   Button,
   Input,
-  AdminControls,
   QuantityButton,
   ContainerSingle,
   LeftColumnSingle,
@@ -21,7 +20,7 @@ import {
   AdminButton,
   CartContainer,
   CenterContainer,
-} from "../styled-components";
+} from '../styled-components';
 
 class SingleProduct extends React.Component {
   constructor(props) {
@@ -29,10 +28,10 @@ class SingleProduct extends React.Component {
     this.state = {
       quantity: 1,
       edit: false,
-      name: "",
+      name: '',
       imageUrl: this.props.cocktail.imageUrl,
       price: 0,
-      description: "",
+      description: '',
     };
     this.handleAdd = this.handleAdd.bind(this);
     this.handleSubtract = this.handleSubtract.bind(this);

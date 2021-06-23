@@ -1,8 +1,9 @@
-import React from "react";
-import { connect } from "react-redux";
-import { fetchCart, addToCart } from "../store/cart";
-import { loadStripe } from "@stripe/stripe-js";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { connect } from 'react-redux';
+import { fetchCart, addToCart } from '../store/cart';
+import { loadStripe } from '@stripe/stripe-js';
+import { Link } from 'react-router-dom';
+import { IoChevronBack } from 'react-icons/io5';
 import {
   CartContainer,
   List,
@@ -11,7 +12,9 @@ import {
   ButtonContainer,
   Button,
   LargeText,
-} from "../styled-components";
+  QuantityButton,
+  SmallText,
+} from '../styled-components';
 
 class Cart extends React.Component {
   constructor(props) {
@@ -55,7 +58,18 @@ class Cart extends React.Component {
   render() {
     const { cart } = this.props;
     let total = 0;
-    let subtotal = 0;
+    let subtotal = {};
+    console.log(this.props);
+    {
+      cart.cocktails &&
+        cart.cocktails.map((cocktail) => {
+          subtotal[cocktail.id] = Number(
+            cocktail.price * cocktail.order_items.quantity
+          );
+          total += Number(cocktail.price * cocktail.order_items.quantity);
+        });
+    }
+
     return (
       <div className="cart">
         <CartContainer>
@@ -73,55 +87,35 @@ class Cart extends React.Component {
                   </Link>
                   <RightColumn>
                     <LargeText>{cocktail.name}</LargeText>
-                    <h3>${cocktail.price}</h3>
+                    <h3>
+                      ${cocktail.price} x
+                      {this.state.edit && (
+                        <QuantityButton
+                          type="button"
+                          onClick={() =>
+                            this.handleSubtract(cocktail.id, 1, cocktail)
+                          }
+                        >
+                          -
+                        </QuantityButton>
+                      )}
+                      {cocktail.order_items?.quantity}
+                      {this.state.edit && (
+                        <QuantityButton
+                          type="button"
+                          onClick={() =>
+                            this.handleAdd(cocktail.id, 1, cocktail)
+                          }
+                        >
+                          +
+                        </QuantityButton>
+                      )}
+                    </h3>
                     <div className="subtotal">
-                      <h4>Subtotal:</h4>
-                      {/* //this is causing the sum to render on the cart component */}
-                      {/* {
-                        (subtotal = Number(
-                          cocktail.price * cocktail.order_items?.quantity
-                        ))
-                      }
-                      {
-                        (total += Number(
-                          cocktail.price * cocktail.order_items?.quantity
-                        ))
-                      } */}
-                      {/* //need to fix above this pt. */}
-                      <div className="subtotal-item">
-                        <span>
-                          <h5>{cocktail.name}</h5>
-                          <h6>{cocktail.order_items?.quantity}</h6>
-                          <h6>X</h6>
-                          <h6>${cocktail.price}</h6>
-                          <h6>=</h6>
-                          <h6>${subtotal}</h6>
-                        </span>
-                      </div>
-                      <h3>
-                        Quantity: {cocktail.order_items?.quantity}
-                        {this.state.edit && (
-                          <button
-                            type="button"
-                            onClick={() =>
-                              this.handleAdd(cocktail.id, 1, cocktail)
-                            }
-                          >
-                            +
-                          </button>
-                        )}
-                        {this.state.edit && (
-                          <button
-                            type="button"
-                            onClick={() =>
-                              this.handleSubtract(cocktail.id, 1, cocktail)
-                            }
-                          >
-                            -
-                          </button>
-                        )}
-                      </h3>
-                      <button
+
+                      <h3>Subtotal: ${subtotal[cocktail.id]}</h3>
+
+                      <Button
                         onClick={() =>
                           this.setState((prevState) => ({
                             edit: !prevState.edit,
@@ -129,49 +123,35 @@ class Cart extends React.Component {
                         }
                       >
                         Edit
-                      </button>
-                    </div>
-
-                    <div className="subtotal">
-                      <h4>Subtotal:</h4>
-                      {cart.cocktails &&
-                        cart.cocktails.map((cocktail) => {
-                          subtotal = Number(
-                            cocktail.price * cocktail.order_items.quantity
-                          );
-                          total += Number(
-                            cocktail.price * cocktail.order_items.quantity
-                          );
-                          return (
-                            <div className="subtotal-item">
-                              <span>
-                                <h5>{cocktail.name}</h5>
-                                <h6>{cocktail.order_items.quantity}</h6>
-                                <h6>X</h6>
-                                <h6>${cocktail.price}</h6>
-                                <h6>=</h6>
-                                <h6>${subtotal}</h6>
-                              </span>
-                            </div>
-                          );
-                        })}
+                      </Button>
                     </div>
                   </RightColumn>
                 </List>
               </div>
             ))}
 
-          <div className="total">
-            <h4>Total: ${cart.cocktails && total}</h4>
-          </div>
           {cart.cocktails && cart.cocktails.length > 0 ? (
-            <ButtonContainer className="checkout" role="link">
-              <Button onClick={this.handleCheckout}>Checkout</Button>
-            </ButtonContainer>
+            <>
+              <ButtonContainer>
+                <LargeText>Total: ${cart.cocktails && total}</LargeText>
+              </ButtonContainer>
+              <br />
+              <ButtonContainer>
+                <Button onClick={this.handleCheckout}>Checkout</Button>
+              </ButtonContainer>
+            </>
           ) : (
-            <h1>
-              Oh no! Your cart is empty :/ would you like to browse a bit more?
-            </h1>
+            <CartContainer>
+              <LargeText>
+                Oh no! Your cart is empty :/ Would you like to browse a bit
+                more?
+              </LargeText>
+              <Link to="/cocktails">
+                <SmallText>
+                  <IoChevronBack /> Back to all cocktails
+                </SmallText>
+              </Link>
+            </CartContainer>
           )}
         </CartContainer>
       </div>
