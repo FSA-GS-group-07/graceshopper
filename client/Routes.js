@@ -9,8 +9,7 @@ import SingleProduct from './components/SingleProduct';
 import NewProduct from './components/NewProduct';
 import Cart from './components/Cart';
 import Users from './components/Users';
-import Confirmation from "./components/OrderConfirmation";
-
+import Confirmation from './components/OrderConfirmation';
 
 /**
  * COMPONENT

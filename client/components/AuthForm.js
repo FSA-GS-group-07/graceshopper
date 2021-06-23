@@ -2,51 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { authenticate } from '../store';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-//CSS STYLES
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  margin-top: 3rem;
-`;
-
-const SmallText = styled.span`
-  font-weight: 300;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.75em;
-`;
-
-const Input = styled.input.attrs({
-  type: 'text',
-})`
-  background-color: white;
-  color: black;
-  margin-bottom: 0;
-  /* width: 20%; */
-  border-color: 2px solid black;
-`;
-
-const Button = styled.button`
-  background-color: transparent;
-  border: 2px solid black;
-  padding: 0.5rem 1rem 0.5rem 1rem;
-  color: black;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 1em;
-  &:hover {
-    background-color: black;
-    border: 2px solid black;
-    color: white;
-  }
-`;
-
-/**
- * COMPONENT
- */
+import { Container, Button, SmallText, Input } from '../styled-components';
 
 const AuthForm = (props) => {
   const { name, displayName, handleSubmit, error } = props;
