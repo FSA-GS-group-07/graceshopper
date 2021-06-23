@@ -141,7 +141,14 @@ export const clearCart = () => async (dispatch) => {
   try {
     const token = window.localStorage.getItem("token");
     if (token) {
-      console.log("still gotta build this out");
+      await axios.put("/api/cart/", {
+        headers: {
+          authorization: token,
+        },
+        body: {
+          checkout: true,
+        },
+      });
     } else {
       const cart = JSON.parse(window.localStorage.getItem("cart"));
       if (cart) {

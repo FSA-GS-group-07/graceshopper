@@ -1,5 +1,3 @@
-import axios from "axios";
-import { render } from "enzyme";
 import React from "react";
 import { connect } from "react-redux";
 import { clearCart } from "../store/cart";
