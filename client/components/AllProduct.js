@@ -8,6 +8,7 @@ import {
   Wrapper,
   Text,
   GridContainer,
+  SmallText,
   CenterContainer,
   AdminButton,
 } from '../styled-components';

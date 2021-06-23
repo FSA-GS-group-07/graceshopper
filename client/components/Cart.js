@@ -1,8 +1,8 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { fetchCart, addToCart } from '../store/cart';
-import { loadStripe } from '@stripe/stripe-js';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { connect } from "react-redux";
+import { fetchCart, addToCart } from "../store/cart";
+import { loadStripe } from "@stripe/stripe-js";
+import { Link } from "react-router-dom";
 import {
   CartContainer,
   List,
@@ -11,16 +11,15 @@ import {
   ButtonContainer,
   Button,
   LargeText,
-} from '../styled-components';
+} from "../styled-components";
+
 
 class Cart extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       edit: false,
     };
-    this.handleCheckout = this.handleCheckout.bind(this);
   }
 
   componentDidMount() {
@@ -54,7 +53,7 @@ class Cart extends React.Component {
   }
 
   render() {
-    const cart = this.props.cart || { order: {}, cocktails: [] };
+    const { cart } = this.props;
     let total = 0;
     let subtotal = 0;
     return (
@@ -62,23 +61,47 @@ class Cart extends React.Component {
         <CartContainer>
           {cart.cocktails &&
             cart.cocktails.map((cocktail) => (
-              <Link
+              <div
+                className="cart-item"
                 key={cocktail.id || cocktail.cocktailId}
-                to={`/cocktails/${cocktail.id}`}
               >
                 <List>
-                  <LeftColumn>
-                    <img src={cocktail.imageUrl} alt={cocktail.name} />
-                  </LeftColumn>
+                  <Link to={`/cocktails/${cocktail.id}`}>
+                    <LeftColumn>
+                      <img src={cocktail.imageUrl} alt={cocktail.name} />
+                    </LeftColumn>
+                  </Link>
                   <RightColumn>
                     <LargeText>{cocktail.name}</LargeText>
                     <h3>${cocktail.price}</h3>
                     <div className="subtotal">
                       <h4>Subtotal:</h4>
+                      
+//this is causing the sum to render on the cart component 
+                      {/* {
+                        (subtotal = Number(
+                          cocktail.price * cocktail.order_items?.quantity
+                        ))
+                      }
+                      {
+                        (total += Number(
+                          cocktail.price * cocktail.order_items?.quantity
+                        ))
+                      } */}
+//need to fix above this pt.
 
-                      <h3>${cocktail.price}</h3>
+                      <div className="subtotal-item">
+                        <span>
+                          <h5>{cocktail.name}</h5>
+                          <h6>{cocktail.order_items?.quantity}</h6>
+                          <h6>X</h6>
+                          <h6>${cocktail.price}</h6>
+                          <h6>=</h6>
+                          <h6>${subtotal}</h6>
+                        </span>
+                      </div>
                       <h3>
-                        Quantity: {cocktail.order_items.quantity}
+                        Quantity: {cocktail.order_items?.quantity}
                         {this.state.edit && (
                           <button
                             type="button"
@@ -137,7 +160,7 @@ class Cart extends React.Component {
                     </div>
                   </RightColumn>
                 </List>
-              </Link>
+              </div>
             ))}
 
           <div className="total">
@@ -158,18 +181,14 @@ class Cart extends React.Component {
   }
 }
 
-const mapState = (state) => {
-  return {
-    cart: state.cart,
-  };
-};
+const mapState = (state) => ({
+  cart: state.cart,
+});
 
-const mapDispatch = (dispatch) => {
-  return {
-    getCart: () => dispatch(fetchCart()),
-    updatedQuantity: (cocktailId, quantity, cocktail) =>
-      dispatch(addToCart(cocktailId, quantity, cocktail)),
-  };
-};
+const mapDispatch = (dispatch) => ({
+  getCart: () => dispatch(fetchCart()),
+  updatedQuantity: (cocktailId, quantity, cocktail) =>
+    dispatch(addToCart(cocktailId, quantity, cocktail)),
+});
 
 export default connect(mapState, mapDispatch)(Cart);

@@ -113,6 +113,14 @@ export const Wrapper = styled.div`
   }
 `;
 
+export const AdminControls = styled.div`
+  max-width: 1200px;
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 1rem;
+`;
+
 export const LargeText = styled.span`
   font-family: 'Bebas Neue', sans-serif;
   text-transform: uppercase;
@@ -143,6 +151,7 @@ export const Text = styled.span`
 export const Input = styled.input`
   background-color: white;
   color: black;
+  margin-bottom: 0;
   border-color: 2px solid black;
 `;
 
@@ -245,3 +254,4 @@ export const NavItemsRed = styled.span`
   letter-spacing: 1px;
   color: darkred;
 `;
+
