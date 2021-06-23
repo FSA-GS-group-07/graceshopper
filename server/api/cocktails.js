@@ -29,8 +29,15 @@ router.get("/:id", async (req, res, next) => {
 //PUT api/cocktails/:id
 router.put("/:id", async (req, res, next) => {
   try {
-    const updateCocktail = await Cocktail.findByPk(req.params.id);
-    res.json(await updateCocktail.update(req.body));
+    const [numberAffectedCocktails, affectedCocktail] = await Cocktail.update(
+      req.body,
+      {
+        where: { id: req.params.id },
+        returning: true,
+        plain: true,
+      }
+    );
+    res.json(affectedCocktail);
   } catch (err) {
     next(err);
   }
