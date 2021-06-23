@@ -1,47 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createCocktail } from '../store/createProduct';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { IoChevronBack } from 'react-icons/io5';
-
-//CSS STYLES
-const SmallText = styled.span`
-  font-weight: 300;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.75em;
-`;
-
-const Container = styled.div`
-  max-width: 800px;
-  padding: 1rem 4rem 1rem 4rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const Input = styled.input.attrs({
-  type: 'text',
-})`
-  background-color: white;
-  color: black;
-  margin-bottom: 0;
-  width: 20%;
-  border-color: 2px solid black;
-  margin-left: 1rem;
-`;
-
-const Button = styled.button`
-  background-color: transparent;
-  border: 2px solid black;
-  padding: 0.5rem 1rem 0.5rem 1rem;
-  color: black;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 1em;
-`;
+import {
+  SmallText,
+  Input,
+  Button,
+  CreateContainer,
+} from '../styled-components';
 
 class NewProduct extends Component {
   constructor(props) {
@@ -73,7 +40,7 @@ class NewProduct extends Component {
     const { handleChange, handleSubmit } = this;
 
     return (
-      <Container>
+      <CreateContainer>
         <Link to="/cocktails">
           <SmallText>
             <IoChevronBack /> Back to all cocktails
@@ -138,7 +105,7 @@ class NewProduct extends Component {
             </Button>
           </SmallText>
         </form>
-      </Container>
+      </CreateContainer>
     );
   }
 }

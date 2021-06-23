@@ -2,33 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../store';
-import styled from 'styled-components';
-
-//CSS STYLES
-const Nav = styled.div`
-  font-size: small;
-  color: black;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  align-content: space-around;
-  margin: 1rem;
-`;
-
-const Logo = styled.span`
-  font-family: 'Bebas Neue', sans-serif;
-  letter-spacing: 3px;
-  font-size: 2rem;
-  color: black;
-  padding: 0.5rem;
-`;
-
-const NavItems = styled.span`
-  padding: 0.5rem;
-  font-weight: 300;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-`;
+import { Nav, Logo, NavItems } from '../styled-components';
 
 class Navbar extends React.Component {
   constructor(props) {
