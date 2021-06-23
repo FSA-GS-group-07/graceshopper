@@ -1,9 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { fetchCart, addToCart } from '../store/cart';
-import { loadStripe } from '@stripe/stripe-js';
-import { Link } from 'react-router-dom';
-import { IoChevronBack } from 'react-icons/io5';
+import React from "react";
+import { connect } from "react-redux";
+import { fetchCart, addToCart } from "../store/cart";
+import { loadStripe } from "@stripe/stripe-js";
+import { Link } from "react-router-dom";
+import { IoChevronBack } from "react-icons/io5";
 import {
   CartContainer,
   List,
@@ -14,7 +14,7 @@ import {
   LargeText,
   QuantityButton,
   SmallText,
-} from '../styled-components';
+} from "../styled-components";
 
 class Cart extends React.Component {
   constructor(props) {
@@ -59,7 +59,6 @@ class Cart extends React.Component {
     const { cart } = this.props;
     let total = 0;
     let subtotal = {};
-    console.log(this.props);
     {
       cart.cocktails &&
         cart.cocktails.map((cocktail) => {
@@ -89,7 +88,7 @@ class Cart extends React.Component {
                     <LargeText>{cocktail.name}</LargeText>
                     <h3>
                       ${cocktail.price} x
-                      {this.state.edit && (
+                      {this.state.edit && cocktail.order_items?.quantity > 0 && (
                         <QuantityButton
                           type="button"
                           onClick={() =>
@@ -100,7 +99,7 @@ class Cart extends React.Component {
                         </QuantityButton>
                       )}
                       {cocktail.order_items?.quantity}
-                      {this.state.edit && (
+                      {this.state.edit && cocktail.order_items?.quantity <= 10 && (
                         <QuantityButton
                           type="button"
                           onClick={() =>
@@ -112,7 +111,6 @@ class Cart extends React.Component {
                       )}
                     </h3>
                     <div className="subtotal">
-
                       <h3>Subtotal: ${subtotal[cocktail.id]}</h3>
 
                       <Button
