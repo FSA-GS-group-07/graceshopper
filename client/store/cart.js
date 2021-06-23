@@ -41,10 +41,14 @@ export const fetchCart = () => async (dispatch) => {
           authorization: token,
         },
       });
-      dispatch(gotCart(cart));
+      if (cart != null && cart != "null") {
+        dispatch(gotCart(cart));
+      } else {
+        dispatch(gotCart({ order: {}, cocktails: [] }));
+      }
     } else {
-      let cart = window.localStorage.getItem('cart');
-      if (cart) {
+      let cart = window.localStorage.getItem("cart");
+      if (cart != null && cart != "null") {
         cart = JSON.parse(cart);
       } else {
         cart = {
