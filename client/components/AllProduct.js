@@ -9,6 +9,8 @@ import {
   Text,
   GridContainer,
   SmallText,
+  CenterContainer,
+  AdminButton,
 } from '../styled-components';
 
 
@@ -21,13 +23,13 @@ class AllProduct extends React.Component {
     const { cocktails, isAdmin } = this.props;
     return (
       <div className="all-cocktails">
-        {isAdmin && (
-          <Link to="/cocktails/create">
-            <SmallText>
-              <b>Admin Controls: </b>Create new cocktail{' '}
-            </SmallText>
-          </Link>
-        )}
+        <CenterContainer>
+          {isAdmin && (
+            <Link to="/cocktails/create">
+              <AdminButton>Create New Cocktail</AdminButton>
+            </Link>
+          )}
+        </CenterContainer>
         <Grid>
           {cocktails &&
             cocktails.map((cocktail) => (

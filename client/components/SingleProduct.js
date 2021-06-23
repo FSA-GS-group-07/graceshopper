@@ -6,8 +6,8 @@ import {
   fetchCocktail,
   updateCocktail,
   deleteCocktail,
-} from "../store/singleproduct";
-import { IoChevronBack } from "react-icons/io5";
+} from '../store/singleproduct';
+import { IoChevronBack } from 'react-icons/io5';
 import {
   SmallText,
   LargeText,
@@ -18,6 +18,9 @@ import {
   ContainerSingle,
   LeftColumnSingle,
   RightColumnSingle,
+  AdminButton,
+  CartContainer,
+  CenterContainer,
 } from "../styled-components";
 
 class SingleProduct extends React.Component {
@@ -95,34 +98,37 @@ class SingleProduct extends React.Component {
 
     return (
       <div>
-        <Link to="/cocktails">
-          <SmallText>
-            <IoChevronBack /> Back to all cocktails
-          </SmallText>
-        </Link>
-        <AdminControls>
+        <CartContainer>
+          <Link to="/cocktails">
+            <SmallText>
+              <IoChevronBack /> Back to all cocktails
+            </SmallText>
+          </Link>
+        </CartContainer>
+        <CenterContainer>
           {isAdmin && (
             <>
               <br />
-              <Button
+              <AdminButton
                 onClick={() =>
                   this.setState((prevState) => ({ edit: !prevState.edit }))
                 }
               >
                 Edit Cocktail
-              </Button>
+              </AdminButton>
             </>
           )}
 
           {isAdmin && (
             <>
               <br />
-              <Button onClick={() => deleteCocktail(cocktail.id, history)}>
+              <AdminButton onClick={() => deleteCocktail(cocktail.id, history)}>
                 Delete Cocktail
-              </Button>
+              </AdminButton>
             </>
           )}
-        </AdminControls>
+        </CenterContainer>
+
         {edit ? (
           <form>
             <SmallText>

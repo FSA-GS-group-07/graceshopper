@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../store';
-import { Nav, Logo, NavItems } from '../styled-components';
+import { Nav, Logo, NavItems, NavItemsRed } from '../styled-components';
+
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -33,9 +34,9 @@ class Navbar extends React.Component {
               <Link to="/cart">Cart</Link>
             </NavItems>
             {this.props.isAdmin ? (
-              <NavItems>
+              <NavItemsRed>
                 <Link to="/users">Users</Link>
-              </NavItems>
+              </NavItemsRed>
             ) : null}
             <NavItems>
               <a href="#" onClick={this.handleClick}>

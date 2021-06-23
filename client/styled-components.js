@@ -35,6 +35,13 @@ export const CreateContainer = styled.div`
   justify-content: center;
 `;
 
+export const CenterContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+`;
+
 export const Grid = styled.div`
   display: grid;
   grid-auto-columns: max-content;
@@ -164,6 +171,23 @@ export const Button = styled.button`
   }
 `;
 
+export const AdminButton = styled.button`
+  background-color: darkred;
+  border: 2px solid darkred;
+  color: white;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1em;
+  margin: 0 1rem 0 1rem;
+  &:hover {
+    background-color: transparent;
+    border: 2px solid darkred;
+    color: darkred;
+  }
+`;
+
 export const QuantityButton = styled.button`
   background-color: transparent;
   border: 2px solid black;
@@ -222,3 +246,12 @@ export const NavItems = styled.span`
   text-transform: uppercase;
   letter-spacing: 1px;
 `;
+
+export const NavItemsRed = styled.span`
+  padding: 0.5rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: darkred;
+`;
+

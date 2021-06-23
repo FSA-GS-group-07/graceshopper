@@ -13,6 +13,7 @@ import {
   LargeText,
 } from "../styled-components";
 
+
 class Cart extends React.Component {
   constructor(props) {
     super(props);
@@ -35,11 +36,11 @@ class Cart extends React.Component {
 
   async handleCheckout() {
     const stripe = await loadStripe(
-      "pk_test_51J5C3LFT1yAmNlTZXfbIlPdca9y7GD8DILU77uUVH1AO844xp0B9UxdzJSGetlpYe4uRpRoH16hKtRyZ8aWPUeYz00RV42ERF5"
+      'pk_test_51J5C3LFT1yAmNlTZXfbIlPdca9y7GD8DILU77uUVH1AO844xp0B9UxdzJSGetlpYe4uRpRoH16hKtRyZ8aWPUeYz00RV42ERF5'
     );
-    const response = await fetch("/api/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const response = await fetch('/api/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(this.props.cart),
     });
     const session = await response.json();
@@ -75,7 +76,8 @@ class Cart extends React.Component {
                     <h3>${cocktail.price}</h3>
                     <div className="subtotal">
                       <h4>Subtotal:</h4>
-
+                      
+//this is causing the sum to render on the cart component 
                       {/* {
                         (subtotal = Number(
                           cocktail.price * cocktail.order_items?.quantity
@@ -86,6 +88,7 @@ class Cart extends React.Component {
                           cocktail.price * cocktail.order_items?.quantity
                         ))
                       } */}
+//need to fix above this pt.
 
                       <div className="subtotal-item">
                         <span>
@@ -129,6 +132,31 @@ class Cart extends React.Component {
                       >
                         Edit
                       </button>
+                    </div>
+
+                    <div className="subtotal">
+                      <h4>Subtotal:</h4>
+                      {cart.cocktails &&
+                        cart.cocktails.map((cocktail) => {
+                          subtotal = Number(
+                            cocktail.price * cocktail.order_items.quantity
+                          );
+                          total += Number(
+                            cocktail.price * cocktail.order_items.quantity
+                          );
+                          return (
+                            <div className="subtotal-item">
+                              <span>
+                                <h5>{cocktail.name}</h5>
+                                <h6>{cocktail.order_items.quantity}</h6>
+                                <h6>X</h6>
+                                <h6>${cocktail.price}</h6>
+                                <h6>=</h6>
+                                <h6>${subtotal}</h6>
+                              </span>
+                            </div>
+                          );
+                        })}
                     </div>
                   </RightColumn>
                 </List>
