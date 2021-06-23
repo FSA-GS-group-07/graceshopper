@@ -19,7 +19,7 @@ router.get("/", requireToken, async (req, res, next) => {
       const cocktails = order.cocktails;
       res.json({ order, cocktails });
     } else {
-      res.send("got through to route");
+      res.sendStatus(404);
     }
   } catch (err) {
     next(err);
@@ -96,6 +96,8 @@ router.put("/", requireToken, async (req, res, next) => {
       item.update({ quantity: qty });
 
       res.send(item);
+    } else {
+      res.sendStatus(404);
     }
   } catch (error) {
     next(error);
@@ -117,6 +119,8 @@ router.put("/completed", requireToken, async (req, res, next) => {
         }
       );
       res.sendStatus(200);
+    } else {
+      res.sendStatus(404);
     }
   } catch (error) {
     next(error);
