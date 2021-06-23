@@ -2,17 +2,12 @@ const path = require("path");
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
-let bodyParser = require("body-parser");
 module.exports = app;
 
 if (process.env.NODE_ENV !== "production") require("../secrets");
 
 // logging middleware
 app.use(morgan("dev"));
-
-// body parsing for Postman requests
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 // body parsing middleware
 app.use(express.json());
