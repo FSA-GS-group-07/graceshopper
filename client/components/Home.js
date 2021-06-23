@@ -1,17 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
+import { Img } from '../styled-components';
 
-//CSS STYLES
-
-const Img = styled.div`
-  width: 100%;
-  height: fixed;
-`;
-
-/**
- * COMPONENT
- */
 export const Home = (props) => {
   const { username } = props;
   console.log(props);
@@ -23,9 +13,6 @@ export const Home = (props) => {
   );
 };
 
-/**
- * CONTAINER
- */
 const mapState = (state) => {
   return {
     username: state.auth.username,
