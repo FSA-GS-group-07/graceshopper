@@ -1,8 +1,54 @@
-import axios from "axios";
-import React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { fetchCart, addToCart } from "../store/cart";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { fetchCart } from '../store/cart';
+import styled from 'styled-components';
+
+//CSS STYLES
+const Container = styled.div`
+  width: 75%;
+  padding: 1rem 4rem 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+`;
+const List = styled.div`
+  padding: 1rem;
+  margin-left: 3rem;
+  display: flex;
+`;
+
+const LeftColumn = styled.div`
+  width: 40%;
+  position: relative;
+`;
+
+const RightColumn = styled.div`
+  width: 60%;
+  margin-left: 3rem;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const Button = styled.button`
+  background-color: transparent;
+  border: 2px solid black;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  color: black;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1em;
+`;
+
+const LargeText = styled.span`
+  font-family: 'Bebas Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 3rem;
+`;
 
 class Cart extends React.Component {
   constructor(props) {
@@ -31,80 +77,54 @@ class Cart extends React.Component {
     // console.log(cart.cocktails)
     return (
       <div className="cart">
-        {cart.cocktails &&
-          cart.cocktails.map((cocktail) => (
-            <div className="cart-item" key={cocktail.id || cocktail.cocktailId}>
-              <Link to={`/cocktails/${cocktail.id}`}>
-                <span>
-                  <h1>{cocktail.name}</h1>
-                  <img src={cocktail.imageUrl} alt={cocktail.name} />
-                </span>
-              </Link>
-
-              <h3>${cocktail.price}</h3>
-
-              <h3>
-                Quantity: {cocktail.order_items.quantity}
-                {this.state.edit && (
-                  <button
-                    type="button"
-                    onClick={() => this.handleAdd(cocktail.id, 1, cocktail)}
-                  >
-                    +
-                  </button>
-                )}
-                {this.state.edit && (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      this.handleSubtract(cocktail.id, 1, cocktail)
-                    }
-                  >
-                    -
-                  </button>
-                )}
-              </h3>
-              <button
-                onClick={() =>
-                  this.setState((prevState) => ({ edit: !prevState.edit }))
-                }
+        <Container>
+          {cart.cocktails &&
+            cart.cocktails.map((cocktail) => (
+              <Link
+                key={cocktail.id || cocktail.cocktailId}
+                to={`/cocktails/${cocktail.id}`}
               >
-                Edit
-              </button>
-            </div>
-          ))}
-        <div className="subtotal">
-          <h4>
-            Subtotal:
-          </h4>
-            {cart.cocktails && cart.cocktails.map(cocktail => {
-              subtotal = Number(cocktail.price * cocktail.order_items.quantity)
-              total += Number(cocktail.price * cocktail.order_items.quantity)
-              return (
-                <div className="subtotal-item">
-                  <span>
-                    <h5>{cocktail.name}</h5>
-                    <h6>{cocktail.order_items.quantity}</h6>
-                    <h6>X</h6>
-                    <h6>${cocktail.price}</h6>
-                    <h6>=</h6>
-                    <h6>${subtotal}</h6>
-                  </span>
-                </div>
-              )
-            }
-            )}
-          
-        </div>
-        <div className="total">
-          <h4>
-            Total: $
-            {cart.cocktails && total}
-          </h4>
-        </div>
-        <div className="checkout">
-          <button>Checkout</button>
-        </div>
+                <List>
+                  <LeftColumn>
+                    <img src={cocktail.imageUrl} alt={cocktail.name} />
+                  </LeftColumn>
+                  <RightColumn>
+                    <LargeText>{cocktail.name}</LargeText>
+                    <h3>${cocktail.price}</h3>
+                  </RightColumn>
+                </List>
+              </Link>
+            ))}
+          <div className="subtotal">
+            <h4>Subtotal:</h4>
+
+            {cart.cocktails &&
+              cart.cocktails.map((cocktail) => {
+                subtotal = Number(
+                  cocktail.price * cocktail.order_items.quantity
+                );
+                total += Number(cocktail.price * cocktail.order_items.quantity);
+                return (
+                  <div className="subtotal-item">
+                    <span>
+                      <h5>{cocktail.name}</h5>
+                      <h6>{cocktail.order_items.quantity}</h6>
+                      <h6>X</h6>
+                      <h6>${cocktail.price}</h6>
+                      <h6>=</h6>
+                      <h6>${subtotal}</h6>
+                    </span>
+                  </div>
+                );
+              })}
+          </div>
+          <div className="total">
+            <h4>Total: ${cart.cocktails && total}</h4>
+          </div>
+          <ButtonContainer>
+            <Button>Checkout</Button>
+          </ButtonContainer>
+        </Container>
       </div>
     );
   }

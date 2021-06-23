@@ -1,18 +1,14 @@
-
-
-import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
-import { withRouter, Route, Switch, Redirect } from "react-router-dom";
-import { Login, Signup } from "./components/AuthForm";
-import Home from "./components/Home";
-import { me } from "./store";
-import AllProduct from "./components/AllProduct";
-import SingleProduct from "./components/SingleProduct";
-import NewProduct from "./components/NewProduct";
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { Login, Signup } from './components/AuthForm';
+import Home from './components/Home';
+import { me } from './store';
+import AllProduct from './components/AllProduct';
+import SingleProduct from './components/SingleProduct';
+import NewProduct from './components/NewProduct';
 import Cart from './components/Cart';
-import Users from "./components/Users"
-
-
+import Users from './components/Users';
 
 /**
  * COMPONENT
@@ -27,14 +23,15 @@ class Routes extends Component {
     return (
       <div>
         <Switch>
-          <Route path="/home" component={Home} exact />
+          {/* <Route path="/home" component={Home} exact /> */}
+          <Route path="/" component={Home} exact />
           <Route
             path="/login"
-            render={() => (isLoggedIn ? <Redirect to="/home" /> : <Login />)}
+            render={() => (isLoggedIn ? <Redirect to="/" /> : <Login />)}
           />
           <Route
             path="/signup"
-            render={() => (isLoggedIn ? <Redirect to="/home" /> : <Signup />)}
+            render={() => (isLoggedIn ? <Redirect to="/" /> : <Signup />)}
           />
           <Route exact path="/cocktails" render={() => <AllProduct />} />
           <Route
@@ -47,9 +44,10 @@ class Routes extends Component {
             path="/cocktails/:id"
             render={(props) => <SingleProduct {...props} />}
           />
-          <Route 
+          <Route
             path="/users"
-            render={() =>  (isAdmin && isLoggedIn ? <Users /> : null )} />
+            render={() => (isAdmin && isLoggedIn ? <Users /> : null)}
+          />
           <Route exact path="/cart" render={() => <Cart />} />
         </Switch>
       </div>
@@ -65,7 +63,7 @@ const mapState = (state) => {
     // Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
     isLoggedIn: !!state.auth.id,
-    isAdmin: state.auth.admin
+    isAdmin: state.auth.admin,
   };
 };
 
