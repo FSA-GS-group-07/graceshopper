@@ -11,6 +11,7 @@ import {
   SmallText,
 } from '../styled-components';
 
+
 class AllProduct extends React.Component {
   componentDidMount() {
     this.props.getCocktails();

@@ -77,7 +77,6 @@ class Cart extends React.Component {
                       <h4>Subtotal:</h4>
 
                       <h3>${cocktail.price}</h3>
-
                       <h3>
                         Quantity: {cocktail.order_items.quantity}
                         {this.state.edit && (
