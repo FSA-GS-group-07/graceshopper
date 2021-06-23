@@ -9,6 +9,7 @@ import SingleProduct from './components/SingleProduct';
 import NewProduct from './components/NewProduct';
 import Cart from './components/Cart';
 import Users from './components/Users';
+import Confirmation from './components/OrderConfirmation';
 
 /**
  * COMPONENT
@@ -49,6 +50,7 @@ class Routes extends Component {
             render={() => (isAdmin && isLoggedIn ? <Users /> : null)}
           />
           <Route exact path="/cart" render={() => <Cart />} />
+          <Route exact path="/confirmation" render={() => <Confirmation />} />
         </Switch>
       </div>
     );

@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { fetchCart, addToCart } from '../store/cart';
+import { loadStripe } from '@stripe/stripe-js';
 import { Link } from 'react-router-dom';
-import { fetchCart } from '../store/cart';
 import styled from 'styled-components';
 
 //CSS STYLES
@@ -57,7 +58,9 @@ class Cart extends React.Component {
     this.state = {
       edit: false,
     };
+    this.handleCheckout = this.handleCheckout.bind(this);
   }
+
   componentDidMount() {
     this.props.getCart();
   }
@@ -70,11 +73,28 @@ class Cart extends React.Component {
     this.props.updatedQuantity(cocktailId, -1, cocktail);
   }
 
+  async handleCheckout() {
+    const stripe = await loadStripe(
+      'pk_test_51J5C3LFT1yAmNlTZXfbIlPdca9y7GD8DILU77uUVH1AO844xp0B9UxdzJSGetlpYe4uRpRoH16hKtRyZ8aWPUeYz00RV42ERF5'
+    );
+    const response = await fetch('/api/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(this.props.cart),
+    });
+    const session = await response.json();
+    const result = await stripe.redirectToCheckout({
+      sessionId: session.id,
+    });
+    if (result.error) {
+      console.log(result.error.message);
+    }
+  }
+
   render() {
-    const { cart } = this.props;
+    const cart = this.props.cart || { order: {}, cocktails: [] };
     let total = 0;
     let subtotal = 0;
-    // console.log(cart.cocktails)
     return (
       <div className="cart">
         <Container>
@@ -95,6 +115,39 @@ class Cart extends React.Component {
                 </List>
               </Link>
             ))}
+          <div className="subtotal">
+            <h4>Subtotal:</h4>
+
+            <h3>${cocktail.price}</h3>
+
+            <h3>
+              Quantity: {cocktail.order_items.quantity}
+              {this.state.edit && (
+                <button
+                  type="button"
+                  onClick={() => this.handleAdd(cocktail.id, 1, cocktail)}
+                >
+                  +
+                </button>
+              )}
+              {this.state.edit && (
+                <button
+                  type="button"
+                  onClick={() => this.handleSubtract(cocktail.id, 1, cocktail)}
+                >
+                  -
+                </button>
+              )}
+            </h3>
+            <button
+              onClick={() =>
+                this.setState((prevState) => ({ edit: !prevState.edit }))
+              }
+            >
+              Edit
+            </button>
+          </div>
+          ))}
           <div className="subtotal">
             <h4>Subtotal:</h4>
             {cart.cocktails &&
@@ -120,9 +173,15 @@ class Cart extends React.Component {
           <div className="total">
             <h4>Total: ${cart.cocktails && total}</h4>
           </div>
-          <ButtonContainer>
-            <Button>Checkout</Button>
-          </ButtonContainer>
+          {cart.cocktails && cart.cocktails.length > 0 ? (
+            <ButtonContainer className="checkout" role="link">
+              <Button onClick={this.handleCheckout}>Checkout</Button>
+            </ButtonContainer>
+          ) : (
+            <h1>
+              Oh no! Your cart is empty :/ would you like to browse a bit more?
+            </h1>
+          )}
         </Container>
       </div>
     );

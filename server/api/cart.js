@@ -49,9 +49,17 @@ router.post("/", requireToken, async (req, res, next) => {
       const cocktails = await order.getCocktails();
       res.send({ order, cocktails });
     } else {
-      res
-        .status(404)
-        .send("no logged in user -> still have to build this feature out");
+      const newOrder = await Order.create(req.body.order);
+
+      req.body.cocktails.forEach(async (cocktail) => {
+        await Order_items.create({
+          orderId: newOrder.id,
+          cocktailId: cocktail.id,
+          quantity: cocktail.order_items.quantity,
+        });
+      });
+
+      res.send(newOrder);
     }
   } catch (error) {
     next(error);
@@ -62,14 +70,20 @@ router.post("/", requireToken, async (req, res, next) => {
 router.put("/", requireToken, async (req, res, next) => {
   try {
     if (req.user) {
-      const { cocktailId, quantity } = req.body.body;
-
       const order = await Order.findOne({
         where: {
           [Sequelize.Op.and]: [{ userId: req.user.id }, { status: "cart" }],
         },
         include: Cocktail,
       });
+
+      if (req.body.body.checkout) {
+        await order.update({ status: "complete" });
+        res.send(order);
+        return;
+      }
+
+      const { cocktailId, quantity } = req.body.body;
 
       let item = order.cocktails.filter(
         (cocktail) => Number(cocktail.id) == Number(cocktailId)
@@ -95,10 +109,6 @@ router.put("/", requireToken, async (req, res, next) => {
       item.update({ quantity: qty });
 
       res.send(item);
-    } else {
-      res
-        .status(404)
-        .send("no logged in user -> still have to build this feature out");
     }
   } catch (error) {
     next(error);
