@@ -48,7 +48,6 @@ export const fetchCart = () => async (dispatch) => {
       }
     } else {
       let cart = window.localStorage.getItem("cart");
-      console.log("is this the cart thats showing?", cart);
       if (cart != null && cart != "null") {
         cart = JSON.parse(cart);
       } else {
