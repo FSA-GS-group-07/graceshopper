@@ -59,83 +59,83 @@ export const fetchCart = () => async (dispatch) => {
   }
 };
 
-export const createCart = (cocktailId, quantity, singleCocktail) => async (
-  dispatch
-) => {
-  try {
-    const token = window.localStorage.getItem("token");
-    if (token) {
-      const { data: cart } = await axios.post("/api/cart/", {
-        headers: {
-          authorization: token,
-        },
-        body: {
-          cocktailId,
-          quantity,
-        },
-      });
-      dispatch(createdCart(cart));
-    } else {
-      singleCocktail.order_items = {
-        quantity,
-      };
-      const cartObj = {
-        order: {},
-        cocktails: [singleCocktail],
-      };
-      const cartString = JSON.stringify(cartObj);
-      window.localStorage.setItem("cart", cartString);
-      dispatch(gotCart(cartObj));
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
+export const createCart =
+  (cocktailId, quantity, singleCocktail) => async (dispatch) => {
+    try {
+      const token = window.localStorage.getItem("token");
+      if (token) {
+        const { data: cart } = await axios.post("/api/cart/", {
+          headers: {
+            authorization: token,
+          },
+          body: {
+            cocktailId,
+            quantity,
+          },
+        });
 
-export const addToCart = (cocktailId, quantity, cocktail) => async (
-  dispatch
-) => {
-  try {
-    const token = window.localStorage.getItem("token");
-    if (token) {
-      const { data: item } = await axios.put("/api/cart/", {
-        headers: {
-          authorization: token,
-        },
-        body: {
-          cocktailId,
-          quantity,
-        },
-      });
-      dispatch(addedToCart(item));
-    } else {
-      const cart = JSON.parse(window.localStorage.getItem("cart"));
-      let updatedItem = false;
-      let updatedCocktails = cart.cocktails.map((drink) => {
-        if (drink.id == cocktailId) {
-          drink.order_items.quantity += quantity;
-          updatedItem = true;
-        }
-        return drink;
-      });
-      if (!updatedItem) {
-        cocktail.order_items = {
+        dispatch(createdCart(cart));
+      } else {
+        singleCocktail.order_items = {
           quantity,
         };
-        updatedCocktails.push(cocktail);
+        const cartObj = {
+          order: {},
+          cocktails: [singleCocktail],
+        };
+        const cartString = JSON.stringify(cartObj);
+        window.localStorage.setItem("cart", cartString);
+        dispatch(gotCart(cartObj));
       }
-      const cartObj = {
-        order: {},
-        cocktails: updatedCocktails,
-      };
-      const cartString = JSON.stringify(cartObj);
-      window.localStorage.setItem("cart", cartString);
-      dispatch(gotCart(cartObj));
+    } catch (error) {
+      console.error(error);
     }
-  } catch (error) {
-    console.error(error);
-  }
-};
+  };
+
+export const addToCart =
+  (cocktailId, quantity, cocktail) => async (dispatch) => {
+    try {
+      const token = window.localStorage.getItem("token");
+      if (token) {
+        console.log("putting to cart");
+        const { data: item } = await axios.put("/api/cart/", {
+          headers: {
+            authorization: token,
+          },
+          body: {
+            cocktailId,
+            quantity,
+          },
+        });
+        dispatch(addedToCart(item));
+      } else {
+        const cart = JSON.parse(window.localStorage.getItem("cart"));
+        let updatedItem = false;
+        let updatedCocktails = cart.cocktails.map((drink) => {
+          if (drink.id == cocktailId) {
+            drink.order_items.quantity += quantity;
+            updatedItem = true;
+          }
+          return drink;
+        });
+        if (!updatedItem) {
+          cocktail.order_items = {
+            quantity,
+          };
+          updatedCocktails.push(cocktail);
+        }
+        const cartObj = {
+          order: {},
+          cocktails: updatedCocktails,
+        };
+        const cartString = JSON.stringify(cartObj);
+        window.localStorage.setItem("cart", cartString);
+        dispatch(gotCart(cartObj));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 export const clearCart = () => async (dispatch) => {
   try {
