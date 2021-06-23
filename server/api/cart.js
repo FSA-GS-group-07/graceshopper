@@ -49,9 +49,17 @@ router.post("/", requireToken, async (req, res, next) => {
       const cocktails = await order.getCocktails();
       res.send({ order, cocktails });
     } else {
-      res
-        .status(404)
-        .send("no logged in user -> still have to build this feature out");
+      const newOrder = await Order.create(req.body.order);
+
+      req.body.cocktails.forEach(async (cocktail) => {
+        await Order_items.create({
+          orderId: newOrder.id,
+          cocktailId: cocktail.id,
+          quantity: cocktail.order_items.quantity,
+        });
+      });
+
+      res.send(newOrder);
     }
   } catch (error) {
     next(error);

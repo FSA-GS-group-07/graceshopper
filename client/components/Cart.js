@@ -45,7 +45,7 @@ class Cart extends React.Component {
   }
 
   render() {
-    const { cart } = this.props;
+    const cart = this.props.cart || { order: {}, cocktails: [] };
     let total = 0;
     let subtotal = 0;
     return (
