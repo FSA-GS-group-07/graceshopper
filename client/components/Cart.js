@@ -87,7 +87,7 @@ class Cart extends React.Component {
                   <RightColumn>
                     <LargeText>{cocktail.name}</LargeText>
                     <h3>
-                      ${cocktail.price} x
+                      ${cocktail.price} x{' '}
                       {this.state.edit && cocktail.order_items?.quantity > 0 && (
                         <QuantityButton
                           type="button"
