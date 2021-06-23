@@ -6,7 +6,6 @@ module.exports = app;
 
 if (process.env.NODE_ENV !== "production") require("../secrets");
 
-const STRIPE_API_KEY = process.env.STRIPE_API_KEY;
 // logging middleware
 app.use(morgan("dev"));
 

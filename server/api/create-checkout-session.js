@@ -1,7 +1,7 @@
 const Cocktail = require("../db/models/cocktail");
 const router = require("express").Router();
 module.exports = router;
-require("../../secrets");
+if (process.env.NODE_ENV !== "production") require("../../secrets");
 const stripe = require("stripe")(process.env.STRIPE_API_KEY);
 
 router.post("/", async (req, res, next) => {
@@ -23,12 +23,21 @@ router.post("/", async (req, res, next) => {
       lineItems.push(obj);
     }
 
+    let success, cancel;
+    if (process.env.NODE_ENV === "production") {
+      success = "https://pourdecisions.herokuapp.com/confirmation";
+      cancel = "https://pourdecisions.herokuapp.com/cart";
+    } else {
+      success = "http://localhost:8080/confirmation";
+      cancel = "http://localhost:8080/cart";
+    }
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: "http://localhost:8080/confirmation",
-      cancel_url: "http://localhost:8080/cart",
+      success_url: success,
+      cancel_url: cancel,
     });
 
     res.json({ id: session.id });
