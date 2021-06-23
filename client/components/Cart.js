@@ -1,9 +1,8 @@
-import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { fetchCart, addToCart } from "../store/cart";
 import { loadStripe } from "@stripe/stripe-js";
+import { Link } from "react-router-dom";
 
 class Cart extends React.Component {
   constructor(props) {

@@ -27,7 +27,7 @@ router.post("/", async (req, res, next) => {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: "https://google.com",
+      success_url: "http://localhost:8080/confirmation",
       cancel_url: "http://localhost:8080/cart",
     });
 

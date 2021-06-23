@@ -1,5 +1,3 @@
-
-
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -9,10 +7,9 @@ import { me } from "./store";
 import AllProduct from "./components/AllProduct";
 import SingleProduct from "./components/SingleProduct";
 import NewProduct from "./components/NewProduct";
-import Cart from './components/Cart';
-import Users from "./components/Users"
-
-
+import Cart from "./components/Cart";
+import Users from "./components/Users";
+import Confirmation from "./components/OrderConfirmation";
 
 /**
  * COMPONENT
@@ -47,10 +44,12 @@ class Routes extends Component {
             path="/cocktails/:id"
             render={(props) => <SingleProduct {...props} />}
           />
-          <Route 
+          <Route
             path="/users"
-            render={() =>  (isAdmin && isLoggedIn ? <Users /> : null )} />
+            render={() => (isAdmin && isLoggedIn ? <Users /> : null)}
+          />
           <Route exact path="/cart" render={() => <Cart />} />
+          <Route exact path="/confirmation" render={() => <Confirmation />} />
         </Switch>
       </div>
     );
@@ -65,7 +64,7 @@ const mapState = (state) => {
     // Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
     isLoggedIn: !!state.auth.id,
-    isAdmin: state.auth.admin
+    isAdmin: state.auth.admin,
   };
 };
 
