@@ -72,12 +72,6 @@ router.put("/", requireToken, async (req, res, next) => {
         include: Cocktail,
       });
 
-      if (req.body.body.checkout) {
-        await order.update({ status: "complete" });
-        res.send(order);
-        return;
-      }
-
       const { cocktailId, quantity } = req.body.body;
 
       let item = order.cocktails.filter(
@@ -104,6 +98,27 @@ router.put("/", requireToken, async (req, res, next) => {
       item.update({ quantity: qty });
 
       res.send(item);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+// PUT /api/cart/completed
+router.put("/completed", requireToken, async (req, res, next) => {
+  try {
+    if (req.user) {
+      await Order.update(
+        {
+          status: "complete",
+        },
+        {
+          where: {
+            [Sequelize.Op.and]: [{ userId: req.user.id }, { status: "cart" }],
+          },
+        }
+      );
+      res.sendStatus(200);
     }
   } catch (error) {
     next(error);
