@@ -33,7 +33,8 @@ class Cart extends React.Component {
     );
     const response = await fetch("/api/create-checkout-session", {
       method: "POST",
-      body: this.props.cart,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(this.props.cart),
     });
     const session = await response.json();
     const result = await stripe.redirectToCheckout({
