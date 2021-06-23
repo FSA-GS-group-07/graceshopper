@@ -1,13 +1,13 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { fetchCart, createCart, addToCart } from '../store/cart';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { connect } from "react-redux";
+import { fetchCart, createCart, addToCart } from "../store/cart";
+import { Link } from "react-router-dom";
 import {
   fetchCocktail,
   updateCocktail,
   deleteCocktail,
-} from '../store/singleproduct';
-import { IoChevronBack } from 'react-icons/io5';
+} from "../store/singleproduct";
+import { IoChevronBack } from "react-icons/io5";
 import {
   SmallText,
   LargeText,
@@ -20,7 +20,7 @@ import {
   AdminButton,
   CartContainer,
   CenterContainer,
-} from '../styled-components';
+} from "../styled-components";
 
 class SingleProduct extends React.Component {
   constructor(props) {
@@ -28,10 +28,10 @@ class SingleProduct extends React.Component {
     this.state = {
       quantity: 1,
       edit: false,
-      name: '',
+      name: "",
       imageUrl: this.props.cocktail.imageUrl,
       price: 0,
-      description: '',
+      description: "",
     };
     this.handleAdd = this.handleAdd.bind(this);
     this.handleSubtract = this.handleSubtract.bind(this);
@@ -46,11 +46,15 @@ class SingleProduct extends React.Component {
   }
 
   handleAdd() {
-    this.setState({ quantity: this.state.quantity + 1 });
+    if (this.state.quantity < 10) {
+      this.setState({ quantity: this.state.quantity + 1 });
+    }
   }
 
   handleSubtract() {
-    this.setState({ quantity: this.state.quantity - 1 });
+    if (this.state.quantity > 0) {
+      this.setState({ quantity: this.state.quantity - 1 });
+    }
   }
 
   async handleAddToCart() {
@@ -187,11 +191,9 @@ class SingleProduct extends React.Component {
                 <LargeText>{cocktail.name}</LargeText>
                 <h3>${cocktail.price}</h3>
                 <p>{cocktail.description}</p>
-
-                <QuantityButton onClick={handleSubtract}>-</QuantityButton>
+                {<QuantityButton onClick={handleSubtract}>-</QuantityButton>}
                 {quantity}
                 <QuantityButton onClick={handleAdd}>+</QuantityButton>
-
                 <br />
                 <br />
                 <Button onClick={handleAddToCart}>Add to Cart</Button>
