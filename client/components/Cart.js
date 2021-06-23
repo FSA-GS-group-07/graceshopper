@@ -3,6 +3,53 @@ import { connect } from "react-redux";
 import { fetchCart, addToCart } from "../store/cart";
 import { loadStripe } from "@stripe/stripe-js";
 import { Link } from "react-router-dom";
+import styled from 'styled-components';
+
+//CSS STYLES
+const Container = styled.div`
+  width: 75%;
+  padding: 1rem 4rem 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+`;
+const List = styled.div`
+  padding: 1rem;
+  margin-left: 3rem;
+  display: flex;
+`;
+
+const LeftColumn = styled.div`
+  width: 40%;
+  position: relative;
+`;
+
+const RightColumn = styled.div`
+  width: 60%;
+  margin-left: 3rem;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const Button = styled.button`
+  background-color: transparent;
+  border: 2px solid black;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  color: black;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1em;
+`;
+
+const LargeText = styled.span`
+  font-family: 'Bebas Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 3rem;
+`;
 
 class Cart extends React.Component {
   constructor(props) {
@@ -50,15 +97,26 @@ class Cart extends React.Component {
     let subtotal = 0;
     return (
       <div className="cart">
-        {cart.cocktails &&
-          cart.cocktails.map((cocktail) => (
-            <div className="cart-item" key={cocktail.id || cocktail.cocktailId}>
-              <Link to={`/cocktails/${cocktail.id}`}>
-                <span>
-                  <h1>{cocktail.name}</h1>
-                  <img src={cocktail.imageUrl} alt={cocktail.name} />
-                </span>
+        <Container>
+          {cart.cocktails &&
+            cart.cocktails.map((cocktail) => (
+              <Link
+                key={cocktail.id || cocktail.cocktailId}
+                to={`/cocktails/${cocktail.id}`}
+              >
+                <List>
+                  <LeftColumn>
+                    <img src={cocktail.imageUrl} alt={cocktail.name} />
+                  </LeftColumn>
+                  <RightColumn>
+                    <LargeText>{cocktail.name}</LargeText>
+                    <h3>${cocktail.price}</h3>
+                  </RightColumn>
+                </List>
               </Link>
+            ))}
+          <div className="subtotal">
+            <h4>Subtotal:</h4>
 
               <h3>${cocktail.price}</h3>
 
@@ -116,14 +174,15 @@ class Cart extends React.Component {
           <h4>Total: ${cart.cocktails && total}</h4>
         </div>
         {cart.cocktails && cart.cocktails.length > 0 ? (
-          <div className="checkout" role="link">
-            <button onClick={this.handleCheckout}>Checkout</button>
-          </div>
+          <ButtonContainer className="checkout" role="link">
+            <Button onClick={this.handleCheckout}>Checkout</Button>
+          </ButtonContainer>
         ) : (
           <h1>
             Oh no! Your cart is empty :/ would you like to browse a bit more?
           </h1>
         )}
+        </Container>
       </div>
     );
   }

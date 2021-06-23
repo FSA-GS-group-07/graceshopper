@@ -1,15 +1,16 @@
-import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
-import { withRouter, Route, Switch, Redirect } from "react-router-dom";
-import { Login, Signup } from "./components/AuthForm";
-import Home from "./components/Home";
-import { me } from "./store";
-import AllProduct from "./components/AllProduct";
-import SingleProduct from "./components/SingleProduct";
-import NewProduct from "./components/NewProduct";
-import Cart from "./components/Cart";
-import Users from "./components/Users";
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { Login, Signup } from './components/AuthForm';
+import Home from './components/Home';
+import { me } from './store';
+import AllProduct from './components/AllProduct';
+import SingleProduct from './components/SingleProduct';
+import NewProduct from './components/NewProduct';
+import Cart from './components/Cart';
+import Users from './components/Users';
 import Confirmation from "./components/OrderConfirmation";
+
 
 /**
  * COMPONENT
@@ -24,14 +25,15 @@ class Routes extends Component {
     return (
       <div>
         <Switch>
-          <Route path="/home" component={Home} exact />
+          {/* <Route path="/home" component={Home} exact /> */}
+          <Route path="/" component={Home} exact />
           <Route
             path="/login"
-            render={() => (isLoggedIn ? <Redirect to="/home" /> : <Login />)}
+            render={() => (isLoggedIn ? <Redirect to="/" /> : <Login />)}
           />
           <Route
             path="/signup"
-            render={() => (isLoggedIn ? <Redirect to="/home" /> : <Signup />)}
+            render={() => (isLoggedIn ? <Redirect to="/" /> : <Signup />)}
           />
           <Route exact path="/cocktails" render={() => <AllProduct />} />
           <Route
