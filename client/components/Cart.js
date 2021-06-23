@@ -76,7 +76,7 @@ class Cart extends React.Component {
                     <h3>${cocktail.price}</h3>
                     <div className="subtotal">
                       <h4>Subtotal:</h4>
-                      //this is causing the sum to render on the cart component
+                      {/* //this is causing the sum to render on the cart component */}
                       {/* {
                         (subtotal = Number(
                           cocktail.price * cocktail.order_items?.quantity
@@ -87,7 +87,7 @@ class Cart extends React.Component {
                           cocktail.price * cocktail.order_items?.quantity
                         ))
                       } */}
-                      //need to fix above this pt.
+                      {/* //need to fix above this pt. */}
                       <div className="subtotal-item">
                         <span>
                           <h5>{cocktail.name}</h5>
