@@ -9,19 +9,14 @@ const { requireToken } = require("./gatekeeping");
 router.get("/", requireToken, async (req, res, next) => {
   try {
     if (req.user) {
-      const orderArr = await Order.findAll({
+      const order = await Order.findOne({
         where: {
           [Sequelize.Op.and]: [{ userId: req.user.id }, { status: "cart" }],
         },
+        include: Cocktail,
       });
 
-      let order = {};
-      let cocktails = [];
-      if (orderArr.length > 0) {
-        order = orderArr[0];
-        cocktails = await order.getCocktails();
-      }
-
+      const cocktails = order.cocktails;
       res.json({ order, cocktails });
     } else {
       //this seems to not be working atm need to look into why
