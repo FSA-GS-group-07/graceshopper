@@ -1,57 +1,58 @@
-const router = require("express").Router();
-const Sequelize = require("sequelize");
+const router = require('express').Router();
+const Sequelize = require('sequelize');
 const {
   models: { Order, Order_items, Cocktail },
-} = require("../db");
-const { requireToken } = require("./gatekeeping");
+} = require('../db');
+const { requireToken } = require('./gatekeeping');
 
 // GET api/cart/
-router.get("/", requireToken, async (req, res, next) => {
+router.get('/', requireToken, async (req, res, next) => {
   try {
     if (req.user) {
-      const orderArr = await Order.findAll({
+      const order = await Order.findOne({
         where: {
-          [Sequelize.Op.and]: [{ userId: req.user.id }, { status: "cart" }],
+          [Sequelize.Op.and]: [{ userId: req.user.id }, { status: 'cart' }],
         },
+        include: Cocktail,
       });
 
-      let order = {};
-      let cocktails = [];
-      if (orderArr.length > 0) {
-        order = orderArr[0];
-        cocktails = await order.getCocktails();
-      }
-
+      const cocktails = order.cocktails;
       res.json({ order, cocktails });
     } else {
-      //this seems to not be working atm need to look into why
-      //wrong place to put error msg?
-      res.status(404).send("You have to be logged in to view cart (for now)!");
+      res.send({ order: {}, cocktails: [] });
     }
   } catch (err) {
-    next(err);
+    res.send({ order: {}, cocktails: [] });
   }
 });
 
 // POST api/cart -> create a new cart WITH the first item added
-router.post("/", requireToken, async (req, res, next) => {
+router.post('/', requireToken, async (req, res, next) => {
   try {
     if (req.user) {
       const order = await Order.create({
         userId: req.user.id,
-        status: "cart",
+        status: 'cart',
       });
       await Order_items.create({
-        quantity: req.body.body.quantity,
+        quantity: req.body.quantity,
         orderId: order.id,
-        cocktailId: req.body.body.cocktailId,
+        cocktailId: req.body.cocktailId,
       });
       const cocktails = await order.getCocktails();
       res.send({ order, cocktails });
     } else {
-      res
-        .status(404)
-        .send("no logged in user -> still have to build this feature out");
+      const newOrder = await Order.create(req.body.order);
+
+      req.body.cocktails.forEach(async (cocktail) => {
+        await Order_items.create({
+          orderId: newOrder.id,
+          cocktailId: cocktail.id,
+          quantity: cocktail.order_items.quantity,
+        });
+      });
+
+      res.send(newOrder);
     }
   } catch (error) {
     next(error);
@@ -59,17 +60,17 @@ router.post("/", requireToken, async (req, res, next) => {
 });
 
 // PUT /api/cart
-router.put("/", requireToken, async (req, res, next) => {
+router.put('/', requireToken, async (req, res, next) => {
   try {
     if (req.user) {
-      const { cocktailId, quantity } = req.body.body;
-
       const order = await Order.findOne({
         where: {
-          [Sequelize.Op.and]: [{ userId: req.user.id }, { status: "cart" }],
+          [Sequelize.Op.and]: [{ userId: req.user.id }, { status: 'cart' }],
         },
         include: Cocktail,
       });
+
+      const { cocktailId, quantity } = req.body;
 
       let item = order.cocktails.filter(
         (cocktail) => Number(cocktail.id) == Number(cocktailId)
@@ -96,9 +97,30 @@ router.put("/", requireToken, async (req, res, next) => {
 
       res.send(item);
     } else {
-      res
-        .status(404)
-        .send("no logged in user -> still have to build this feature out");
+      res.sendStatus(404);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+// PUT /api/cart/completed
+router.put('/completed', requireToken, async (req, res, next) => {
+  try {
+    if (req.user) {
+      await Order.update(
+        {
+          status: 'complete',
+        },
+        {
+          where: {
+            [Sequelize.Op.and]: [{ userId: req.user.id }, { status: 'cart' }],
+          },
+        }
+      );
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(404);
     }
   } catch (error) {
     next(error);

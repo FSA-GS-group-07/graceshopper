@@ -1,7 +1,18 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { fetchCocktails } from "../store/allProduct";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { fetchCocktails } from '../store/allProduct';
+import {
+  Grid,
+  CartButton,
+  Wrapper,
+  Text,
+  GridContainer,
+  SmallText,
+  CenterContainer,
+  AdminButton,
+} from '../styled-components';
+
 
 class AllProduct extends React.Component {
   componentDidMount() {
@@ -12,22 +23,27 @@ class AllProduct extends React.Component {
     const { cocktails, isAdmin } = this.props;
     return (
       <div className="all-cocktails">
-        {isAdmin && (
-          <Link to="/cocktails/create">
-            <button type="button">Create new cocktail </button>
-          </Link>
-        )}
-        {cocktails &&
-          cocktails.map((cocktail) => (
-            <Link key={cocktail.id} to={`/cocktails/${cocktail.id}`}>
-              <span>
-                <h1>{cocktail.name}</h1>
-                <img src={cocktail.imageUrl} alt={cocktail.name} />
-                <h3>{cocktail.price}</h3>
-                <p>{cocktail.description}</p>
-              </span>
+        <CenterContainer>
+          {isAdmin && (
+            <Link to="/cocktails/create">
+              <AdminButton>Create New Cocktail</AdminButton>
             </Link>
-          ))}
+          )}
+        </CenterContainer>
+        <Grid>
+          {cocktails &&
+            cocktails.map((cocktail) => (
+              <Link key={cocktail.id} to={`/cocktails/${cocktail.id}`}>
+                <Wrapper>
+                  <img src={cocktail.imageUrl} alt={cocktail.name} />
+                  <CartButton>Add to Cart</CartButton>
+                </Wrapper>
+                <GridContainer>
+                  <Text>{cocktail.name}</Text> <Text>${cocktail.price}</Text>
+                </GridContainer>
+              </Link>
+            ))}
+        </Grid>
       </div>
     );
   }

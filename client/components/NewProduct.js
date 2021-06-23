@@ -1,16 +1,25 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { createCocktail } from "../store/createProduct";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { createCocktail } from '../store/createProduct';
+import { Link } from 'react-router-dom';
+import { IoChevronBack } from 'react-icons/io5';
+import {
+  SmallText,
+  Input,
+  Button,
+  CreateContainer,
+  Container,
+} from '../styled-components';
 
 class NewProduct extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
-      imageUrl: "",
+      name: '',
+      imageUrl: '',
       price: 0,
-      description: "",
-      ingredients: "",
+      description: '',
+      ingredients: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -32,52 +41,65 @@ class NewProduct extends Component {
     const { handleChange, handleSubmit } = this;
 
     return (
-      <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-          <input type="text" name="name" onChange={handleChange} value={name} />
-        </label>
-
-        <label>
-          Image Url:
-          <input
-            type="text"
-            name="imageUrl"
-            onChange={handleChange}
-            value={imageUrl}
-          />
-        </label>
-        <label>
-          Description:
-          <input
-            type="text"
-            name="description"
-            onChange={handleChange}
-            value={description}
-          />
-        </label>
-        <label>
-          ingredients:
-          <input
-            type="text"
-            name="ingredients"
-            onChange={handleChange}
-            value={ingredients}
-          />
-        </label>
-        <label>
-          Price:
-          <input
-            type="text"
-            name="price"
-            onChange={handleChange}
-            value={price}
-          />
-        </label>
-        <button type="submit" onClick={(event) => handleSubmit(event)}>
-          Submit
-        </button>
-      </form>
+      <CreateContainer>
+        <Link to="/cocktails">
+          <SmallText>
+            <IoChevronBack /> Back to all cocktails
+          </SmallText>
+        </Link>
+        <br />
+        <br />
+        <Container>
+          <form onSubmit={handleSubmit}>
+            <SmallText>
+              <label>Name</label>
+              <Input
+                type="text"
+                name="name"
+                onChange={handleChange}
+                value={name}
+              />
+              <br />
+              <label>Image Url</label>
+              <Input
+                type="text"
+                name="imageUrl"
+                onChange={handleChange}
+                value={imageUrl}
+              />
+              <br />
+              <label>Description</label>
+              <Input
+                type="text"
+                name="description"
+                onChange={handleChange}
+                value={description}
+              />
+              <br />
+              <label>Ingredients</label>
+              <Input
+                type="text"
+                name="ingredients"
+                onChange={handleChange}
+                value={ingredients}
+              />
+              <br />
+              <label>Price</label>
+              <Input
+                type="text"
+                name="price"
+                onChange={handleChange}
+                value={price}
+              />
+              <br />
+              <br />
+              <Button type="submit" onClick={(event) => handleSubmit(event)}>
+                Submit
+              </Button>
+            </SmallText>
+          </form>
+        </Container>
+      </CreateContainer>
     );
   }
 }

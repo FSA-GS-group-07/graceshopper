@@ -1,7 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { logout } from "../store";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { logout } from '../store';
+import { Nav, Logo, NavItems, NavItemsRed } from '../styled-components';
 
 
 class Navbar extends React.Component {
@@ -18,33 +19,49 @@ class Navbar extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>PourDecisions</h1>
-        <nav> 
-          {this.props.isLoggedIn ? (
-            <div>
-              {/* The navbar will show these links after you log in */}
-              <Link to="/home">Home</Link>
+      <Nav>
+        <Logo>
+          <Link to="/">Pour Decisions</Link>
+        </Logo>
+        {this.props.isLoggedIn ? (
+          <div>
+            {/* The navbar will show these links after you log in */}
+
+            <NavItems>
               <Link to="/cocktails">Shop</Link>
+            </NavItems>
+            <NavItems>
               <Link to="/cart">Cart</Link>
-              {this.props.isAdmin ? (<Link to="/users">Users</Link>) : null }
+            </NavItems>
+            {this.props.isAdmin ? (
+              <NavItemsRed>
+                <Link to="/users">Users</Link>
+              </NavItemsRed>
+            ) : null}
+            <NavItems>
               <a href="#" onClick={this.handleClick}>
                 Logout
               </a>
-            </div>
-          ) : (
+            </NavItems>
+          </div>
+        ) : (
           <div>
-              {/* The navbar will show these links before you log in */}
-              <Link to="/home">Home</Link>
+            {/* The navbar will show these links before you log in */}
+            <NavItems>
               <Link to="/cocktails">Shop</Link>
+            </NavItems>
+            <NavItems>
               <Link to="/cart">Cart</Link>
+            </NavItems>
+            <NavItems>
               <Link to="/login">Login</Link>
+            </NavItems>
+            <NavItems>
               <Link to="/signup">Sign Up</Link>
-            </div>
-          )}
-        </nav>
-        <hr />
-      </div>
+            </NavItems>
+          </div>
+        )}
+      </Nav>
     );
   }
 }

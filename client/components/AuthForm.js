@@ -1,95 +1,90 @@
-import React from "react";
-import { connect } from "react-redux";
-import { authenticate } from "../store";
-import { Link } from "react-router-dom";
-
-/**
- * COMPONENT
- */
+import React from 'react';
+import { connect } from 'react-redux';
+import { authenticate } from '../store';
+import { Link } from 'react-router-dom';
+import { Container, Button, SmallText, Input } from '../styled-components';
 
 const AuthForm = (props) => {
   const { name, displayName, handleSubmit, error } = props;
 
   const errorHandler = (error) => {
-    if (error === "Validation error: Validation isEmail on email failed") {
-      return "Invalid email entry";
+    if (error === 'Validation error: Validation isEmail on email failed') {
+      return 'Invalid email entry';
     }
-    if (error === "User already exists") {
-      return "User already exists";
+    if (error === 'User already exists') {
+      return 'User already exists';
     }
   };
 
   const renderLogin = () => {
     return (
-      <form onSubmit={handleSubmit} name={name}>
-        <div>
+      <Container>
+        <form onSubmit={handleSubmit} name={name}>
           <label htmlFor="email">
-            <small>Email</small>
+            <SmallText>Email</SmallText>
           </label>
-          <input name="email" type="text" required />
-        </div>
-        <div>
+          <Input name="email" type="text" required />
+          <br />
           <label htmlFor="password">
-            <small>Password</small>
+            <SmallText>Password</SmallText>
           </label>
-          <input name="password" type="password" required />
-        </div>
-        <div>
-          <button type="submit">{displayName}</button>
-        </div>
-        <br />
-        <small>First Time?</small>
-        <br />
-        <small>
-          <Link to="/signup">Sign up here</Link>
-        </small>
-        {error?.response && <div> {error.response.data} </div>}
-      </form>
+          <Input name="password" type="password" required />
+          <br />
+          <br />
+          <Button type="submit">{displayName}</Button>
+          <br />
+          <br />
+          <SmallText>First Time?</SmallText>
+          <br />
+          <SmallText>
+            <Link to="/signup">Sign up here</Link>
+          </SmallText>
+          {error?.response && <div> {error.response.data} </div>}
+        </form>
+      </Container>
     );
   };
 
   const renderSignup = () => {
     return (
-      <form onSubmit={handleSubmit} name={name}>
-        <div>
+      <Container>
+        <form onSubmit={handleSubmit} name={name}>
           <label htmlFor="firstName">
-            <small>First Name</small>
+            <SmallText>First Name</SmallText>
           </label>
-          <input name="fname" type="text" required />
-        </div>
-        <div>
+          <Input name="fname" type="text" required />
+          <br />
           <label htmlFor="lastName">
-            <small>Last Name</small>
+            <SmallText>Last Name</SmallText>
           </label>
-          <input name="lname" type="text" required />
-        </div>
-        <div>
+          <Input name="lname" type="text" required />
+          <br />
           <label htmlFor="email">
-            <small>Email</small>
+            <SmallText>Email</SmallText>
           </label>
-          <input name="email" type="text" required />
-        </div>
-        <div>
+          <Input name="email" type="text" required />
+          <br />
           <label htmlFor="password">
-            <small>Password</small>
+            <SmallText>Password</SmallText>
           </label>
-          <input name="password" type="password" required />
-        </div>
-        <div>
-          <button type="submit">{displayName}</button>
-        </div>
-        <br />
-        <small>Already have an account?</small>
-        <br />
-        <small>
-          <Link to="/login">log in here</Link>
-        </small>
-        {error?.response && <div>{errorHandler(error.response.data)}</div>}
-      </form>
+          <Input name="password" type="password" required />
+          <br />
+          <br />
+          <Button type="submit">{displayName}</Button>
+          <br />
+          <br />
+          <SmallText>Already have an account?</SmallText>
+          <br />
+          <SmallText>
+            <Link to="/login">log in here</Link>
+          </SmallText>
+          {error?.response && <div>{errorHandler(error.response.data)}</div>}
+        </form>
+      </Container>
     );
   };
 
-  return <div>{name === "signup" ? renderSignup() : renderLogin()}</div>;
+  return <div>{name === 'signup' ? renderSignup() : renderLogin()}</div>;
 };
 
 /**
@@ -101,16 +96,16 @@ const AuthForm = (props) => {
  */
 const mapLogin = (state) => {
   return {
-    name: "login",
-    displayName: "Login",
+    name: 'login',
+    displayName: 'Login',
     error: state.auth.loginError,
   };
 };
 
 const mapSignup = (state) => {
   return {
-    name: "signup",
-    displayName: "Sign Up",
+    name: 'signup',
+    displayName: 'Sign Up',
     error: state.auth.signupError,
   };
 };

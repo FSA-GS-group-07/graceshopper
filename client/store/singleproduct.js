@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 
-const GET_COCKTAIL = "GET_COCKTAIL";
-const UPDATE_COCKTAIL = "UPDATE_COCKTAIL";
-const DELETE_COCKTAIL = "DELETE_COCKTAIL";
+const GET_COCKTAIL = 'GET_COCKTAIL';
+const UPDATE_COCKTAIL = 'UPDATE_COCKTAIL';
+const DELETE_COCKTAIL = 'DELETE_COCKTAIL';
 
 const gotCocktail = (cocktail) => ({
   type: GET_COCKTAIL,
@@ -46,7 +46,7 @@ export const deleteCocktail = (id, history) => async (dispatch) => {
       `/api/cocktails/${id}`
     );
     if (dispatch(_deleteCocktail(removedCocktail))) {
-      history.push("/cocktails");
+      history.push('/cocktails');
     }
   } catch (error) {
     console.error(error);

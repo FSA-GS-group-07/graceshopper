@@ -1,12 +1,27 @@
-import React from "react";
-import { connect } from "react-redux";
-import { fetchCart, createCart, addToCart } from "../store/cart";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { connect } from 'react-redux';
+import { fetchCart, createCart, addToCart } from '../store/cart';
+import { Link } from 'react-router-dom';
 import {
   fetchCocktail,
   updateCocktail,
   deleteCocktail,
-} from "../store/singleproduct";
+} from '../store/singleproduct';
+import { IoChevronBack } from 'react-icons/io5';
+import {
+  SmallText,
+  LargeText,
+  Button,
+  Input,
+  QuantityButton,
+  ContainerSingle,
+  LeftColumnSingle,
+  RightColumnSingle,
+  AdminButton,
+  CartContainer,
+  CenterContainer,
+} from '../styled-components';
+import NotFound from './NotFound';
 
 class SingleProduct extends React.Component {
   constructor(props) {
@@ -14,10 +29,10 @@ class SingleProduct extends React.Component {
     this.state = {
       quantity: 1,
       edit: false,
-      name: "",
+      name: '',
       imageUrl: this.props.cocktail.imageUrl,
       price: 0,
-      description: "",
+      description: '',
     };
     this.handleAdd = this.handleAdd.bind(this);
     this.handleSubtract = this.handleSubtract.bind(this);
@@ -40,15 +55,17 @@ class SingleProduct extends React.Component {
   }
 
   async handleAddToCart() {
-    if (this.props.cart.order.id) {
+    if (this.props.cart.cocktails && this.props.cart.cocktails.length > 0) {
       await this.props.addToCart(
         this.props.match.params.id,
-        this.state.quantity
+        this.state.quantity,
+        this.props.cocktail
       );
     } else {
       await this.props.createCart(
         this.props.match.params.id,
-        this.state.quantity
+        this.state.quantity,
+        this.props.cocktail
       );
     }
   }
@@ -69,91 +86,124 @@ class SingleProduct extends React.Component {
 
   render() {
     const { cocktail, history, isAdmin, deleteCocktail } = this.props;
-    const { edit, name, price, description, imageUrl, quantity } = this.state;
-    const { handleChange, handleSubmit, handleSubtract, handleAdd, handleAddToCart } = this;
+    const { edit, name, price, description, quantity } = this.state;
+
+    const {
+      handleChange,
+      handleSubmit,
+      handleSubtract,
+      handleAdd,
+      handleAddToCart,
+    } = this;
+
+    if (cocktail.error) {
+      return <NotFound />;
+    }
 
     return (
       <div>
-        {isAdmin && (
-          <button
-            onClick={() =>
-              this.setState((prevState) => ({ edit: !prevState.edit }))
-            }
-          >
-            Edit Cocktail
-          </button>
-        )}
+        <CartContainer>
+          <Link to="/cocktails">
+            <SmallText>
+              <IoChevronBack /> Back to all cocktails
+            </SmallText>
+          </Link>
+        </CartContainer>
+        <CenterContainer>
+          {isAdmin && (
+            <>
+              <br />
+              <AdminButton
+                onClick={() =>
+                  this.setState((prevState) => ({ edit: !prevState.edit }))
+                }
+              >
+                Edit Cocktail
+              </AdminButton>
+            </>
+          )}
 
-        {isAdmin && (
-          <button onClick={() => deleteCocktail(cocktail.id, history)}>
-            X
-          </button>
-        )}
+          {isAdmin && (
+            <>
+              <br />
+              <AdminButton onClick={() => deleteCocktail(cocktail.id, history)}>
+                Delete Cocktail
+              </AdminButton>
+            </>
+          )}
+        </CenterContainer>
 
         {edit ? (
           <form>
-            <label>
-              Name:
-              <input
-                type="text"
-                name="name"
-                onChange={handleChange}
-                value={name}
-              />
-            </label>
-            <label>
-              Image Url:
-              <input
-                type="text"
-                name="imageUrl"
-                placeholder={cocktail.imageUrl}
-                onChange={handleChange}
-                value={imageUrl}
-              />
-            </label>
-            <label>
-              Description:
-              <input
-                type="text"
-                name="description"
-                onChange={handleChange}
-                value={description}
-              />
-            </label>
-            <label>
-              Price:
-              <input
-                type="text"
-                name="price"
-                onChange={handleChange}
-                value={price}
-              />
-            </label>
-            <button type="submit" onClick={(event) => handleSubmit(event)}>
-              Submit
-            </button>
+            <SmallText>
+              <label>
+                Name:
+                <Input
+                  type="text"
+                  name="name"
+                  onChange={handleChange}
+                  value={name}
+                />
+              </label>
+              <br />
+              <label>
+                Image Url:
+                <Input
+                  type="text"
+                  name="imageUrl"
+                  placeholder={cocktail.imageUrl}
+                  onChange={handleChange}
+                  value={imageUrl}
+                />
+              </label>
+              <br />
+              <label>
+                Description:
+                <Input
+                  type="text"
+                  name="description"
+                  onChange={handleChange}
+                  value={description}
+                />
+              </label>
+              <br />
+              <label>
+                Price:
+                <Input
+                  type="text"
+                  name="price"
+                  onChange={handleChange}
+                  value={price}
+                />
+              </label>
+              <br />
+              <Button type="submit" onClick={(event) => handleSubmit(event)}>
+                Submit
+              </Button>
+            </SmallText>
           </form>
         ) : (
           <div>
-            <h1>{cocktail.name}</h1>
-            <h3>{cocktail.price}</h3>
-            <p>{cocktail.description}</p>
-            <img src={cocktail.imageUrl} />
+            <ContainerSingle>
+              <LeftColumnSingle>
+                <img src={cocktail.imageUrl} />
+              </LeftColumnSingle>
+              <RightColumnSingle>
+                <LargeText>{cocktail.name}</LargeText>
+                <h3>${cocktail.price}</h3>
+                <p>{cocktail.description}</p>
 
-            <button type="button" onClick={handleSubtract}>
-              -
-            </button>
-            <span>{quantity}</span>
-            <button type="button" onClick={handleAdd}>
-              +
-            </button>
+                <QuantityButton onClick={handleSubtract}>-</QuantityButton>
+                {quantity}
+                <QuantityButton onClick={handleAdd}>+</QuantityButton>
 
-            <button type="button" onClick={handleAddToCart}>Add to Cart</button>
+                <br />
+                <br />
+                <Button onClick={handleAddToCart}>Add to Cart</Button>
+              </RightColumnSingle>
+            </ContainerSingle>
           </div>
         )}
-        <Link to="/cocktails">
-          <button type="button">Back</button>
-        </Link>
       </div>
     );
   }
@@ -172,8 +222,10 @@ const mapDispatch = (dispatch) => {
   return {
     getCart: () => dispatch(fetchCart()),
     getCocktail: (id) => dispatch(fetchCocktail(id)),
-    addToCart: (id, quantity) => dispatch(addToCart(id, quantity)),
-    createCart: (id, quantity) => dispatch(createCart(id, quantity)),
+    addToCart: (id, quantity, cocktail) =>
+      dispatch(addToCart(id, quantity, cocktail)),
+    createCart: (id, quantity, cocktail) =>
+      dispatch(createCart(id, quantity, cocktail)),
     updateCocktail: (cocktail) => dispatch(updateCocktail(cocktail)),
     deleteCocktail: (id, history) => dispatch(deleteCocktail(id, history)),
   };
