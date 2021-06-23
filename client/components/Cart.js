@@ -38,7 +38,6 @@ class Cart extends React.Component {
     const stripe = await loadStripe(
       "pk_test_51J5C3LFT1yAmNlTZXfbIlPdca9y7GD8DILU77uUVH1AO844xp0B9UxdzJSGetlpYe4uRpRoH16hKtRyZ8aWPUeYz00RV42ERF5"
     );
-    console.log("props;", this.props);
     const response = await fetch("/api/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
