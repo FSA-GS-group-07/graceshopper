@@ -1,8 +1,55 @@
-import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { fetchCart, addToCart } from "../store/cart";
+import { loadStripe } from "@stripe/stripe-js";
+import { Link } from "react-router-dom";
+import styled from 'styled-components';
+
+//CSS STYLES
+const Container = styled.div`
+  width: 75%;
+  padding: 1rem 4rem 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+`;
+const List = styled.div`
+  padding: 1rem;
+  margin-left: 3rem;
+  display: flex;
+`;
+
+const LeftColumn = styled.div`
+  width: 40%;
+  position: relative;
+`;
+
+const RightColumn = styled.div`
+  width: 60%;
+  margin-left: 3rem;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const Button = styled.button`
+  background-color: transparent;
+  border: 2px solid black;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  color: black;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1em;
+`;
+
+const LargeText = styled.span`
+  font-family: 'Bebas Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 3rem;
+`;
 
 class Cart extends React.Component {
   constructor(props) {
@@ -11,7 +58,9 @@ class Cart extends React.Component {
     this.state = {
       edit: false,
     };
+    this.handleCheckout = this.handleCheckout.bind(this);
   }
+
   componentDidMount() {
     this.props.getCart();
   }
@@ -24,22 +73,50 @@ class Cart extends React.Component {
     this.props.updatedQuantity(cocktailId, -1, cocktail);
   }
 
+  async handleCheckout() {
+    const stripe = await loadStripe(
+      "pk_test_51J5C3LFT1yAmNlTZXfbIlPdca9y7GD8DILU77uUVH1AO844xp0B9UxdzJSGetlpYe4uRpRoH16hKtRyZ8aWPUeYz00RV42ERF5"
+    );
+    const response = await fetch("/api/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(this.props.cart),
+    });
+    const session = await response.json();
+    const result = await stripe.redirectToCheckout({
+      sessionId: session.id,
+    });
+    if (result.error) {
+      console.log(result.error.message);
+    }
+  }
+
   render() {
-    const { cart } = this.props;
+    const cart = this.props.cart || { order: {}, cocktails: [] };
     let total = 0;
     let subtotal = 0;
-    // console.log(cart.cocktails)
     return (
       <div className="cart">
-        {cart.cocktails &&
-          cart.cocktails.map((cocktail) => (
-            <div className="cart-item" key={cocktail.id || cocktail.cocktailId}>
-              <Link to={`/cocktails/${cocktail.id}`}>
-                <span>
-                  <h1>{cocktail.name}</h1>
-                  <img src={cocktail.imageUrl} alt={cocktail.name} />
-                </span>
+        <Container>
+          {cart.cocktails &&
+            cart.cocktails.map((cocktail) => (
+              <Link
+                key={cocktail.id || cocktail.cocktailId}
+                to={`/cocktails/${cocktail.id}`}
+              >
+                <List>
+                  <LeftColumn>
+                    <img src={cocktail.imageUrl} alt={cocktail.name} />
+                  </LeftColumn>
+                  <RightColumn>
+                    <LargeText>{cocktail.name}</LargeText>
+                    <h3>${cocktail.price}</h3>
+                  </RightColumn>
+                </List>
               </Link>
+            ))}
+          <div className="subtotal">
+            <h4>Subtotal:</h4>
 
               <h3>${cocktail.price}</h3>
 
@@ -74,12 +151,11 @@ class Cart extends React.Component {
             </div>
           ))}
         <div className="subtotal">
-          <h4>
-            Subtotal:
-          </h4>
-            {cart.cocktails && cart.cocktails.map(cocktail => {
-              subtotal = Number(cocktail.price * cocktail.order_items.quantity)
-              total += Number(cocktail.price * cocktail.order_items.quantity)
+          <h4>Subtotal:</h4>
+          {cart.cocktails &&
+            cart.cocktails.map((cocktail) => {
+              subtotal = Number(cocktail.price * cocktail.order_items.quantity);
+              total += Number(cocktail.price * cocktail.order_items.quantity);
               return (
                 <div className="subtotal-item">
                   <span>
@@ -91,20 +167,22 @@ class Cart extends React.Component {
                     <h6>${subtotal}</h6>
                   </span>
                 </div>
-              )
-            }
-            )}
-          
+              );
+            })}
         </div>
         <div className="total">
-          <h4>
-            Total: $
-            {cart.cocktails && total}
-          </h4>
+          <h4>Total: ${cart.cocktails && total}</h4>
         </div>
-        <div className="checkout">
-          <button>Checkout</button>
-        </div>
+        {cart.cocktails && cart.cocktails.length > 0 ? (
+          <ButtonContainer className="checkout" role="link">
+            <Button onClick={this.handleCheckout}>Checkout</Button>
+          </ButtonContainer>
+        ) : (
+          <h1>
+            Oh no! Your cart is empty :/ would you like to browse a bit more?
+          </h1>
+        )}
+        </Container>
       </div>
     );
   }
