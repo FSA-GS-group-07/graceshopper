@@ -2,6 +2,7 @@ const path = require('path')
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
+const bodyParser = require('body-parser')
 module.exports = app
 
 
@@ -13,6 +14,8 @@ app.use(morgan('dev'))
 
 // body parsing middleware
 app.use(express.json())
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // auth and api routes
 app.use('/auth', require('./auth'))

@@ -13,15 +13,15 @@ class Cart extends React.Component {
     this.props.getCart();
   }
 
-  handleDelete(item) {
-    this.props.removeFromCart(id);
+  async handleDelete(id) {
+    await this.props.deleteFromCart(id);
+    this.props.getCart()
   }
 
   render() {
     const { cart } = this.props;
     let total = 0;
     let subtotal = 0;
-    // console.log(cart.cocktails)
     return (
       <div className="cart">
         {cart.cocktails &&
