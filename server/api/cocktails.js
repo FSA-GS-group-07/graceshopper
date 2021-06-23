@@ -1,6 +1,6 @@
 //Changes(if required) : name of the model
 const router = require("express").Router();
-
+const { isAdmin } = require("./gatekeeping");
 const {
   models: { Cocktail },
 } = require("../db");
@@ -27,7 +27,7 @@ router.get("/:id", async (req, res, next) => {
 });
 
 //PUT api/cocktails/:id
-router.put("/:id", async (req, res, next) => {
+router.put("/:id", isAdmin, async (req, res, next) => {
   try {
     const [numberAffectedCocktails, affectedCocktail] = await Cocktail.update(
       req.body,
@@ -44,7 +44,7 @@ router.put("/:id", async (req, res, next) => {
 });
 
 //POST api/cocktails
-router.post("/", async (req, res, next) => {
+router.post("/", isAdmin, async (req, res, next) => {
   try {
     const newCocktail = await Cocktail.create(req.body);
     res.status(201).json(newCocktail);
@@ -54,7 +54,7 @@ router.post("/", async (req, res, next) => {
 });
 
 //DELETE api/cocktails/:id
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", isAdmin, async (req, res, next) => {
   try {
     const deleteCocktail = await Cocktail.findByPk(req.params.id);
     await deleteCocktail.destroy();

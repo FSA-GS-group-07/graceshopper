@@ -19,9 +19,7 @@ router.get("/", requireToken, async (req, res, next) => {
       const cocktails = order.cocktails;
       res.json({ order, cocktails });
     } else {
-      //this seems to not be working atm need to look into why
-      //wrong place to put error msg?
-      res.status(404).send("You have to be logged in to view cart (for now)!");
+      res.send("got through to route");
     }
   } catch (err) {
     next(err);
