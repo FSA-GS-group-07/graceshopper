@@ -19,9 +19,7 @@ router.get("/", requireToken, async (req, res, next) => {
       const cocktails = order.cocktails;
       res.json({ order, cocktails });
     } else {
-      //this seems to not be working atm need to look into why
-      //wrong place to put error msg?
-      res.status(404).send("You have to be logged in to view cart (for now)!");
+      res.sendStatus(404);
     }
   } catch (err) {
     next(err);
@@ -98,6 +96,8 @@ router.put("/", requireToken, async (req, res, next) => {
       item.update({ quantity: qty });
 
       res.send(item);
+    } else {
+      res.sendStatus(404);
     }
   } catch (error) {
     next(error);
@@ -119,6 +119,8 @@ router.put("/completed", requireToken, async (req, res, next) => {
         }
       );
       res.sendStatus(200);
+    } else {
+      res.sendStatus(404);
     }
   } catch (error) {
     next(error);
