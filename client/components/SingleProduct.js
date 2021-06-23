@@ -1,13 +1,13 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { fetchCart, createCart, addToCart } from '../store/cart';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { connect } from "react-redux";
+import { fetchCart, createCart, addToCart } from "../store/cart";
+import { Link } from "react-router-dom";
 import {
   fetchCocktail,
   updateCocktail,
   deleteCocktail,
-} from '../store/singleproduct';
-import { IoChevronBack } from 'react-icons/io5';
+} from "../store/singleproduct";
+import { IoChevronBack } from "react-icons/io5";
 import {
   SmallText,
   LargeText,
@@ -18,7 +18,7 @@ import {
   ContainerSingle,
   LeftColumnSingle,
   RightColumnSingle,
-} from '../styled-components';
+} from "../styled-components";
 
 class SingleProduct extends React.Component {
   constructor(props) {
@@ -26,10 +26,10 @@ class SingleProduct extends React.Component {
     this.state = {
       quantity: 1,
       edit: false,
-      name: '',
+      name: "",
       imageUrl: this.props.cocktail.imageUrl,
       price: 0,
-      description: '',
+      description: "",
     };
     this.handleAdd = this.handleAdd.bind(this);
     this.handleSubtract = this.handleSubtract.bind(this);
@@ -52,7 +52,7 @@ class SingleProduct extends React.Component {
   }
 
   async handleAddToCart() {
-    if (this.props.cart && this.props.cart.cocktails.length > 0) {
+    if (this.props.cart.cocktails && this.props.cart.cocktails.length > 0) {
       await this.props.addToCart(
         this.props.match.params.id,
         this.state.quantity,
