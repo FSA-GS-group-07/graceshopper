@@ -60,44 +60,45 @@ class Cart extends React.Component {
         <CartContainer>
           {cart.cocktails &&
             cart.cocktails.map((cocktail) => (
-              <Link
+              <div
+                className="cart-item"
                 key={cocktail.id || cocktail.cocktailId}
-                to={`/cocktails/${cocktail.id}`}
               >
                 <List>
-                  <LeftColumn>
-                    <img src={cocktail.imageUrl} alt={cocktail.name} />
-                  </LeftColumn>
+                  <Link to={`/cocktails/${cocktail.id}`}>
+                    <LeftColumn>
+                      <img src={cocktail.imageUrl} alt={cocktail.name} />
+                    </LeftColumn>
+                  </Link>
                   <RightColumn>
                     <LargeText>{cocktail.name}</LargeText>
                     <h3>${cocktail.price}</h3>
                     <div className="subtotal">
                       <h4>Subtotal:</h4>
-                      {cart.cocktails &&
-                        cart.cocktails.map((cocktail) => {
-                          subtotal = Number(
-                            cocktail.price * cocktail.order_items.quantity
-                          );
-                          total += Number(
-                            cocktail.price * cocktail.order_items.quantity
-                          );
-                          return (
-                            <div className="subtotal-item">
-                              <span>
-                                <h5>{cocktail.name}</h5>
-                                <h6>{cocktail.order_items.quantity}</h6>
-                                <h6>X</h6>
-                                <h6>${cocktail.price}</h6>
-                                <h6>=</h6>
-                                <h6>${subtotal}</h6>
-                              </span>
-                            </div>
-                          );
-                        })}
 
-                      <h3>${cocktail.price}</h3>
+                      {/* {
+                        (subtotal = Number(
+                          cocktail.price * cocktail.order_items?.quantity
+                        ))
+                      }
+                      {
+                        (total += Number(
+                          cocktail.price * cocktail.order_items?.quantity
+                        ))
+                      } */}
+
+                      <div className="subtotal-item">
+                        <span>
+                          <h5>{cocktail.name}</h5>
+                          <h6>{cocktail.order_items?.quantity}</h6>
+                          <h6>X</h6>
+                          <h6>${cocktail.price}</h6>
+                          <h6>=</h6>
+                          <h6>${subtotal}</h6>
+                        </span>
+                      </div>
                       <h3>
-                        Quantity: {cocktail.order_items.quantity}
+                        Quantity: {cocktail.order_items?.quantity}
                         {this.state.edit && (
                           <button
                             type="button"
@@ -131,7 +132,7 @@ class Cart extends React.Component {
                     </div>
                   </RightColumn>
                 </List>
-              </Link>
+              </div>
             ))}
 
           <div className="total">
