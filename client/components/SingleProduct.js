@@ -120,7 +120,7 @@ class SingleProduct extends React.Component {
   }
 
   async handleAddToCart() {
-    if (this.props.cart.cocktails.length > 0) {
+    if (this.props.cart && this.props.cart.cocktails.length > 0) {
       await this.props.addToCart(
         this.props.match.params.id,
         this.state.quantity,
