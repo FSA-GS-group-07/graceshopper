@@ -4,6 +4,7 @@ import axios from "axios";
 const GET_CART = "GET CART";
 const CREATE_CART = "CREATE CART";
 const ADD_TO_CART = "ADD TO CART";
+const REMOVE_FROM_CART = "DELETE_FROM_CART"
 
 const gotCart = (cart) => ({
   type: GET_CART,
@@ -23,6 +24,13 @@ const addedToCart = (item) => {
     item,
   };
 };
+
+const removedFromCart = (id) => {
+  return {
+    type: REMOVE_FROM_CART,
+    id
+  }
+}
 
 export const fetchCart = () => async (dispatch) => {
   try {
@@ -80,6 +88,15 @@ export const addToCart = (cocktailId, quantity) => async (dispatch) => {
   }
 };
 
+export const removeFromCart = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`/api/cocktail/${id}`)
+    dispatch(removedFromCart(id))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export default function cartReducer(state = {}, action) {
   switch (action.type) {
     case GET_CART:
@@ -99,6 +116,8 @@ export default function cartReducer(state = {}, action) {
         updatedCocktails.push(action.item);
       }
       return { ...state, cocktails: updatedCocktails };
+    case REMOVE_FROM_CART:
+      return {...state, cocktails: [...state.cocktails].filter((cocktail) => cocktail.id !== action.cocktailId)}
     default:
       return state;
   }
