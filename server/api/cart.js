@@ -1,17 +1,17 @@
-const router = require('express').Router();
-const Sequelize = require('sequelize');
+const router = require("express").Router();
+const Sequelize = require("sequelize");
 const {
   models: { Order, Order_items, Cocktail },
-} = require('../db');
-const { requireToken } = require('./gatekeeping');
+} = require("../db");
+const { requireToken } = require("./gatekeeping");
 
 // GET api/cart/
-router.get('/', requireToken, async (req, res, next) => {
+router.get("/", requireToken, async (req, res, next) => {
   try {
     if (req.user) {
       const order = await Order.findOne({
         where: {
-          [Sequelize.Op.and]: [{ userId: req.user.id }, { status: 'cart' }],
+          [Sequelize.Op.and]: [{ userId: req.user.id }, { status: "cart" }],
         },
         include: Cocktail,
       });
@@ -27,13 +27,12 @@ router.get('/', requireToken, async (req, res, next) => {
 });
 
 // POST api/cart -> create a new cart WITH the first item added
-router.post('/', requireToken, async (req, res, next) => {
+router.post("/", requireToken, async (req, res, next) => {
   try {
     if (req.user) {
-      console.log('req.body', req.body);
       const order = await Order.create({
         userId: req.user.id,
-        status: 'cart',
+        status: "cart",
       });
       await Order_items.create({
         quantity: req.body.quantity,
@@ -61,14 +60,12 @@ router.post('/', requireToken, async (req, res, next) => {
 });
 
 // PUT /api/cart
-router.put('/', requireToken, async (req, res, next) => {
+router.put("/", requireToken, async (req, res, next) => {
   try {
-    console.log('req.body', req.body);
-
     if (req.user) {
       const order = await Order.findOne({
         where: {
-          [Sequelize.Op.and]: [{ userId: req.user.id }, { status: 'cart' }],
+          [Sequelize.Op.and]: [{ userId: req.user.id }, { status: "cart" }],
         },
         include: Cocktail,
       });
@@ -107,16 +104,16 @@ router.put('/', requireToken, async (req, res, next) => {
 });
 
 // PUT /api/cart/completed
-router.put('/completed', requireToken, async (req, res, next) => {
+router.put("/completed", requireToken, async (req, res, next) => {
   try {
     if (req.user) {
       await Order.update(
         {
-          status: 'complete',
+          status: "complete",
         },
         {
           where: {
-            [Sequelize.Op.and]: [{ userId: req.user.id }, { status: 'cart' }],
+            [Sequelize.Op.and]: [{ userId: req.user.id }, { status: "cart" }],
           },
         }
       );
@@ -131,25 +128,28 @@ router.put('/completed', requireToken, async (req, res, next) => {
 
 //DELETE /api/cocktail/:id
 
-router.delete('/cocktail/:id', requireToken, async (req, res, next) => {
-  try { 
-      const userId = req.user.id;
-      const order = await Order.findOne({
-        where: {
-          [Sequelize.Op.and]: [{ userId }, { status: "cart" }],
-        },
-        include: Cocktail
-      });
+router.delete("/cocktail/:id", requireToken, async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const order = await Order.findOne({
+      where: {
+        [Sequelize.Op.and]: [{ userId }, { status: "cart" }],
+      },
+      include: Cocktail,
+    });
 
     await Order_items.destroy({
       where: {
-        [Sequelize.Op.and]: [{ orderId: order.id }, {cocktailId: req.params.id}],
+        [Sequelize.Op.and]: [
+          { orderId: order.id },
+          { cocktailId: req.params.id },
+        ],
       },
     });
-    res.sendStatus(200)
+    res.sendStatus(200);
   } catch (error) {
-    next (error)
+    next(error);
   }
-})
+});
 
 module.exports = router;

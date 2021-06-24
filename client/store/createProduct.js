@@ -9,10 +9,20 @@ export const createdCocktail = (cocktail) => ({
 
 export const createCocktail = (cocktail, history) => async (dispatch) => {
   try {
-    console.log(cocktail);
-    const { data: addCocktail } = await axios.post("/api/cocktails", cocktail);
-    dispatch(createdCocktail(addCocktail));
-    history.push("/cocktails");
+    const token = window.localStorage.getItem("token");
+    if (token) {
+      const { data: addCocktail } = await axios.post(
+        "/api/cocktails",
+        cocktail,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      dispatch(createdCocktail(addCocktail));
+      history.push("/cocktails");
+    }
   } catch (error) {
     console.error(error);
   }
