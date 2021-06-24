@@ -10,7 +10,6 @@ import NewProduct from "./components/NewProduct";
 import Cart from "./components/Cart";
 import Users from "./components/Users";
 import Confirmation from "./components/OrderConfirmation";
-import AgeConf from "./components/AgeConf";
 
 /**
  * COMPONENT
