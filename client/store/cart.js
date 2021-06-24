@@ -1,10 +1,13 @@
 /* eslint-disable no-case-declarations */
 import axios from 'axios';
+import history from "../history"
 
 const GET_CART = 'GET CART';
 const CREATE_CART = 'CREATE CART';
 const ADD_TO_CART = 'ADD TO CART';
 const CLEAR_CART = 'CLEAR CART';
+const REMOVE_FROM_CART = "DELETE_FROM_CART"
+const TOKEN = "token";
 
 const gotCart = (cart) => ({
   type: GET_CART,
@@ -25,6 +28,13 @@ const addedToCart = (item) => {
   };
 };
 
+const removedFromCart = (id) => {
+  return {
+    type: REMOVE_FROM_CART,
+    id
+  }
+}
+
 const clearedCart = (cart) => {
   return {
     type: CLEAR_CART,
@@ -41,11 +51,15 @@ export const fetchCart = () => async (dispatch) => {
           authorization: token,
         },
       });
-      console.log('inside fetchCart cart', cart);
-      dispatch(gotCart(cart));
+
+      if (cart != null && cart != "null") {
+        dispatch(gotCart(cart));
+      } else {
+        dispatch(gotCart({ order: {}, cocktails: [] }));
+      }
     } else {
-      let cart = window.localStorage.getItem('cart');
-      if (cart) {
+      let cart = window.localStorage.getItem("cart");
+      if (cart != null && cart != "null") {
         cart = JSON.parse(cart);
       } else {
         cart = {
@@ -63,8 +77,10 @@ export const fetchCart = () => async (dispatch) => {
 export const createCart =
   (cocktailId, quantity, singleCocktail) => async (dispatch) => {
     try {
-      const token = window.localStorage.getItem('token');
+
+      const token = window.localStorage.getItem("token");
       if (token) {
+
         const { data: cart } = await axios.post(
           '/api/cart/',
           {
@@ -99,7 +115,7 @@ export const createCart =
 export const addToCart =
   (cocktailId, quantity, cocktail) => async (dispatch) => {
     try {
-      const token = window.localStorage.getItem('token');
+      const token = window.localStorage.getItem("token");
       if (token) {
         const { data: item } = await axios.put(
           '/api/cart/',
@@ -112,7 +128,11 @@ export const addToCart =
         );
         dispatch(addedToCart(item));
       } else {
-        const cart = JSON.parse(window.localStorage.getItem('cart'));
+        let cart = JSON.parse(window.localStorage.getItem("cart")) || {
+          order: {},
+          cocktails: [cocktail],
+        };
+
         let updatedItem = false;
         let updatedCocktails = cart.cocktails.map((drink) => {
           if (drink.id == cocktailId) {
@@ -168,7 +188,27 @@ export const clearCart = () => async (dispatch) => {
   }
 };
 
-export default function cartReducer(state = {}, action) {
+
+export const removeFromCart = (id) => async (dispatch) => {
+  try {
+    const token = window.localStorage.getItem(TOKEN)
+    await axios.delete(`/api/cart/cocktail/${id}`, {
+      headers: {
+        authorization: token,
+      },
+    })
+    dispatch(removedFromCart(id)) 
+    history.push('/cart')
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export default function cartReducer(
+  state = { order: {}, cocktails: [] },
+  action
+) {
+
   switch (action.type) {
     case GET_CART:
       return action.cart;
@@ -187,6 +227,8 @@ export default function cartReducer(state = {}, action) {
         updatedCocktails.push(action.item);
       }
       return { ...state, cocktails: updatedCocktails };
+    case REMOVE_FROM_CART:
+      return {...state, cocktails: [...state.cocktails].filter((cocktail) => cocktail.id !== action.cocktailId)}
     case CLEAR_CART:
       return action.cart;
     default:
