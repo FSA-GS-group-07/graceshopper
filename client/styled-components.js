@@ -18,8 +18,8 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-content: center;
-  margin-top: 3rem;
-  margin: 10rem;
+  margin-top: 2rem;
+  margin: 5rem;
 `;
 
 export const GridContainer = styled.div`
@@ -226,6 +226,11 @@ export const CartButton = styled.button`
     letter-spacing: 1px;
     font-size: 0.75em;
   }
+  &:hover {
+    background-color: black;
+    border: 2px solid white;
+    color: white;
+  }
 `;
 /* height: 20%;
 width: 80%; */
@@ -233,6 +238,7 @@ width: 80%; */
 //css content, after element "::after ::before"
 
 export const Img = styled.div`
+  max-width: 100%;
   display: flex;
   justify-content: center;
   margin: 2rem;
