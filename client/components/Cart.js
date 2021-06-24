@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchCart, addToCart } from "../store/cart";
+import { fetchCart, addToCart, removeFromCart } from "../store/cart";
 import { loadStripe } from "@stripe/stripe-js";
 import { Link } from "react-router-dom";
 import { IoChevronBack } from "react-icons/io5";
