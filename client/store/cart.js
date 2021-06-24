@@ -1,10 +1,13 @@
 /* eslint-disable no-case-declarations */
 import axios from 'axios';
+import history from "../history"
 
 const GET_CART = 'GET CART';
 const CREATE_CART = 'CREATE CART';
 const ADD_TO_CART = 'ADD TO CART';
 const CLEAR_CART = 'CLEAR CART';
+const REMOVE_FROM_CART = "DELETE_FROM_CART"
+const TOKEN = "token";
 
 const gotCart = (cart) => ({
   type: GET_CART,
@@ -24,6 +27,13 @@ const addedToCart = (item) => {
     item,
   };
 };
+
+const removedFromCart = (id) => {
+  return {
+    type: REMOVE_FROM_CART,
+    id
+  }
+}
 
 const clearedCart = (cart) => {
   return {
@@ -172,6 +182,21 @@ export const clearCart = () => async (dispatch) => {
   }
 };
 
+export const removeFromCart = (id) => async (dispatch) => {
+  try {
+    const token = window.localStorage.getItem(TOKEN)
+    await axios.delete(`/api/cart/cocktail/${id}`, {
+      headers: {
+        authorization: token,
+      },
+    })
+    dispatch(removedFromCart(id)) 
+    history.push('/cart')
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export default function cartReducer(
   state = { order: {}, cocktails: [] },
   action
@@ -194,6 +219,8 @@ export default function cartReducer(
         updatedCocktails.push(action.item);
       }
       return { ...state, cocktails: updatedCocktails };
+    case REMOVE_FROM_CART:
+      return {...state, cocktails: [...state.cocktails].filter((cocktail) => cocktail.id !== action.cocktailId)}
     case CLEAR_CART:
       return action.cart;
     default:
