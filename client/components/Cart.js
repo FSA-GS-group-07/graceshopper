@@ -40,7 +40,7 @@ class Cart extends React.Component {
 
   async handleDelete(id) {
     await this.props.deleteFromCart(id);
-    this.props.getCart()
+    this.props.getCart();
   }
 
   async handleCheckout() {
@@ -60,7 +60,6 @@ class Cart extends React.Component {
       console.log(result.error.message);
     }
   }
-
 
   render() {
     const { cart } = this.props;
@@ -96,11 +95,6 @@ class Cart extends React.Component {
                   <RightColumn>
                     <LargeText>{cocktail.name}</LargeText>
                     <h3>
-                    <Button onClick={() => 
-                    this.handleDelete(cocktail.id)}
-                    >
-                       Delete
-                       </Button>
                       ${cocktail.price} x{' '}
                       {this.state.edit && cocktail.order_items?.quantity > 0 && (
                         <QuantityButton
@@ -135,6 +129,9 @@ class Cart extends React.Component {
                         }
                       >
                         Edit
+                      </Button>
+                      <Button onClick={() => this.handleDelete(cocktail.id)}>
+                        Delete
                       </Button>
                     </div>
                   </RightColumn>
@@ -181,7 +178,7 @@ const mapDispatch = (dispatch) => ({
   getCart: () => dispatch(fetchCart()),
   updatedQuantity: (cocktailId, quantity, cocktail) =>
     dispatch(addToCart(cocktailId, quantity, cocktail)),
-  deleteFromCart: (id) => dispatch(removeFromCart(id))
+  deleteFromCart: (id) => dispatch(removeFromCart(id)),
 });
 
 export default connect(mapState, mapDispatch)(Cart);

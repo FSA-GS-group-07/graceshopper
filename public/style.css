@@ -27,6 +27,6 @@ form div {
 }
 
 img {
-  max-width: 100%;
-  max-height: fixed;
+  width: 100%;
+  height: fixed;
 }

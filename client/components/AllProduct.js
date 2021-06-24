@@ -1,10 +1,10 @@
-import React from "react";
-import { createDispatchHook } from "react-redux";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { create } from "react-test-renderer";
-import { fetchCocktails } from "../store/allProduct";
-import { createCart, fetchCart, addToCart } from "../store/cart";
+import React from 'react';
+import { createDispatchHook } from 'react-redux';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { create } from 'react-test-renderer';
+import { fetchCocktails } from '../store/allProduct';
+import { createCart, fetchCart, addToCart } from '../store/cart';
 import {
   Grid,
   CartButton,
@@ -14,7 +14,7 @@ import {
   SmallText,
   CenterContainer,
   AdminButton,
-} from "../styled-components";
+} from '../styled-components';
 
 class AllProduct extends React.Component {
   constructor(props) {
@@ -49,28 +49,28 @@ class AllProduct extends React.Component {
         </CenterContainer>
         <Grid>
           {cocktails &&
-            cocktails.map((cocktail, index) => (
-              <React.Fragment key={index}>
-                <Wrapper key={cocktail.id}>
-                  <img src={cocktail.imageUrl} alt={cocktail.name} />
-                  <CartButton
-                    onClick={() => {
-                      this.handleAddToCart(
-                        cocktail.id,
-                        cart.cocktails?.order_items?.quantity,
-                        cocktail
-                      );
-                    }}
-                  >
-                    Add to Cart
-                  </CartButton>
-                </Wrapper>
-                <GridContainer>
-                  <Link to={`/cocktails/${cocktail.id}`}>
+            cocktails.map((cocktail) => (
+              // <React.Fragment key={index}>
+              <Wrapper key={cocktail.id}>
+                <img src={cocktail.imageUrl} alt={cocktail.name} />
+                <CartButton
+                  onClick={() => {
+                    this.handleAddToCart(
+                      cocktail.id,
+                      cart.cocktails?.order_items?.quantity,
+                      cocktail
+                    );
+                  }}
+                >
+                  Add to Cart
+                </CartButton>
+                <Link to={`/cocktails/${cocktail.id}`}>
+                  <GridContainer>
                     <Text>{cocktail.name}</Text> <Text>${cocktail.price}</Text>
-                  </Link>
-                </GridContainer>
-              </React.Fragment>
+                  </GridContainer>
+                </Link>
+              </Wrapper>
+              // </React.Fragment>
             ))}
         </Grid>
       </div>
