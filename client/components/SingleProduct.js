@@ -20,7 +20,9 @@ import {
   AdminButton,
   CartContainer,
   CenterContainer,
-} from "../styled-components";
+} from '../styled-components';
+import NotFound from './NotFound';
+
 
 class SingleProduct extends React.Component {
   constructor(props) {
@@ -98,6 +100,10 @@ class SingleProduct extends React.Component {
       handleAdd,
       handleAddToCart,
     } = this;
+
+    if (cocktail.error) {
+      return <NotFound />;
+    }
 
     return (
       <div>

@@ -1,10 +1,10 @@
 /* eslint-disable no-case-declarations */
-import axios from "axios";
+import axios from 'axios';
 
-const GET_CART = "GET CART";
-const CREATE_CART = "CREATE CART";
-const ADD_TO_CART = "ADD TO CART";
-const CLEAR_CART = "CLEAR CART";
+const GET_CART = 'GET CART';
+const CREATE_CART = 'CREATE CART';
+const ADD_TO_CART = 'ADD TO CART';
+const CLEAR_CART = 'CLEAR CART';
 
 const gotCart = (cart) => ({
   type: GET_CART,
@@ -34,17 +34,21 @@ const clearedCart = (cart) => {
 
 export const fetchCart = () => async (dispatch) => {
   try {
-    const token = window.localStorage.getItem("token");
+    const token = window.localStorage.getItem('token');
     if (token) {
-      const { data: cart } = await axios.get("/api/cart/", {
+      const { data: cart } = await axios.get('/api/cart/', {
         headers: {
           authorization: token,
         },
       });
-      dispatch(gotCart(cart));
+      if (cart != null && cart != "null") {
+        dispatch(gotCart(cart));
+      } else {
+        dispatch(gotCart({ order: {}, cocktails: [] }));
+      }
     } else {
       let cart = window.localStorage.getItem("cart");
-      if (cart) {
+      if (cart != null && cart != "null") {
         cart = JSON.parse(cart);
       } else {
         cart = {
@@ -62,6 +66,7 @@ export const fetchCart = () => async (dispatch) => {
 export const createCart =
   (cocktailId, quantity, singleCocktail) => async (dispatch) => {
     try {
+
       const token = window.localStorage.getItem("token");
       if (token) {
         const { data: cart } = await axios.post("/api/cart/", {
@@ -73,7 +78,6 @@ export const createCart =
             quantity,
           },
         });
-
         dispatch(createdCart(cart));
       } else {
         singleCocktail.order_items = {
@@ -84,7 +88,7 @@ export const createCart =
           cocktails: [singleCocktail],
         };
         const cartString = JSON.stringify(cartObj);
-        window.localStorage.setItem("cart", cartString);
+        window.localStorage.setItem('cart', cartString);
         dispatch(gotCart(cartObj));
       }
     } catch (error) {
@@ -112,6 +116,7 @@ export const addToCart =
           order: {},
           cocktails: [cocktail],
         };
+
         let updatedItem = false;
         let updatedCocktails = cart.cocktails.map((drink) => {
           if (drink.id == cocktailId) {
@@ -131,7 +136,7 @@ export const addToCart =
           cocktails: updatedCocktails,
         };
         const cartString = JSON.stringify(cartObj);
-        window.localStorage.setItem("cart", cartString);
+        window.localStorage.setItem('cart', cartString);
         dispatch(gotCart(cartObj));
       }
     } catch (error) {
@@ -141,19 +146,19 @@ export const addToCart =
 
 export const clearCart = () => async (dispatch) => {
   try {
-    const token = window.localStorage.getItem("token");
+    const token = window.localStorage.getItem('token');
     if (token) {
-      await axios.put("/api/cart/completed", {
+      await axios.put('/api/cart/completed', {
         headers: {
           authorization: token,
         },
       });
     } else {
-      const cart = JSON.parse(window.localStorage.getItem("cart"));
+      const cart = JSON.parse(window.localStorage.getItem('cart'));
       if (cart) {
-        cart.order.status = "complete";
-        await axios.post("/api/cart", cart);
-        window.localStorage.setItem("cart", null);
+        cart.order.status = 'complete';
+        await axios.post('/api/cart', cart);
+        window.localStorage.setItem('cart', null);
       }
     }
     dispatch(
@@ -167,7 +172,10 @@ export const clearCart = () => async (dispatch) => {
   }
 };
 
-export default function cartReducer(state = {}, action) {
+export default function cartReducer(
+  state = { order: {}, cocktails: [] },
+  action
+) {
   switch (action.type) {
     case GET_CART:
       return action.cart;
