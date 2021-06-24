@@ -127,4 +127,27 @@ router.put('/completed', requireToken, async (req, res, next) => {
   }
 });
 
+//DELETE /api/cocktail/:id
+
+router.delete('/cocktail/:id', requireToken, async (req, res, next) => {
+  try { 
+      const userId = req.user.id;
+      const order = await Order.findOne({
+        where: {
+          [Sequelize.Op.and]: [{ userId }, { status: "cart" }],
+        },
+        include: Cocktail
+      });
+
+    await Order_items.destroy({
+      where: {
+        [Sequelize.Op.and]: [{ orderId: order.id }, {cocktailId: req.params.id}],
+      },
+    });
+    res.sendStatus(200)
+  } catch (error) {
+    next (error)
+  }
+})
+
 module.exports = router;
