@@ -66,9 +66,10 @@ export const fetchCart = () => async (dispatch) => {
 export const createCart =
   (cocktailId, quantity, singleCocktail) => async (dispatch) => {
     try {
-      const token = window.localStorage.getItem('token');
+
+      const token = window.localStorage.getItem("token");
       if (token) {
-        const { data: cart } = await axios.post('/api/cart/', {
+        const { data: cart } = await axios.post("/api/cart/", {
           headers: {
             authorization: token,
           },
@@ -98,18 +99,24 @@ export const createCart =
 export const addToCart =
   (cocktailId, quantity, cocktail) => async (dispatch) => {
     try {
-      const token = window.localStorage.getItem('token');
+      const token = window.localStorage.getItem("token");
       if (token) {
-        const { data: item } = await axios.put('/api/cart/', {
+        const { data: item } = await axios.put("/api/cart/", {
           headers: {
             authorization: token,
           },
-          cocktailId,
-          quantity,
+          body: {
+            cocktailId,
+            quantity,
+          },
         });
         dispatch(addedToCart(item));
       } else {
-        const cart = JSON.parse(window.localStorage.getItem('cart'));
+        let cart = JSON.parse(window.localStorage.getItem("cart")) || {
+          order: {},
+          cocktails: [cocktail],
+        };
+
         let updatedItem = false;
         let updatedCocktails = cart.cocktails.map((drink) => {
           if (drink.id == cocktailId) {
