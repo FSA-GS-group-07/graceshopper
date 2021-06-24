@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const { db } = require("../server/db");
 
@@ -10,6 +10,7 @@ const Order_items = require("../server/db/models/orderitems");
 const data = require("../script/data2.json");
 const users = require("./users");
 const orders = require("./orderAddresses");
+if (process.env.NODE_ENV !== "production") require("../secrets");
 
 /**
  * seed - this function clears the database, updates tables to
@@ -40,6 +41,15 @@ async function seed() {
       return newUser.save();
     })
   );
+
+  const adminUser = User.build({});
+  adminUser.firstName = "Admin";
+  adminUser.lastName = "User";
+  adminUser.username = "AdminUser";
+  adminUser.email = "adminuser@mail.com";
+  adminUser.password = process.env.ADMIN_PASSWORD;
+  adminUser.admin = true;
+  adminUser.save();
 
   let memo = {};
   const allOrders = await Promise.all(
@@ -98,16 +108,16 @@ async function seed() {
  The `seed` function is concerned only with modifying the database.
 */
 async function runSeed() {
-  console.log('seeding...');
+  console.log("seeding...");
   try {
     await seed();
   } catch (err) {
     console.error(err);
     process.exitCode = 1;
   } finally {
-    console.log('closing db connection');
+    console.log("closing db connection");
     await db.close();
-    console.log('db connection closed');
+    console.log("db connection closed");
   }
 }
 
