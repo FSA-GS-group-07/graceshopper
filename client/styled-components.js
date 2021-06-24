@@ -86,12 +86,12 @@ export const List = styled.div`
 `;
 
 export const LeftColumn = styled.div`
-  width: 40%;
+  width: 60%;
   position: relative;
 `;
 
 export const RightColumn = styled.div`
-  width: 60%;
+  width: 40%;
   margin-left: 3rem;
 `;
 
@@ -104,7 +104,7 @@ export const ContainerSingle = styled.div`
 export const LeftColumnSingle = styled.div`
   width: 60%;
   position: relative;
-  padding: 3rem;
+  padding: 1rem;
 `;
 
 export const RightColumnSingle = styled.div`
@@ -177,6 +177,7 @@ export const Button = styled.button`
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 1em;
+  margin-right: 1rem;
   &:hover {
     background-color: transparent;
     border: 2px solid black;
@@ -214,7 +215,7 @@ export const CartButton = styled.button`
   & {
     display: none;
     position: absolute;
-    top: 45%;
+    top: 38%;
     left: 23%;
     background-color: transparent;
     border: 2px solid white;
