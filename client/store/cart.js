@@ -51,6 +51,7 @@ export const fetchCart = () => async (dispatch) => {
           authorization: token,
         },
       });
+
       if (cart != null && cart != "null") {
         dispatch(gotCart(cart));
       } else {
@@ -79,15 +80,20 @@ export const createCart =
 
       const token = window.localStorage.getItem("token");
       if (token) {
-        const { data: cart } = await axios.post("/api/cart/", {
-          headers: {
-            authorization: token,
-          },
-          body: {
+
+        const { data: cart } = await axios.post(
+          '/api/cart/',
+          {
             cocktailId,
             quantity,
           },
-        });
+          {
+            headers: {
+              authorization: token,
+            },
+          }
+        );
+        console.log('inside createCart thunk', cart);
         dispatch(createdCart(cart));
       } else {
         singleCocktail.order_items = {
@@ -111,15 +117,15 @@ export const addToCart =
     try {
       const token = window.localStorage.getItem("token");
       if (token) {
-        const { data: item } = await axios.put("/api/cart/", {
-          headers: {
-            authorization: token,
-          },
-          body: {
-            cocktailId,
-            quantity,
-          },
-        });
+        const { data: item } = await axios.put(
+          '/api/cart/',
+          { cocktailId, quantity },
+          {
+            headers: {
+              authorization: token,
+            },
+          }
+        );
         dispatch(addedToCart(item));
       } else {
         let cart = JSON.parse(window.localStorage.getItem("cart")) || {
@@ -182,6 +188,7 @@ export const clearCart = () => async (dispatch) => {
   }
 };
 
+
 export const removeFromCart = (id) => async (dispatch) => {
   try {
     const token = window.localStorage.getItem(TOKEN)
@@ -201,6 +208,7 @@ export default function cartReducer(
   state = { order: {}, cocktails: [] },
   action
 ) {
+
   switch (action.type) {
     case GET_CART:
       return action.cart;

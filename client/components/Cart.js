@@ -64,8 +64,10 @@ class Cart extends React.Component {
 
   render() {
     const { cart } = this.props;
+    console.log('this.props', this.props);
     let total = 0;
     let subtotal = {};
+
     {
       cart.cocktails &&
         cart.cocktails.map((cocktail) => {

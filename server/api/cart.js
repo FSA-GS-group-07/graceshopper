@@ -30,6 +30,7 @@ router.get('/', requireToken, async (req, res, next) => {
 router.post('/', requireToken, async (req, res, next) => {
   try {
     if (req.user) {
+      console.log('req.body', req.body);
       const order = await Order.create({
         userId: req.user.id,
         status: 'cart',
@@ -62,6 +63,8 @@ router.post('/', requireToken, async (req, res, next) => {
 // PUT /api/cart
 router.put('/', requireToken, async (req, res, next) => {
   try {
+    console.log('req.body', req.body);
+
     if (req.user) {
       const order = await Order.findOne({
         where: {
@@ -69,7 +72,6 @@ router.put('/', requireToken, async (req, res, next) => {
         },
         include: Cocktail,
       });
-
       const { cocktailId, quantity } = req.body;
 
       let item = order.cocktails.filter(
