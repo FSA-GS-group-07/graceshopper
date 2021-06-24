@@ -1,9 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { fetchCart, addToCart } from '../store/cart';
-import { loadStripe } from '@stripe/stripe-js';
-import { Link } from 'react-router-dom';
-import { IoChevronBack } from 'react-icons/io5';
+import React from "react";
+import { connect } from "react-redux";
+import { fetchCart, addToCart } from "../store/cart";
+import { loadStripe } from "@stripe/stripe-js";
+import { Link } from "react-router-dom";
+import { IoChevronBack } from "react-icons/io5";
 import {
   CartContainer,
   List,
@@ -14,7 +14,7 @@ import {
   LargeText,
   QuantityButton,
   SmallText,
-} from '../styled-components';
+} from "../styled-components";
 
 class Cart extends React.Component {
   constructor(props) {
@@ -45,11 +45,11 @@ class Cart extends React.Component {
 
   async handleCheckout() {
     const stripe = await loadStripe(
-      'pk_test_51J5C3LFT1yAmNlTZXfbIlPdca9y7GD8DILU77uUVH1AO844xp0B9UxdzJSGetlpYe4uRpRoH16hKtRyZ8aWPUeYz00RV42ERF5'
+      "pk_test_51J5C3LFT1yAmNlTZXfbIlPdca9y7GD8DILU77uUVH1AO844xp0B9UxdzJSGetlpYe4uRpRoH16hKtRyZ8aWPUeYz00RV42ERF5"
     );
-    const response = await fetch('/api/create-checkout-session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch("/api/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(this.props.cart),
     });
     const session = await response.json();
@@ -63,7 +63,6 @@ class Cart extends React.Component {
 
   render() {
     const { cart } = this.props;
-    console.log('this.props', this.props);
     let total = 0;
     let subtotal = {};
 
@@ -95,7 +94,7 @@ class Cart extends React.Component {
                   <RightColumn>
                     <LargeText>{cocktail.name}</LargeText>
                     <h3>
-                      ${cocktail.price} x{' '}
+                      ${cocktail.price} x{" "}
                       {this.state.edit && cocktail.order_items?.quantity > 0 && (
                         <QuantityButton
                           type="button"

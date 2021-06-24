@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 
-const GET_COCKTAIL = 'GET_COCKTAIL';
-const UPDATE_COCKTAIL = 'UPDATE_COCKTAIL';
-const DELETE_COCKTAIL = 'DELETE_COCKTAIL';
+const GET_COCKTAIL = "GET_COCKTAIL";
+const UPDATE_COCKTAIL = "UPDATE_COCKTAIL";
+const DELETE_COCKTAIL = "DELETE_COCKTAIL";
 
 const gotCocktail = (cocktail) => ({
   type: GET_COCKTAIL,
@@ -30,11 +30,19 @@ export const fetchCocktail = (id) => async (dispatch) => {
 
 export const updateCocktail = (cocktail) => async (dispatch) => {
   try {
-    const { data: revisedCocktail } = await axios.put(
-      `/api/cocktails/${cocktail.id}`,
-      cocktail
-    );
-    dispatch(_updatedCocktail(revisedCocktail));
+    const token = window.localStorage.getItem("token");
+    if (token) {
+      const { data: revisedCocktail } = await axios.put(
+        `/api/cocktails/${cocktail.id}`,
+        cocktail,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      dispatch(_updatedCocktail(revisedCocktail));
+    }
   } catch (error) {
     console.error(error);
   }
@@ -42,11 +50,19 @@ export const updateCocktail = (cocktail) => async (dispatch) => {
 
 export const deleteCocktail = (id, history) => async (dispatch) => {
   try {
-    const { data: removedCocktail } = await axios.delete(
-      `/api/cocktails/${id}`
-    );
-    if (dispatch(_deleteCocktail(removedCocktail))) {
-      history.push('/cocktails');
+    const token = window.localStorage.getItem("token");
+    if (token) {
+      const { data: removedCocktail } = await axios.delete(
+        `/api/cocktails/${id}`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      if (dispatch(_deleteCocktail(removedCocktail))) {
+        history.push("/cocktails");
+      }
     }
   } catch (error) {
     console.error(error);
