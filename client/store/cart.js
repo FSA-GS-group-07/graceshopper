@@ -41,6 +41,7 @@ export const fetchCart = () => async (dispatch) => {
           authorization: token,
         },
       });
+      console.log('inside fetchCart cart', cart);
       dispatch(gotCart(cart));
     } else {
       let cart = window.localStorage.getItem('cart');
@@ -64,15 +65,19 @@ export const createCart =
     try {
       const token = window.localStorage.getItem('token');
       if (token) {
-        const { data: cart } = await axios.post('/api/cart/', {
-          headers: {
-            authorization: token,
-          },
-          body: {
+        const { data: cart } = await axios.post(
+          '/api/cart/',
+          {
             cocktailId,
             quantity,
           },
-        });
+          {
+            headers: {
+              authorization: token,
+            },
+          }
+        );
+        console.log('inside createCart thunk', cart);
         dispatch(createdCart(cart));
       } else {
         singleCocktail.order_items = {
@@ -96,13 +101,15 @@ export const addToCart =
     try {
       const token = window.localStorage.getItem('token');
       if (token) {
-        const { data: item } = await axios.put('/api/cart/', {
-          headers: {
-            authorization: token,
-          },
-          cocktailId,
-          quantity,
-        });
+        const { data: item } = await axios.put(
+          '/api/cart/',
+          { cocktailId, quantity },
+          {
+            headers: {
+              authorization: token,
+            },
+          }
+        );
         dispatch(addedToCart(item));
       } else {
         const cart = JSON.parse(window.localStorage.getItem('cart'));
@@ -161,10 +168,7 @@ export const clearCart = () => async (dispatch) => {
   }
 };
 
-export default function cartReducer(
-  state = { order: {}, cocktails: [] },
-  action
-) {
+export default function cartReducer(state = {}, action) {
   switch (action.type) {
     case GET_CART:
       return action.cart;

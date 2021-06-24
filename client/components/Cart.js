@@ -57,15 +57,17 @@ class Cart extends React.Component {
 
   render() {
     const { cart } = this.props;
+    console.log('this.props', this.props);
     let total = 0;
     let subtotal = {};
+
     {
       cart.cocktails &&
         cart.cocktails.map((cocktail) => {
           subtotal[cocktail.id] = Number(
-            cocktail.price * cocktail.order_items.quantity
+            cocktail.price * cocktail.order_items?.quantity
           );
-          total += Number(cocktail.price * cocktail.order_items.quantity);
+          total += Number(cocktail.price * cocktail.order_items?.quantity);
         });
     }
 
