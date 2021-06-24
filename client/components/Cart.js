@@ -63,9 +63,9 @@ class Cart extends React.Component {
       cart.cocktails &&
         cart.cocktails.map((cocktail) => {
           subtotal[cocktail.id] = Number(
-            cocktail.price * cocktail.order_items.quantity
+            cocktail.price * cocktail.order_items?.quantity
           );
-          total += Number(cocktail.price * cocktail.order_items.quantity);
+          total += Number(cocktail.price * cocktail.order_items?.quantity);
         });
     }
 
