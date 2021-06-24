@@ -1,6 +1,6 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Img } from '../styled-components';
+import React from "react";
+import { connect } from "react-redux";
+import { Img } from "../styled-components";
 
 export const Home = (props) => {
   const { username } = props;

@@ -97,7 +97,6 @@ export const addToCart =
     try {
       const token = window.localStorage.getItem("token");
       if (token) {
-        console.log("putting to cart");
         const { data: item } = await axios.put("/api/cart/", {
           headers: {
             authorization: token,
@@ -109,7 +108,10 @@ export const addToCart =
         });
         dispatch(addedToCart(item));
       } else {
-        const cart = JSON.parse(window.localStorage.getItem("cart"));
+        let cart = JSON.parse(window.localStorage.getItem("cart")) || {
+          order: {},
+          cocktails: [cocktail],
+        };
         let updatedItem = false;
         let updatedCocktails = cart.cocktails.map((drink) => {
           if (drink.id == cocktailId) {

@@ -27,13 +27,12 @@ class AllProduct extends React.Component {
     this.props.getCart();
   }
 
-  handleAddToCart(id, quantity = 1, cocktail) {
-    this.props.addToCart(id, quantity, cocktail);
-    // if (this.props.cart.cocktails && this.props.cart.cocktails.length > 0) {
-    //   this.props.createCart(id, quantity, cocktail);
-    // } else {
-    //   this.props.addToCart(id, quantity, cocktail);
-    // }
+  async handleAddToCart(id, quantity = 1, cocktail) {
+    if (this.props.cart.cocktails && this.props.cart.cocktails.length > 0) {
+      await this.props.addToCart(id, quantity, cocktail);
+    } else {
+      await this.props.createCart(id, quantity, cocktail);
+    }
   }
 
   render() {
