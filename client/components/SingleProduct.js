@@ -20,9 +20,8 @@ import {
   AdminButton,
   CartContainer,
   CenterContainer,
-} from '../styled-components';
-import NotFound from './NotFound';
-
+} from "../styled-components";
+import NotFound from "./NotFound";
 
 class SingleProduct extends React.Component {
   constructor(props) {
@@ -31,7 +30,6 @@ class SingleProduct extends React.Component {
       quantity: 1,
       edit: false,
       name: "",
-      imageUrl: this.props.cocktail.imageUrl,
       price: 0,
       description: "",
     };
@@ -150,18 +148,7 @@ class SingleProduct extends React.Component {
                   value={name}
                 />
               </label>
-              <br />
-              <label>
-                Image Url:
-                <Input
-                  type="text"
-                  name="imageUrl"
-                  placeholder={cocktail.imageUrl}
-                  onChange={handleChange}
-                  value={imageUrl}
-                />
-              </label>
-              <br />
+
               <label>
                 Description:
                 <Input
