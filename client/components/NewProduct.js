@@ -41,14 +41,14 @@ class NewProduct extends Component {
     const { handleChange, handleSubmit } = this;
 
     return (
-      <CreateContainer>
-        <Link to="/cocktails">
-          <SmallText>
-            <IoChevronBack /> Back to all cocktails
-          </SmallText>
-        </Link>
-        <br />
-        <br />
+      <>
+        <CreateContainer>
+          <Link to="/cocktails">
+            <SmallText>
+              <IoChevronBack /> Back to all cocktails
+            </SmallText>
+          </Link>
+        </CreateContainer>
         <Container>
           <form onSubmit={handleSubmit}>
             <SmallText>
@@ -99,7 +99,7 @@ class NewProduct extends Component {
             </SmallText>
           </form>
         </Container>
-      </CreateContainer>
+      </>
     );
   }
 }
