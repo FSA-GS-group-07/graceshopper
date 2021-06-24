@@ -1,6 +1,7 @@
 body {
   font-family: 'Lato', sans-serif;
   background-color: white;
+  margin: 0;
 }
 
 a:link,
@@ -27,5 +28,5 @@ form div {
 
 img {
   max-width: 100%;
-  max-height: 100%;
+  max-height: fixed;
 }

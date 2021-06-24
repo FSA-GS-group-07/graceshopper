@@ -2,11 +2,24 @@ import styled from 'styled-components';
 
 //CSS STYLES
 
+export const FixedHeightContainer = styled.div`
+  height: 100vh;
+  box-sizing: border-box;
+  border: 20px solid darkslategrey;
+  min-width: 500px;
+`;
+
+export const Content = styled.div`
+  height: 75vh;
+  overflow: auto;
+`;
+
 export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-content: center;
   margin-top: 3rem;
+  margin: 10rem;
 `;
 
 export const GridContainer = styled.div`
@@ -219,8 +232,9 @@ width: 80%; */
 //css content, after element "::after ::before"
 
 export const Img = styled.div`
-  width: 100%;
-  height: fixed;
+  display: flex;
+  justify-content: center;
+  margin: 2rem;
 `;
 
 export const Nav = styled.div`
