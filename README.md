@@ -1,77 +1,51 @@
-# FS-App-Template
+# Pour Decision
 
-## Setup
+Pour decisions is an interactive ecommerce website for selling cocktails. The Website stimulates an online shopping experience with a functioning shopping cart, sign-up, login, and checkout with the payment processing feature.
 
-To use this as boilerplate, you'll need to take the following steps:
+### User Features: 
 
-* Don't fork or clone this repo! Instead, create a new, empty
-  directory on your machine and `git init` (or create an empty repo on
-  Github and clone it to your local machine)
+##### Homescreen
 
-* Now you will have to add the fs-app-template as a remote and merge it into your own repository.
+<img width="650" alt="Screen Shot 2021-07-16 at 10 49 37 AM" src="https://user-images.githubusercontent.com/70176837/126515257-b10263f3-454d-4929-8c0e-c2528dfaf7da.png">
 
-```
-git remote add boilermaker https://github.com/FullstackAcademy/fs-app-template.git
-git fetch boilermaker
-git merge boilermaker/main
-git branch -m master main
-```
+##### Cocktail Screen
 
-## Customize
+<img width="650" alt="Screen Shot 2021-07-16 at 11 09 05 AM" src="https://user-images.githubusercontent.com/70176837/126515985-b5dc228f-5a39-4b89-aab9-ea15a494f661.png">
 
-Now that you've got the code, follow these steps to get acclimated:
+##### Cart
 
-* Update project name and description in `package.json`
-* `npm install`
-* Create two postgres databases (`MY_APP_NAME` should match the `name`
-  parameter in `package.json`):
-* These commands will create both your **development** and **test** databases
+<img width="650" alt="Screen Shot 2021-07-16 at 11 09 05 AM" src="https://user-images.githubusercontent.com/70176837/126516958-7cd1151b-e997-4494-a206-b3ad8e7c983c.png">
 
-```
-createdb <YOUR APP NAME HERE FROM package.json>
-createdb <YOUR APP NAME HERE FROM package.json>-test
-```
+##### Payment
 
-* By default, running `npm test` will use your test database, while
-  regular development uses development database
+<img width="650" alt="Screen Shot 2021-07-16 at 11 05 39 AM" src="https://user-images.githubusercontent.com/70176837/126515582-7a7e7598-8824-44f6-aff2-6c29b068b022.png">
 
-## Start
+### Admin Features:
 
-Sync and seed your database by running `npm run seed`. Running `npm run start:dev` will make great things happen!
+<img width="650" alt="Screen Shot 2021-07-16 at 11 09 05 AM" src="https://user-images.githubusercontent.com/70176837/126516724-9e3d4ae0-e6f6-4ac1-8f84-08fc21a686f9.png">
 
-- start:dev will both start your server and build your client side files using webpack
-- start:dev:logger is the same as start:dev, but you will see your SQL queries (can be helpful for debugging)
-- start:dev:seed will start your server and also seed your database (this is useful when you are making schema changes and you don't want to run your seed script separately)
+<img width="650" alt="Screen Shot 2021-07-16 at 11 09 05 AM" src="https://user-images.githubusercontent.com/70176837/126516756-aa1ed189-ac11-4d46-aeb8-09bc05af5579.png">
 
+<img width="650" alt="Screen Shot 2021-07-16 at 11 09 05 AM" src="https://user-images.githubusercontent.com/70176837/126516797-9a0a07b9-2b99-4d26-88ab-915a0f986b21.png">
 
-### Heroku
+## Deployed Site:
+https://pourdecisions.herokuapp.com/
 
-1.  Set up the [Heroku command line tools][heroku-cli]
-2.  `heroku login`
-3.  Add a git remote for heroku:
+## Technologies used
+- React 
+- Redux
+- styled-components
+- Express
+- Node
+- PostgreSQL
+- Sequelize
+- Jest
 
-[heroku-cli]: https://devcenter.heroku.com/articles/heroku-cli
+## Contributors
 
-* **If you are creating a new app...**
-
-  1.  `heroku create` or `heroku create your-app-name` if you have a
-      name in mind.
-  2.  `heroku config:set JWT=<your secret here!>` to set a secret for JWT signing
-
-Database Setup
-
-  3.  `heroku addons:create heroku-postgresql:hobby-dev` to add
-      ("provision") a postgres database to your heroku dyno (This creates your production database)
-
-  4.  `heroku config:set SEED=true` to get heroku to sync and seed your database
-
-  5.   note everytime your app restarts, the database tables will be dropped and re-created. To avoid this you can `config:unset SEED`
+- [Swan Zhao](https://github.com/swan-zhao)
+- [Finley Matthews](https://github.com/finleymatthews96)
+- [Margarita Danshina](https://github.com/margaritadanshina)
+- [Yagna Patel](https://github.com/yagna11)
 
 
-* **If you already have a Heroku app...**
-
-  1.  `heroku git:remote your-app-name` You'll need to be a
-      collaborator on the app.
-
-
-Now, you should be deployed!
