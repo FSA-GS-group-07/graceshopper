@@ -26,6 +26,7 @@ async function seed() {
     let cocktail = {
       name: drink.strDrink,
       imageUrl: drink.strDrinkThumb,
+      price: ((Math.ceil(Math.random() * 15) + 5) * 100 - 1) / 100,
     };
     cocktails.push(cocktail);
   });
