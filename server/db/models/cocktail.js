@@ -17,7 +17,7 @@ const Cocktail = db.define('cocktail', {
         allowNull: true,
     },
     price: {
-        type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
         allowNull: false,
         defaultValue: 10
     },
