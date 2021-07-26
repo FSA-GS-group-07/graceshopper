@@ -1,4 +1,4 @@
-# Pour Decision
+# Pour Decisions
 
 Pour decisions is an interactive ecommerce website for selling cocktails. The Website stimulates an online shopping experience with a functioning shopping cart, sign-up, login, and checkout with the payment processing feature.
 
