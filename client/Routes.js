@@ -1,16 +1,16 @@
-
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
-import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
-import { Login, Signup } from './components/AuthForm';
-import Home from './components/Home';
-import { me } from './store';
-import AllProduct from './components/AllProduct';
-import SingleProduct from './components/SingleProduct';
-import NewProduct from './components/NewProduct';
-import Cart from './components/Cart';
-import Users from './components/Users';
-import Confirmation from './components/OrderConfirmation';
+import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+import { withRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Login, Signup } from "./components/AuthForm";
+import Home from "./components/Home";
+import { me } from "./store";
+import AllProduct from "./components/AllProduct";
+import SingleProduct from "./components/SingleProduct";
+import NewProduct from "./components/NewProduct";
+import Cart from "./components/Cart";
+import Users from "./components/Users";
+import Confirmation from "./components/OrderConfirmation";
+import Orders from "./components/Orders";
 
 /**
  * COMPONENT
@@ -50,6 +50,7 @@ class Routes extends Component {
             render={() => (isAdmin && isLoggedIn ? <Users /> : null)}
           />
           <Route exact path="/cart" render={() => <Cart />} />
+          <Route exact path="/orders" render={() => <Orders />} />
           <Route exact path="/confirmation" render={() => <Confirmation />} />
         </Switch>
       </div>
